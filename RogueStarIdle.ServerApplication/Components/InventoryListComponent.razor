@@ -1,0 +1,171 @@
+﻿@inject IViewItemsByNameUseCase ViewItemsByNameUseCase
+@inject IViewItemsByTagUseCase ViewItemsByTagUseCase
+
+<div class="row" style="height:100%;">
+    <div style="height: 100%; overflow-y: scroll; width:70%;">
+        <table class="table" style="background-color: cornflowerblue;">
+            <thead style="position:sticky; top: 0; background-color: cornflowerblue;">
+                <tr style=" border-bottom: 2px black solid">
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody style="max-height: 100%; overflow-y: auto;">
+                @foreach (var item in listItems) 
+                {
+                    <tr style="width: 100%; height: 30px"
+                        @onclick="() => SelectItem(item)">
+                        <td>@item.Quantity</td>
+                        <td>@item.Name</td>
+                        <td>@item.SellPrice.ToString("c")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div style="width:30%; border: 3px solid black; height: 100%;">
+        <h4>
+            @selectedItem.Name [@selectedItem.Quantity]
+        </h4>
+        <h5>Buy Price: @selectedItem.BuyPrice   Sell Price: @selectedItem.SellPrice</h5>
+        @if (selectedItem.IsWeapon || selectedItem.IsArmor)
+        {
+            <h5> Quality level: @selectedItem.QualityLevel / @selectedItem.MaxQualityLevel</h5>
+        }
+        @if (selectedItem.IsWeapon)
+        {
+            @checkType(selectedItem);
+            <h5>Base Damage: @selectedItem.MinBaseDamage - @selectedItem.MaxBaseDamage</h5>
+            <h5>To-Hit Modifier: @selectedItem.ToHitModifier</h5>
+            @checkAllDamageTypes(selectedItem);
+        }
+        @if (selectedItem.IsArmor)
+        {
+            @checkAllDefenseTypes(selectedItem);
+            @checkAllDamageResistances(selectedItem);
+        }
+    </div>
+</div>
+
+
+@code {
+    private List<Item> listItems = new List<Item>();
+
+    [Parameter]
+    public string SearchTerm { get; set; } = string.Empty;
+
+    public Item selectedItem = new Item();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        listItems = (await ViewItemsByNameUseCase.ExecuteAsync(this.SearchTerm)).ToList();
+        listItems = listItems.Union(await ViewItemsByTagUseCase.ExecuteAsync(this.SearchTerm)).ToList();
+    }
+
+    public void SelectItem(Item item)
+    {
+        selectedItem = item;
+    }
+
+    public MarkupString checkType( Item item)
+    {
+        if (item.IsMelee)
+        {
+            return new MarkupString("<h5>Type: Melee<h5/>");
+        }
+        if (item.IsRanged)
+        {
+            return new MarkupString("<h5>Type: Ranged<h5/>");
+        }
+        if (item.IsExplosive)
+        {
+            return new MarkupString("<h5>Type: Explosive<h5/>");
+        }
+        return new MarkupString("");
+    }
+
+    public MarkupString checkAllDamageTypes(Item item)
+    {
+        string markup = "";
+        markup += @checkDamage("Slashing", selectedItem.PercentSlashingDamage, selectedItem);
+        markup += @checkDamage("Piercing", selectedItem.PercentPiercingDamage, selectedItem);
+        markup += @checkDamage("Crushing", selectedItem.PercentCrushingDamage, selectedItem);
+        markup += @checkDamage("Acid", selectedItem.PercentAcidDamage, selectedItem);
+        markup += @checkDamage("Poison", selectedItem.PercentPoisonDamage, selectedItem);
+        markup += @checkDamage("Fire", selectedItem.PercentFireDamage, selectedItem);
+        markup += @checkDamage("Shock", selectedItem.PercentShockDamage, selectedItem);
+        return new MarkupString(markup);
+    }
+
+    public MarkupString checkDamage(string type, int percent, Item item)
+    {
+        if (percent < 1)
+        {
+            return new MarkupString("");
+        }
+        int min = (item.MinBaseDamage * percent) / 100;
+        int max = (item.MaxBaseDamage * percent) / 100;
+        string markup = $"<h5>{type} Damage: {min} - {max}</h5>";
+        return new MarkupString(markup);
+    }
+
+    public MarkupString checkAllDefenseTypes(Item item)
+    {
+        string markup = "";
+        markup += checkDefense("Melee", item.MeleeDefense, item);
+        markup += checkDefense("Ranged", item.RangedDefense, item);
+        markup += checkDefense("Explosive", item.ExplosiveDefense, item);
+        markup += checkDefense("Kinetic", item.KineticDefense, item);
+        markup += checkDefense("Energy", item.EnergyDefense, item);
+        markup += checkDefense("Psychic", item.PsychicDefense, item);
+        return new MarkupString(markup);
+    }
+
+    public MarkupString checkDefense(string type, int defense, Item item)
+    {
+        if (defense < 1)
+        {
+            return new MarkupString("");
+        }
+        string markup = $"<h5>{type} Defense: {defense}</h5>";
+        return new MarkupString(markup);
+    }
+
+    public MarkupString checkAllDamageResistances(Item item)
+    {
+        string markup = "";
+        markup += checkDamageResistance("Kinetic", item.KineticDamageReduction, item);
+        markup += checkDamageResistance("Psychic", item.PsychicDamageReduction, item);
+        markup += checkDamageResistance("Energy", item.EnergyDamageReduction, item);
+        markup += checkDamageResistance("Piercing", item.KineticDamageReduction, item.PiercingDamageReduction, item);
+        markup += checkDamageResistance("Crushing", item.KineticDamageReduction, item.CrushingDamageReduction, item);
+        markup += checkDamageResistance("Slashing", item.KineticDamageReduction, item.SlashingDamageReduction, item);
+        markup += checkDamageResistance("Fire", item.EnergyDamageReduction, item.FireDamageReduction, item); 
+        markup += checkDamageResistance("Acid", item.EnergyDamageReduction, item.AcidDamageReduction, item);
+        markup += checkDamageResistance("Poison", item.EnergyDamageReduction, item.PoisonDamageReduction, item);
+        markup += checkDamageResistance("Shock", item.EnergyDamageReduction, item.ShockDamageReduction, item);
+        return new MarkupString(markup);
+    }
+
+    public MarkupString checkDamageResistance(string type, int dr, Item item)
+    {
+        if (dr < 1)
+        {
+            return new MarkupString("");
+        }
+        string markup = $"<h5>{type} Resistance: {dr}</h5>";
+        return new MarkupString(markup);
+    }
+
+    public MarkupString checkDamageResistance(string type, int categoryDR, int typeDR, Item item)
+    {
+        if (typeDR <= categoryDR)
+        {
+            return new MarkupString("");
+        }
+        string markup = $"<h5>{type} Resistance: {typeDR}</h5>";
+        return new MarkupString(markup);
+    }
+}

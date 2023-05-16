@@ -1,0 +1,24 @@
+﻿@page "/inventory"
+<div class="page-content-container">
+    <div class="column" style="width: 95%; style: flex; align-content: center; ">
+        <div style="height:150px;">
+            <h3>Inventory List</h3>
+            <br/>
+            <SearchInventoryComponent
+                OnSearchInventory="OnInventorySearch"/>
+        </div>
+        <div style="height:80%">
+            <InventoryListComponent SearchTerm=@searchTerm/>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string searchTerm;
+    
+    private void OnInventorySearch(string searchTerm)
+    {
+        this.searchTerm = searchTerm;
+    }
+
+}
