@@ -128,6 +128,13 @@
         int crushingDR = 0;
         int slashingDR = 0;
         int psychicDR = 0;
+        int fireDamage = 0;
+        int acidDamage = 0;
+        int poisonDamage = 0;
+        int shockDamage = 0;
+        int piercingDamage = 0;
+        int crushingDamage = 0;
+        int slashingDamage = 0;
         foreach (var property in typeof(EquipmentSet).GetProperties())
         {
             if (property.PropertyType == typeof(EquipmentSlot))
@@ -153,43 +160,75 @@
                     crushingDR += Math.Max(slot.Item.KineticDamageReduction, slot.Item.CrushingDamageReduction);
                     slashingDR += Math.Max(slot.Item.KineticDamageReduction, slot.Item.SlashingDamageReduction);
                     psychicDR += slot.Item.PsychicDamageReduction;
+                    fireDamage += slot.Item.PercentFireDamage;
+                    acidDamage += slot.Item.PercentFireDamage;
+                    poisonDamage += slot.Item.PercentPoisonDamage;
+                    shockDamage += slot.Item.PercentShockDamage;
+                    piercingDamage += slot.Item.PercentPiercingDamage;
+                    slashingDamage += slot.Item.PercentSlashingDamage;
+                    crushingDamage += slot.Item.PercentCrushingDamage;
                 }
             }
         }
         string markup = "";
-        markup = $"<p>Damage: {minDamage} - {maxDamage}</p>";
-        if (kineticDefense > 0)
-            markup += $"<p>Kinetic Defense: {kineticDefense}</p>";
-        if (energyDefense > 0)
-            markup += $"<p>Energy Defense: {energyDefense}</p>";
-        if (psychicDefense > 0)
-            markup += $"<p>Psychic Defense: {psychicDefense}</p>";
-        if (meleeDefense > 0)
-            markup += $"<p>Melee Defense: {meleeDefense}</p>";
-        if (rangedDefense > 0)
-            markup += $"<p>Ranged Defense: {rangedDefense}</p>";
-        if (explosiveDefense > 0)
-            markup += $"<p>Explosive Defense: {explosiveDefense}</p>";
-        if (energyDR > 0)
-            markup += $"<p>Energy Damage Resistance: {energyDR}%</p>";
-        if (fireDR > 0 && fireDR > energyDR)
-            markup += $"<p>Fire Damage Resistance: {fireDR}%</p>";
-        if (acidDR > 0 && acidDR > energyDR)
-            markup += $"<p>Acid Damage Resistance: {acidDR}%</p>";
-        if (poisonDR > 0 && poisonDR > energyDR)
-            markup += $"<p>Poison Damage Resistance: {poisonDR}%</p>";
-        if (shockDR > 0 && shockDR > energyDR)
-            markup += $"<p>Shock Damage Resistance: {shockDR}%</p>";
-        if (kineticDR > 0)
-            markup += $"<p>Kinetic Damage Resistance: {kineticDR}%</p>";
-        if (piercingDR > 0 && piercingDR > kineticDR)
-            markup += $"<p>Piercing Damage Resistance: {piercingDR}%</p>";
-        if (slashingDR > 0 && slashingDR > kineticDR)
-            markup += $"<p>Slashing Damage Resistance: {slashingDR}%</p>";
-        if (crushingDR > 0 && crushingDR > kineticDR)
-            markup += $"<p>Piercing Damage Resistance: {crushingDR}%</p>";
-        if (psychicDR > 0)
-            markup += $"<p>Psychic Damage Resistance: {psychicDR}%</p>";
+        markup += weaponDamageMarkup("Slashing", minDamage, maxDamage, slashingDamage);
+        markup += weaponDamageMarkup("Piercing", minDamage, maxDamage, piercingDamage);
+        markup += weaponDamageMarkup("Crushing", minDamage, maxDamage, crushingDamage);
+        markup += weaponDamageMarkup("Fire", minDamage, maxDamage, fireDamage);
+        markup += weaponDamageMarkup("Acid", minDamage, maxDamage, acidDamage);
+        markup += weaponDamageMarkup("Poison", minDamage, maxDamage, poisonDamage);
+        markup += weaponDamageMarkup("Shock", minDamage, maxDamage, shockDamage);
+        markup += defenseMarkup("Kinetic", kineticDefense);
+        markup += defenseMarkup("Energy", energyDefense);
+        markup += defenseMarkup("Psychic", psychicDefense);
+        markup += defenseMarkup("Melee", meleeDefense);
+        markup += defenseMarkup("Ranged", rangedDefense);
+        markup += defenseMarkup("Explosive", explosiveDefense);
+        markup += damageResistanceMarkup("Energy", energyDR);
+        markup += damageResistanceMarkup("Fire", fireDR, energyDR);
+        markup += damageResistanceMarkup("Acid", acidDR, energyDR);
+        markup += damageResistanceMarkup("Poison", poisonDR, energyDR);
+        markup += damageResistanceMarkup("Shock", shockDR, energyDR);
+        markup += damageResistanceMarkup("Kinetic", kineticDR);
+        markup += damageResistanceMarkup("Piercing", piercingDR, kineticDR);
+        markup += damageResistanceMarkup("Slashing", slashingDR, kineticDR);
+        markup += damageResistanceMarkup("Crushing", crushingDR, kineticDR);
+        return new MarkupString(markup);
+    }
+
+    MarkupString weaponDamageMarkup(string type, int minDamage, int maxDamage, int percentage)
+    {
+        if (percentage == 0)
+        {
+            return new MarkupString("");
+        }
+        int minTypedDamage = (minDamage * percentage) / 100;
+        int maxTypedDamage = (maxDamage * percentage) / 100;
+        string markup = $"<p>{minTypedDamage} - {maxTypedDamage} Slashing Damage</p>";
+        return new MarkupString(markup);
+    }
+
+    MarkupString defenseMarkup(string type, int defense)
+    {
+        string markup = "";
+        if (defense > 0)
+            markup = $"<p>{type} Defense: {defense}</p>";
+        return new MarkupString(markup);
+    }
+
+    MarkupString damageResistanceMarkup(string type, int resistance)
+    {
+        string markup = "";
+        if (resistance > 0)
+            markup += $"<p>{type} Damage Resistance: {resistance}";
+        return new MarkupString(markup);
+    }
+
+    MarkupString damageResistanceMarkup(string type, int resistance, int parentResistance)
+    {
+        string markup = "";
+        if (resistance > 0 && resistance > parentResistance)
+            markup += $"<p>{type} Damage Resistance: {resistance}";
         return new MarkupString(markup);
     }
 }
