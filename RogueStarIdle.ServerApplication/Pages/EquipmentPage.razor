@@ -1,4 +1,7 @@
 ﻿@page "/equippedItems"
+@using RogueStarIdle.ServerApplication.Shared.State;
+@inject EquipmentState equipmentState
+
 <div class="page-content-container">
     <div class="row" style="width:auto; height: 75px;">
         <div class="inventory-grid-container">
@@ -17,7 +20,7 @@
                 <div class="inventory-slot locked">Body Cybernetic 2</div>
                 <div class="inventory-slot locked">Body Cybernetic 3</div>
                 <div class="inventory-spacer" />
-                <div class="inventory-slot">Head</div>
+                <div class="inventory-slot"> @displayEquipment(equipmentState.MainCharacterEquipment.Head.Item?.Name, "Head") </div>
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
                 <div class="inventory-slot locked">Droid Mod</div>
@@ -96,5 +99,12 @@
 
 
 @code {
-
+    private string displayEquipment(string itemName, string slotName)
+    {
+        if (string.IsNullOrEmpty(itemName))
+        {
+            return slotName;
+        }
+        return itemName;
+    }
 }

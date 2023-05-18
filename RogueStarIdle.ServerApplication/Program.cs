@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using RogueStarIdle.PlugIns.InMemory;
 using RogueStarIdle.ServerApplication.Data;
+using RogueStarIdle.ServerApplication.Pages;
+using RogueStarIdle.ServerApplication.Shared.State;
 using RogueStarIdle.UseCases.Items;
 using RogueStarIdle.UseCases.Items.Interfaces;
 using RogueStarIdle.UseCases.Items.PluginInterfaces;
@@ -15,6 +17,7 @@ builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<IItemsRepository, ItemsRepository>();
 builder.Services.AddTransient<IViewItemsByNameUseCase, ViewItemsByNameUseCase>();
 builder.Services.AddTransient<IViewItemsByTagUseCase, ViewItemsByTagUseCase>();
+builder.Services.AddSingleton<EquipmentState>();
 
 var app = builder.Build();
 

@@ -1,5 +1,6 @@
 ﻿@inject IViewItemsByNameUseCase ViewItemsByNameUseCase
 @inject IViewItemsByTagUseCase ViewItemsByTagUseCase
+@using RogueStarIdle.ServerApplication.Shared.State;
 
 <div class="row" style="height:100%;">
     <div style="height: 100%; overflow-y: scroll; width:70%;">
@@ -20,12 +21,20 @@
                         <td>@item.Quantity</td>
                         <td>@item.Name</td>
                         <td>@item.SellPrice.ToString("c")</td>
+                        <td>
+                            @if (item.IsEquippable)
+                            {
+                                <button @onclick="() => EquipItem(item)">
+                                    Equip
+                                </button>
+                            }
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-    <div style="width:30%; border: 3px solid black; height: 100%;">
+    <div style="width:30%; border: 3px solid black; height: 100%; background-color: cornflowerblue">
         <h4>
             @selectedItem.Name [@selectedItem.Quantity]
         </h4>
@@ -54,14 +63,17 @@
     private List<Item> listItems = new List<Item>();
 
     [Parameter]
-    public string SearchTerm { get; set; } = string.Empty;
+    public string searchTerm { get; set; } = string.Empty;
+
+    [Parameter]
+    public EquipmentState equipmentState { get; set; } = new EquipmentState();
 
     public Item selectedItem = new Item();
 
     protected override async Task OnParametersSetAsync()
     {
-        listItems = (await ViewItemsByNameUseCase.ExecuteAsync(this.SearchTerm)).ToList();
-        listItems = listItems.Union(await ViewItemsByTagUseCase.ExecuteAsync(this.SearchTerm)).ToList();
+        listItems = (await ViewItemsByNameUseCase.ExecuteAsync(this.searchTerm)).ToList();
+        listItems = listItems.Union(await ViewItemsByTagUseCase.ExecuteAsync(this.searchTerm)).ToList();
     }
 
     public void SelectItem(Item item)
@@ -69,6 +81,13 @@
         selectedItem = item;
     }
 
+    // Placeholder equipping to head while I figure out state management. Will need to match Item equip slot to proper inventory slot Id.
+    public void EquipItem(Item item)
+    {
+        equipmentState.MainCharacterEquipment.Head.Item = item;
+    }
+
+    // Return MarkupString of weapon type for display
     public MarkupString checkType( Item item)
     {
         if (item.IsMelee)
@@ -86,6 +105,7 @@
         return new MarkupString("");
     }
 
+    // Return all active damage ranges in one MarkupString for display
     public MarkupString checkAllDamageTypes(Item item)
     {
         string markup = "";
@@ -99,6 +119,7 @@
         return new MarkupString(markup);
     }
 
+    // Return MarkupString of damage range of given type
     public MarkupString checkDamage(string type, int percent, Item item)
     {
         if (percent < 1)
@@ -111,6 +132,7 @@
         return new MarkupString(markup);
     }
 
+    // Return all active Defenses in one MarkupString for display
     public MarkupString checkAllDefenseTypes(Item item)
     {
         string markup = "";
@@ -123,6 +145,7 @@
         return new MarkupString(markup);
     }
 
+    // Return MarkupString of individual type Defense
     public MarkupString checkDefense(string type, int defense, Item item)
     {
         if (defense < 1)
@@ -133,6 +156,7 @@
         return new MarkupString(markup);
     }
 
+    // Return all active DRs in one MarkupString for desplay
     public MarkupString checkAllDamageResistances(Item item)
     {
         string markup = "";
@@ -149,6 +173,7 @@
         return new MarkupString(markup);
     }
 
+    // Return damage resistance MarkupString
     public MarkupString checkDamageResistance(string type, int dr, Item item)
     {
         if (dr < 1)
@@ -159,6 +184,8 @@
         return new MarkupString(markup);
     }
 
+    // Return damage resistance MarkupString if greater than DR of category. 
+    // Category DR applies to all damage types, (i.e. Energy applies to Fire, Acid, Shock and Poison, while Kinetic applies to Piercing, Slashing and Crushing)
     public MarkupString checkDamageResistance(string type, int categoryDR, int typeDR, Item item)
     {
         if (typeDR <= categoryDR)
