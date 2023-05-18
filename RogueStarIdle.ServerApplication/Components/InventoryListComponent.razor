@@ -22,12 +22,6 @@
                         <td>@item.Name</td>
                         <td>@item.SellPrice.ToString("c")</td>
                         <td>
-                            @if (item.IsEquippable)
-                            {
-                                <button @onclick="() => EquipItem(item)">
-                                    Equip
-                                </button>
-                            }
                         </td>
                     </tr>
                 }
@@ -55,6 +49,12 @@
             @checkAllDefenseTypes(selectedItem);
             @checkAllDamageResistances(selectedItem);
         }
+        @foreach(var slot in selectedItem.EquipmentSlots)
+        {
+            <button @onclick="() => EquipItem(selectedItem, slot, equipmentState.MainCharacterEquipment)">
+                Equip @getSlotName(selectedItem, slot, equipmentState.MainCharacterEquipment)
+            </button>
+        }
     </div>
 </div>
 
@@ -81,10 +81,36 @@
         selectedItem = item;
     }
 
-    // Placeholder equipping to head while I figure out state management. Will need to match Item equip slot to proper inventory slot Id.
-    public void EquipItem(Item item)
+    public void EquipItem(Item item, int id, EquipmentSet equipmentSet)
     {
-        equipmentState.MainCharacterEquipment.Head.Item = item;
+        foreach (var property in typeof(EquipmentSet).GetProperties())
+        {
+            if (property.PropertyType == typeof(EquipmentSlot))
+            {
+                EquipmentSlot slot = (EquipmentSlot)property.GetValue(equipmentSet);
+                if (slot.Id == id)
+                {
+                    slot.Item = item;
+                    break;
+                }
+            }
+        }
+    }
+
+    public string getSlotName(Item item, int id, EquipmentSet equipmentSet)
+    {
+        foreach (var property in typeof(EquipmentSet).GetProperties())
+        {
+            if (property.PropertyType == typeof(EquipmentSlot))
+            {
+                EquipmentSlot slot = (EquipmentSlot)property.GetValue(equipmentSet);
+                if (slot.Id == id)
+                {
+                    return property.Name;
+                }
+            }
+        }
+        return "Error";
     }
 
     // Return MarkupString of weapon type for display
