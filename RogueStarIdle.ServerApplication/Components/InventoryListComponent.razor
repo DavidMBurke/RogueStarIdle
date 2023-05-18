@@ -1,15 +1,13 @@
-﻿@inject IViewItemsByNameUseCase ViewItemsByNameUseCase
-@inject IViewItemsByTagUseCase ViewItemsByTagUseCase
-@using RogueStarIdle.ServerApplication.Shared.State;
+﻿@using RogueStarIdle.ServerApplication.Shared.State;
+@inject InventoryState inventoryState;
 
 <div class="row" style="height:100%;">
     <div style="height: 100%; overflow-y: scroll; width:70%;">
         <table class="table" style="background-color: cornflowerblue;">
             <thead style="position:sticky; top: 0; background-color: cornflowerblue;">
                 <tr style=" border-bottom: 2px black solid">
-                    <th>Name</th>
                     <th>Quantity</th>
-                    <th>Price</th>
+                    <th>Name</th>
                     <th></th>
                 </tr>
             </thead>
@@ -20,7 +18,6 @@
                         @onclick="() => SelectItem(item)">
                         <td>@item.Quantity</td>
                         <td>@item.Name</td>
-                        <td>@item.SellPrice.ToString("c")</td>
                         <td>
                         </td>
                     </tr>
@@ -72,11 +69,11 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        listItems = (await ViewItemsByNameUseCase.ExecuteAsync(this.searchTerm)).ToList();
-        listItems = listItems.Union(await ViewItemsByTagUseCase.ExecuteAsync(this.searchTerm)).ToList();
+        listItems = (await inventoryState.GetItemsByNameAsync(searchTerm)).ToList();
+        listItems = listItems.Union(await inventoryState.GetItemsByTagAsync(searchTerm)).ToList();
     }
 
-    public void SelectItem(Item item)
+    private void SelectItem(Item item)
     {
         selectedItem = item;
     }

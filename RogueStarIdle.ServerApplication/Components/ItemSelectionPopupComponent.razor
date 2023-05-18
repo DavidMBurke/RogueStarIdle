@@ -1,0 +1,52 @@
+﻿@inject IViewItemsByNameUseCase ViewItemsByNameUseCase
+@inject IViewItemsByTagUseCase ViewItemsByTagUseCase
+@using RogueStarIdle.ServerApplication.Shared.State;
+@inject InventoryState inventoryState;
+
+<div class="column" style="height:75%; width:100%; overflow-y: scroll;">
+    <SearchInventoryComponent OnSearchInventory="OnInventorySearch" />
+    @foreach (Item item in listItems)
+    {
+        <h6>
+            @item.Name 
+            <button @onclick="() => addToInventory(item)">Add Item</button>
+        </h6>
+    }
+</div>
+
+
+@code {
+    private List<Item> listItems = new List<Item>();
+
+    [Parameter] public string searchTerm { get; set; } = string.Empty;
+
+    private void OnInventorySearch(string searchTerm)
+    {
+        this.searchTerm = searchTerm;
+        SetParametersAsync(ParameterView.Empty);
+    }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        await base.SetParametersAsync(parameters);
+        listItems = (await ViewItemsByNameUseCase.ExecuteAsync(this.searchTerm)).ToList();
+        listItems = listItems.Union(await ViewItemsByTagUseCase.ExecuteAsync(this.searchTerm)).ToList();
+        StateHasChanged();
+    }
+
+    private void addToInventory(Item item)
+    {
+        if (item == null)
+        {
+            return;
+        }
+        Item matchingItem = inventoryState.inventory.FirstOrDefault(i => i.Id == item.Id, null);
+        if (matchingItem != null)
+        {
+            matchingItem.Quantity += 1;
+            return;
+        }
+        inventoryState.inventory.Add(item);
+    }
+
+}

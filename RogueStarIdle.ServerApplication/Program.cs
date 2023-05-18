@@ -18,6 +18,7 @@ builder.Services.AddSingleton<IItemsRepository, ItemsRepository>();
 builder.Services.AddTransient<IViewItemsByNameUseCase, ViewItemsByNameUseCase>();
 builder.Services.AddTransient<IViewItemsByTagUseCase, ViewItemsByTagUseCase>();
 builder.Services.AddSingleton<EquipmentState>();
+builder.Services.AddSingleton<InventoryState>();
 
 var app = builder.Build();
 

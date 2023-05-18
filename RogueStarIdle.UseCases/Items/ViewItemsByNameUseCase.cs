@@ -4,8 +4,11 @@ using RogueStarIdle.UseCases.Items.PluginInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+
+
 
 namespace RogueStarIdle.UseCases.Items
 {
