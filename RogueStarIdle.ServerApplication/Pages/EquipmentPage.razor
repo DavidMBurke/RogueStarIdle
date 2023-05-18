@@ -90,7 +90,7 @@
                 <div class="equipped-items-character">Companion 9</div>
             </div>
             <div style="border: 2px solid black; background-color: cornflowerblue; height: 50%; margin-bottom: 3px;">
-                <h3 style="font-size: clamp(8px, 1.5vw, 16px);"> Stats of selected character go here</h3>
+                @calculateStats(equipmentState.MainCharacterEquipment)
             </div>
 
         </div>
@@ -106,5 +106,50 @@
             return slotName;
         }
         return itemName;
+    }
+
+    private MarkupString calculateStats(EquipmentSet equipment)
+    {
+        int minDamage = 0;
+        int maxDamage = 0;
+        int energyDefense = 0;
+        int kineticDefense = 0;
+        int psychicDefense = 0;
+        int meleeDefense = 0;
+        int rangedDefense = 0;
+        int explosiveDefense = 0;
+        foreach (var property in typeof(EquipmentSet).GetProperties())
+        {
+            if (property.PropertyType == typeof(EquipmentSlot))
+            {
+                EquipmentSlot slot = (EquipmentSlot)property.GetValue(equipment);
+                if (slot.Item != null)
+                {
+                    minDamage += slot.Item.MinBaseDamage;
+                    maxDamage += slot.Item.MaxBaseDamage;
+                    energyDefense += slot.Item.EnergyDefense;
+                    kineticDefense += slot.Item.KineticDefense;
+                    psychicDefense += slot.Item.PsychicDefense;
+                    meleeDefense += slot.Item.MeleeDefense;
+                    rangedDefense += slot.Item.RangedDefense;
+                    explosiveDefense += slot.Item.ExplosiveDefense;
+                }
+            }
+        }
+        string markup = "";
+        markup = $"<p>Damage: {minDamage} - {maxDamage}</p>";
+        if (kineticDefense > 0)
+            markup += $"<p>Kinetic Defense: {kineticDefense}</p>";
+        if (energyDefense > 0)
+            markup += $"<p>Energy Defense: {energyDefense}</p>";
+        if (psychicDefense > 0)
+            markup += $"<p>Psychic Defense: {psychicDefense}</p>";
+        if (meleeDefense > 0)
+            markup += $"<p>Melee Defense: {meleeDefense}</p>";
+        if (rangedDefense > 0)
+            markup += $"<p>Ranged Defense: {rangedDefense}</p>";
+        if (explosiveDefense > 0)
+        markup += $"<p>Explosive Defense: {explosiveDefense}</p>";
+        return new MarkupString(markup);
     }
 }
