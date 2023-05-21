@@ -29,6 +29,7 @@
         public EquipmentSlot BodyCybernetic1 { get; set; } = new EquipmentSlot(25, null);
         public EquipmentSlot BodyCybernetic2 { get; set; } = new EquipmentSlot(26, null);
         public EquipmentSlot BodyCybernetic3 { get; set; } = new EquipmentSlot(27, null);
+        public EquipmentStats StatBlock { get; set; } = new EquipmentStats();
 
         //get name of slot from ID for display purposes
         public string getSlotNameById(int id)
@@ -45,6 +46,46 @@
                 }
             }
             return "Error";
+        }
+
+        public void CalculateStats()
+        {
+            StatBlock = new EquipmentStats();
+            foreach (var property in typeof(EquipmentSet).GetProperties())
+            {
+                if (property.PropertyType == typeof(EquipmentSlot))
+                {
+                    EquipmentSlot slot = (EquipmentSlot)property.GetValue(this);
+                    if (slot.Item != null)
+                    {
+                        StatBlock.minDamage += slot.Item.MinBaseDamage;
+                        StatBlock.maxDamage += slot.Item.MaxBaseDamage;
+                        StatBlock.energyDefense += slot.Item.EnergyDefense;
+                        StatBlock.kineticDefense += slot.Item.KineticDefense;
+                        StatBlock.psychicDefense += slot.Item.PsychicDefense;
+                        StatBlock.meleeDefense += slot.Item.MeleeDefense;
+                        StatBlock.rangedDefense += slot.Item.RangedDefense;
+                        StatBlock.explosiveDefense += slot.Item.ExplosiveDefense;
+                        StatBlock.energyDR += slot.Item.EnergyDamageReduction;
+                        StatBlock.fireDR += Math.Max(slot.Item.EnergyDamageReduction, slot.Item.FireDamageReduction);
+                        StatBlock.acidDR += Math.Max(slot.Item.EnergyDamageReduction, slot.Item.AcidDamageReduction);
+                        StatBlock.poisonDR += Math.Max(slot.Item.EnergyDamageReduction, slot.Item.PoisonDamageReduction);
+                        StatBlock.shockDR += Math.Max(slot.Item.EnergyDamageReduction, slot.Item.ShockDamageReduction);
+                        StatBlock.kineticDR += slot.Item.KineticDamageReduction;
+                        StatBlock.piercingDR += Math.Max(slot.Item.KineticDamageReduction, slot.Item.PiercingDamageReduction);
+                        StatBlock.crushingDR += Math.Max(slot.Item.KineticDamageReduction, slot.Item.CrushingDamageReduction);
+                        StatBlock.slashingDR += Math.Max(slot.Item.KineticDamageReduction, slot.Item.SlashingDamageReduction);
+                        StatBlock.psychicDR += slot.Item.PsychicDamageReduction;
+                        StatBlock.fireDamage += slot.Item.PercentFireDamage;
+                        StatBlock.acidDamage += slot.Item.PercentFireDamage;
+                        StatBlock.poisonDamage += slot.Item.PercentPoisonDamage;
+                        StatBlock.shockDamage += slot.Item.PercentShockDamage;
+                        StatBlock.piercingDamage += slot.Item.PercentPiercingDamage;
+                        StatBlock.slashingDamage += slot.Item.PercentSlashingDamage;
+                        StatBlock.crushingDamage += slot.Item.PercentCrushingDamage;
+                    }
+                }
+            }
         }
     }
 }

@@ -75,19 +75,15 @@
             }
             @if (selectedItem.IsWeapon)
             {
-                @getTypeMarkup(selectedItem)
-                ;
+                @getTypeMarkup(selectedItem);
                 <h5>Base Damage: @selectedItem.MinBaseDamage - @selectedItem.MaxBaseDamage</h5>
                 <h5>To-Hit Modifier: @selectedItem.ToHitModifier</h5>
-                @getAllDamageTypeMarkups(selectedItem)
-                ;
+                @getAllDamageTypeMarkups(selectedItem);
             }
             @if (selectedItem.IsArmor)
             {
-                @getAllDefenseMarkups(selectedItem)
-                ;
-                @getAllDamageResistanceMarkups(selectedItem)
-                ;
+                @getAllDefenseMarkups(selectedItem);
+                @getAllDamageResistanceMarkups(selectedItem);
             }
             @foreach (var slot in selectedItem.EquipmentSlots)
             {
