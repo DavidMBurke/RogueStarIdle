@@ -9,6 +9,11 @@
     {
         <h6>
             @item.Name 
+            <input style="width:20px;" @bind-value="item.Quantity"/>
+            @if (item.MaxQualityLevel > 0)
+            {
+                <input style="width:20px;" @bind-value="item.QualityLevel"/>
+            }
             <button @onclick="() => addToInventory(item)">Add Item</button>
         </h6>
     }
@@ -40,13 +45,15 @@
         {
             return;
         }
-        Item matchingItem = inventoryState.inventory.FirstOrDefault(i => i.Id == item.Id, null);
+        Item matchingItem = inventoryState.inventory.FirstOrDefault(i => (i.Id == item.Id && i.QualityLevel == item.QualityLevel), null);
         if (matchingItem != null)
         {
-            matchingItem.Quantity += 1;
+            matchingItem.Quantity += item.Quantity;
             return;
         }
-        inventoryState.inventory.Add(item);
+        Item newItem = item.createCopy();
+
+        inventoryState.inventory.Add(newItem);
     }
 
 }

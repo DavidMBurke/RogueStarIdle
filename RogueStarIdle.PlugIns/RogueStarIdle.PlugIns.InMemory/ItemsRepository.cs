@@ -49,7 +49,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     MinBaseDamage = 10,
                     MaxBaseDamage = 20,
                     PercentSlashingDamage = 100,
-                    QualityLevel = 4,
+                    QualityLevel = 1,
                     MaxQualityLevel = 15},
                 new Item {
                     Id = 5,
@@ -65,7 +65,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     EnergyDefense = 2,
                     EnergyDamageReduction = 1,
                     ShockDamageReduction = 5,
-                    QualityLevel = 2,
+                    QualityLevel = 1,
                     MaxQualityLevel = 15},
                 new Item {
                     Id = 6,
@@ -81,7 +81,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     EnergyDefense = 2,
                     EnergyDamageReduction = 1,
                     ShockDamageReduction = 5,
-                    QualityLevel = 2,
+                    QualityLevel = 1,
                     MaxQualityLevel = 15},
                 new Item {
                     Id = 7,
@@ -97,7 +97,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     EnergyDefense = 2,
                     EnergyDamageReduction = 1,
                     ShockDamageReduction = 5,
-                    QualityLevel = 2,
+                    QualityLevel = 1,
                     MaxQualityLevel = 15},
                 new Item {
                     Id = 8,
@@ -113,7 +113,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     EnergyDefense = 2,
                     EnergyDamageReduction = 1,
                     ShockDamageReduction = 5,
-                    QualityLevel = 2,
+                    QualityLevel = 1,
                     MaxQualityLevel = 15},
                 new Item {
                     Id = 9,
@@ -129,7 +129,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     EnergyDefense = 2,
                     EnergyDamageReduction = 1,
                     ShockDamageReduction = 5,
-                    QualityLevel = 2,
+                    QualityLevel = 1,
                     MaxQualityLevel = 15},
                 new Item {
                     Id = 10,
@@ -145,7 +145,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     EnergyDefense = 2,
                     EnergyDamageReduction = 1,
                     ShockDamageReduction = 5,
-                    QualityLevel = 2,
+                    QualityLevel = 1,
                     MaxQualityLevel = 15},
                 new Item {
                     Id = 11,
@@ -161,7 +161,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     EnergyDefense = 2,
                     EnergyDamageReduction = 1,
                     ShockDamageReduction = 5,
-                    QualityLevel = 2,
+                    QualityLevel = 1,
                     MaxQualityLevel = 15},
                 new Item {
                     Id = 12,
@@ -177,7 +177,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     EnergyDefense = 2,
                     EnergyDamageReduction = 1,
                     ShockDamageReduction = 5,
-                    QualityLevel = 2,
+                    QualityLevel = 1,
                     MaxQualityLevel = 15}
             };
         }

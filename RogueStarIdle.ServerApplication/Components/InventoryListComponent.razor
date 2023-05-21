@@ -8,49 +8,75 @@
                 <tr style=" border-bottom: 2px black solid">
                     <th>Quantity</th>
                     <th>Name</th>
-                    <th></th>
+                    <th>Quality</th>
                 </tr>
             </thead>
             <tbody style="max-height: 100%; overflow-y: auto;">
-                @foreach (var item in listItems) 
+                @{
+                    var itemGroups = listItems.GroupBy(i => i.Name);
+                } 
+                @foreach (var group in itemGroups) 
                 {
-                    <tr style="width: 100%; height: 30px"
-                        @onclick="() => SelectItem(item)">
-                        <td>@item.Quantity</td>
-                        <td>@item.Name</td>
-                        <td>
-                        </td>
-                    </tr>
+                    if (group.Count() == 1)
+                    {
+                        Item item = group.First();
+                        <tr style="width: 100%; height: 30px; @(item.Equipped ? "background-color: blue;" : string.Empty)" @onclick="() => SelectItem(item)">
+                            <td>@item.Quantity</td>
+                            <td>@item.Name @if (item.Equipped) {<text> <b> [Equipped]</b></text>}</td>
+                            <td>@item.QualityLevel / @item.MaxQualityLevel</td>
+                        </tr>
+                    } else {
+                        <tr style="width: 100%; height: 30px; font: bold; @(group.Any(i => i.Equipped) && (!expandedViews.ContainsKey(group.Key) || (expandedViews.ContainsKey(group.Key) && !expandedViews[group.Key])) ? "background-color: blue;" : string.Empty)" @onclick="() => ToggleExpandedView(group.Key)">
+                            <td>@group.Sum(i => i.Quantity)</td>
+                            <td>@group.First().Name</td>
+                            <td></td>
+                        </tr>
+                        if (expandedViews.ContainsKey(group.Key) && expandedViews[group.Key])
+                        {
+                            foreach (Item item in group)
+                            {
+                                <tr style="width: 100%; height: 30px; @(item.Equipped ? "background-color: blue;" : string.Empty)"
+                    @onclick="() => SelectItem(item)">
+                                <td>@item.Quantity</td>
+                                    <td>@item.Name @if (item.Equipped) {<text> <b> [Equipped]</b></text>}</td>
+                                    <td>@item.QualityLevel / @item.MaxQualityLevel</td>
+                            </tr>
+                            }
+                        }
+                    }
                 }
             </tbody>
         </table>
     </div>
     <div style="width:30%; border: 3px solid black; height: 100%; background-color: cornflowerblue">
-        <h4>
-            @selectedItem.Name [@selectedItem.Quantity]
-        </h4>
-        <h5>Buy Price: @selectedItem.BuyPrice   Sell Price: @selectedItem.SellPrice</h5>
-        @if (selectedItem.IsWeapon || selectedItem.IsArmor)
-        {
-            <h5> Quality level: @selectedItem.QualityLevel / @selectedItem.MaxQualityLevel</h5>
-        }
-        @if (selectedItem.IsWeapon)
-        {
-            @checkType(selectedItem);
-            <h5>Base Damage: @selectedItem.MinBaseDamage - @selectedItem.MaxBaseDamage</h5>
-            <h5>To-Hit Modifier: @selectedItem.ToHitModifier</h5>
-            @checkAllDamageTypes(selectedItem);
-        }
-        @if (selectedItem.IsArmor)
-        {
-            @checkAllDefenseTypes(selectedItem);
-            @checkAllDamageResistances(selectedItem);
-        }
-        @foreach(var slot in selectedItem.EquipmentSlots)
-        {
-            <button @onclick="() => EquipItem(selectedItem, slot, equipmentState.MainCharacterEquipment)">
-                Equip @getSlotName(selectedItem, slot, equipmentState.MainCharacterEquipment)
-            </button>
+        @if (selectedItem != null)
+        {   
+            <h4>
+                @selectedItem.Name [@selectedItem.Quantity]
+            </h4>
+            <h5>Buy Price: @selectedItem.BuyPrice   Sell Price: @selectedItem.SellPrice</h5>
+            @if (selectedItem.IsWeapon || selectedItem.IsArmor)
+            {
+                <h5> Quality level: @selectedItem.QualityLevel / @selectedItem.MaxQualityLevel</h5>
+            }
+            @if (selectedItem.IsWeapon)
+            {
+                @checkType(selectedItem);
+                <h5>Base Damage: @selectedItem.MinBaseDamage - @selectedItem.MaxBaseDamage</h5>
+                <h5>To-Hit Modifier: @selectedItem.ToHitModifier</h5>
+                @checkAllDamageTypes(selectedItem);
+            }
+            @if (selectedItem.IsArmor)
+            {
+                @checkAllDefenseTypes(selectedItem);
+                @checkAllDamageResistances(selectedItem);
+            }
+            @foreach(var slot in selectedItem.EquipmentSlots)
+            {
+                <button @onclick="() => EquipItem(selectedItem, slot, equipmentState.MainCharacterEquipment)">
+                    Equip @getSlotName(selectedItem, slot, equipmentState.MainCharacterEquipment)
+                </button>
+            }
         }
     </div>
 </div>
@@ -59,18 +85,38 @@
 @code {
     private List<Item> listItems = new List<Item>();
 
+    private bool reload = false;
+
     [Parameter]
     public string searchTerm { get; set; } = string.Empty;
 
     [Parameter]
     public EquipmentState equipmentState { get; set; } = new EquipmentState();
 
-    public Item selectedItem = new Item();
+    public Item selectedItem = null;
+
+    private Dictionary<string, bool> expandedViews = new Dictionary<string, bool>();
+
+    private void ToggleExpandedView(string key)
+    {
+        if (expandedViews.ContainsKey(key))
+        {
+            expandedViews[key] = !expandedViews[key];
+        }
+        else
+        {
+            expandedViews[key] = true;
+        }
+    }
 
     protected override async Task OnParametersSetAsync()
     {
         listItems = (await inventoryState.GetItemsByNameAsync(searchTerm)).ToList();
         listItems = listItems.Union(await inventoryState.GetItemsByTagAsync(searchTerm)).ToList();
+        listItems.RemoveAll(i => i.Quantity < 1);
+        listItems.Sort((x,y) => x.Equipped.CompareTo(y.Equipped));
+        listItems.Sort((x, y) => y.QualityLevel.CompareTo(x.QualityLevel));
+        listItems.Sort((x, y) => x.Name.CompareTo(y.Name));
     }
 
     private void SelectItem(Item item)
@@ -78,7 +124,7 @@
         selectedItem = item;
     }
 
-    public void EquipItem(Item item, int id, EquipmentSet equipmentSet)
+    public async void EquipItem(Item item, int id, EquipmentSet equipmentSet)
     {
         foreach (var property in typeof(EquipmentSet).GetProperties())
         {
@@ -87,11 +133,31 @@
                 EquipmentSlot slot = (EquipmentSlot)property.GetValue(equipmentSet);
                 if (slot.Id == id)
                 {
-                    slot.Item = item;
+
+                    if (slot.Item != null)
+                    {
+                        Item unequippedItem = slot.Item.createCopy();
+                        unequippedItem.Equipped = false;
+                        inventoryState.inventory.Add(unequippedItem);
+                        inventoryState.inventory.Remove(slot.Item);
+                    }
+
+                    item.Quantity -= 1;
+                    Item equippedItem = item.createCopy();
+                    equippedItem.Quantity = 1;
+                    equippedItem.Equipped = true;
+                    SelectItem(equippedItem);
+                    inventoryState.inventory.Add(equippedItem);
+                    slot.Item = equippedItem;
+                    if (item.Quantity == 0)
+                    {                        
+                        inventoryState.inventory.Remove(item);
+                    }
                     break;
                 }
             }
         }
+        await OnParametersSetAsync();
     }
 
     public string getSlotName(Item item, int id, EquipmentSet equipmentSet)

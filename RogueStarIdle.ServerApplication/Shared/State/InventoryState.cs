@@ -7,6 +7,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
     public class InventoryState
     {
         public List<Item> inventory { get; set; } = new List<Item>();
+        private Dictionary<string, bool> expandedViews = new Dictionary<string, bool>();
 
         public async Task<IEnumerable<Item>> GetItemsByNameAsync(string name)
         {
