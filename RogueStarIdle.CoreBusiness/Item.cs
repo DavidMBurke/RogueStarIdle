@@ -14,6 +14,7 @@
         public bool Equipped { get; set; } = false;
         // Equipment slot IDs that are allowed
         public List<int> EquipmentSlots { get; set; } = new List<int>();
+        public bool StacksInEquipmentSlot { get; set; } = false;
         public bool IsWeapon { get; set; } = false;
         public bool IsArmor { get; set; } = false;
 
@@ -77,6 +78,7 @@
                 IsEquippable = IsEquippable,
                 Equipped = Equipped,
                 EquipmentSlots = EquipmentSlots,
+                StacksInEquipmentSlot = StacksInEquipmentSlot,
                 IsWeapon = IsWeapon,
                 IsArmor = IsArmor,
                 AllowedAmmo = AllowedAmmo,

@@ -14,7 +14,7 @@
             {
                 <input style="width:20px;" @bind-value="item.QualityLevel"/>
             }
-            <button @onclick="() => addToInventory(item)">Add Item</button>
+            <button @onclick="() => inventoryState.addToInventory(item)">Add Item</button>
         </h6>
     }
 </div>
@@ -37,23 +37,6 @@
         listItems = (await ViewItemsByNameUseCase.ExecuteAsync(this.searchTerm)).ToList();
         listItems = listItems.Union(await ViewItemsByTagUseCase.ExecuteAsync(this.searchTerm)).ToList();
         StateHasChanged();
-    }
-
-    private void addToInventory(Item item)
-    {
-        if (item == null)
-        {
-            return;
-        }
-        Item matchingItem = inventoryState.inventory.FirstOrDefault(i => (i.Id == item.Id && i.QualityLevel == item.QualityLevel), null);
-        if (matchingItem != null)
-        {
-            matchingItem.Quantity += item.Quantity;
-            return;
-        }
-        Item newItem = item.createCopy();
-
-        inventoryState.inventory.Add(newItem);
     }
 
 }

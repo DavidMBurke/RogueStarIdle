@@ -27,7 +27,44 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             var taggedItems = inventory.Where(x => x.Tags.Any(t => t.Contains(tag, StringComparison.OrdinalIgnoreCase)));
             return taggedItems;
         }
+
+        // When item equipped / unequipped, item is replaced with item with updated status. This is tradeoff d/t storing duplicate items as one item with different Quantity.
+
+        public void addToInventory(Item item, int quantityAdded = 1)
+        {
+            if (item == null)
+            {
+                return;
+            }
+            if (item.StacksInEquipmentSlot)
+            {
+                quantityAdded = item.Quantity;
+            }
+            Item matchingItem = inventory.FirstOrDefault(i => (i.Id == item.Id && i.QualityLevel == item.QualityLevel && i.Equipped == item.Equipped), null);
+            if (matchingItem != null)
+            {
+                matchingItem.Quantity += quantityAdded;
+                return;
+            }            
+            Item newItem = item.createCopy();
+            newItem.Quantity = quantityAdded;
+            inventory.Add(newItem);
+        }
+
+        public void removeFromInventory(Item item, int quantityRemoved = 1)
+        {
+            Item itemInInventory = inventory.FirstOrDefault(i => (i.Id == item.Id && i.QualityLevel == item.QualityLevel && i.Equipped == item.Equipped), null);
+            if (itemInInventory == null)
+            {
+                return;
+            }
+            
+            itemInInventory.Quantity -= quantityRemoved;
+            
+            if (itemInInventory.Quantity <= 0)
+            {
+                inventory.Remove(itemInInventory);
+            }
+        }
     }
-
-
 }

@@ -135,6 +135,10 @@
 
     public async void EquipItem(Item item, int slotId, EquipmentSet equipmentSet)
     {
+        if (item.Equipped)
+        {
+            return;
+        }
         foreach (var property in typeof(EquipmentSet).GetProperties())
         {
             if (property.PropertyType != typeof(EquipmentSlot))
@@ -147,35 +151,19 @@
                 continue; // skip if not correct slot
             }
 
-            // When item equipped / unequipped, item is replaced with item with updated status. This is tradeoff d/t storing duplicate items as one item with different Quantity.
+            Item itemToEquip = item.createCopy();
+            itemToEquip.Equipped = true;
+            inventoryState.removeFromInventory(item);
+            inventoryState.addToInventory(itemToEquip);
+
             if (slot.Item != null)
             {
                 Item unequippedItem = slot.Item.createCopy();
+                inventoryState.removeFromInventory(unequippedItem);
                 unequippedItem.Equipped = false;
-                var unequippedItemInInventory = inventoryState.inventory.FirstOrDefault(i => i.Id == unequippedItem.Id && i.QualityLevel == unequippedItem.QualityLevel, null);
-                inventoryState.inventory.Remove(slot.Item);
-                inventoryState.inventory.Add(unequippedItem);
-                //if (unequippedItemInInventory == null)
-                //{
-                //    inventoryState.inventory.Add(unequippedItem);
-                //}
-                //else
-                //{
-                //    unequippedItemInInventory.Quantity += unequippedItem.Quantity;
-                //}
+                inventoryState.addToInventory(unequippedItem);
             }
-
-            item.Quantity -= 1;
-            Item equippedItem = item.createCopy();
-            equippedItem.Quantity = 1;
-            equippedItem.Equipped = true;
-            SelectItem(equippedItem);
-            inventoryState.inventory.Add(equippedItem);
-            slot.Item = equippedItem;
-            if (item.Quantity == 0)
-            {
-                inventoryState.inventory.Remove(item);
-            }
+            slot.Item = itemToEquip;
             break;
 
 
