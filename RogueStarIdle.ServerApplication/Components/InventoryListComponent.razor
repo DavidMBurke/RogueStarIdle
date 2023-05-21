@@ -24,11 +24,13 @@
                         Item item = group.First();
                         <tr style="width: 100%; height: 30px; @(item.Equipped ? "background-color: blue;" : string.Empty)" @onclick="() => SelectItem(item)">
                             <td>@item.Quantity</td>
-                            <td>@item.Name @if (item.Equipped)
+                            <td>
+                                @item.Name @if (item.Equipped)
                                 {
                                     <text> <b> [Equipped]</b></text>
-                                }</td>
-                            <td>@item.QualityLevel / @item.MaxQualityLevel</td>
+                                }
+                            </td>
+                            <td>@(item.QualityLevel > 0 ? $"{item.QualityLevel} / {item.MaxQualityLevel}" : "")</td>
                         </tr>
                     }
                     else
@@ -43,14 +45,15 @@
                         {
                             foreach (Item item in group)
                             {
-                                <tr style="width: 100%; height: 30px; @(item.Equipped ? "background-color: blue;" : string.Empty)"
-                    @onclick="() => SelectItem(item)">
+                                <tr style="width: 100%; height: 30px; @(item.Equipped ? "background-color: blue;" : string.Empty)" @onclick="() => SelectItem(item)">
                                     <td>@item.Quantity</td>
-                                    <td>@item.Name @if (item.Equipped)
+                                    <td>
+                                        @item.Name @if (item.Equipped)
                                         {
                                             <text> <b> [Equipped]</b></text>
-                                        }</td>
-                                    <td>@item.QualityLevel / @item.MaxQualityLevel</td>
+                                        }
+                                    </td>
+                                    <td>@(item.QualityLevel > 0 ? $"{item.QualityLevel} / {item.MaxQualityLevel}" : "")</td>
                                 </tr>
                             }
                         }
@@ -66,30 +69,30 @@
                 @selectedItem.Name [@selectedItem.Quantity]
             </h4>
             <h5>Buy Price: @selectedItem.BuyPrice   Sell Price: @selectedItem.SellPrice</h5>
-            @if (selectedItem.IsWeapon || selectedItem.IsArmor)
+            @if (selectedItem.QualityLevel > 0)
             {
                 <h5> Quality level: @selectedItem.QualityLevel / @selectedItem.MaxQualityLevel</h5>
             }
             @if (selectedItem.IsWeapon)
             {
-                @checkType(selectedItem)
+                @getTypeMarkup(selectedItem)
                 ;
                 <h5>Base Damage: @selectedItem.MinBaseDamage - @selectedItem.MaxBaseDamage</h5>
                 <h5>To-Hit Modifier: @selectedItem.ToHitModifier</h5>
-                @checkAllDamageTypes(selectedItem)
+                @getAllDamageTypeMarkups(selectedItem)
                 ;
             }
             @if (selectedItem.IsArmor)
             {
-                @checkAllDefenseTypes(selectedItem)
+                @getAllDefenseMarkups(selectedItem)
                 ;
-                @checkAllDamageResistances(selectedItem)
+                @getAllDamageResistanceMarkups(selectedItem)
                 ;
             }
             @foreach (var slot in selectedItem.EquipmentSlots)
             {
                 <button @onclick="() => EquipItem(selectedItem, slot, equipmentState.MainCharacterEquipment)">
-                    Equip @getSlotName(slot, equipmentState.MainCharacterEquipment)
+                    Equip @equipmentState.MainCharacterEquipment.getSlotNameById(slot)
                 </button>
             }
         }
@@ -150,78 +153,53 @@
             {
                 continue; // skip if not correct slot
             }
-
+            // replace unequipped item with equipped item
             Item itemToEquip = item.createCopy();
             itemToEquip.Equipped = true;
             inventoryState.removeFromInventory(item);
             inventoryState.addToInventory(itemToEquip);
-
             if (slot.Item != null)
             {
+                // replace previously equipped item with unequipped item
                 Item unequippedItem = slot.Item.createCopy();
                 inventoryState.removeFromInventory(unequippedItem);
                 unequippedItem.Equipped = false;
                 inventoryState.addToInventory(unequippedItem);
             }
-            slot.Item = itemToEquip;
+            slot.Item = itemToEquip; //equip item
             break;
-
-
         }
         await OnParametersSetAsync();
     }
 
-    //get name of slot from ID for display purposes
-    public string getSlotName(int id, EquipmentSet equipmentSet)
-    {
-        foreach (var property in typeof(EquipmentSet).GetProperties())
-        {
-            if (property.PropertyType == typeof(EquipmentSlot))
-            {
-                EquipmentSlot slot = (EquipmentSlot)property.GetValue(equipmentSet);
-                if (slot.Id == id)
-                {
-                    return property.Name;
-                }
-            }
-        }
-        return "Error";
-    }
-
     // Return MarkupString of weapon type for display
-    public MarkupString checkType(Item item)
+    public MarkupString getTypeMarkup(Item item)
     {
         if (item.IsMelee)
-        {
             return new MarkupString("<h5>Type: Melee<h5/>");
-        }
         if (item.IsRanged)
-        {
             return new MarkupString("<h5>Type: Ranged<h5/>");
-        }
         if (item.IsExplosive)
-        {
             return new MarkupString("<h5>Type: Explosive<h5/>");
-        }
         return new MarkupString("");
     }
 
     // Return all active damage ranges in one MarkupString for display
-    public MarkupString checkAllDamageTypes(Item item)
+    public MarkupString getAllDamageTypeMarkups(Item item)
     {
         string markup = "";
-        markup += @checkDamage("Slashing", selectedItem.PercentSlashingDamage, selectedItem);
-        markup += @checkDamage("Piercing", selectedItem.PercentPiercingDamage, selectedItem);
-        markup += @checkDamage("Crushing", selectedItem.PercentCrushingDamage, selectedItem);
-        markup += @checkDamage("Acid", selectedItem.PercentAcidDamage, selectedItem);
-        markup += @checkDamage("Poison", selectedItem.PercentPoisonDamage, selectedItem);
-        markup += @checkDamage("Fire", selectedItem.PercentFireDamage, selectedItem);
-        markup += @checkDamage("Shock", selectedItem.PercentShockDamage, selectedItem);
+        markup += getDamageMarkupByType("Slashing", selectedItem.PercentSlashingDamage, selectedItem);
+        markup += getDamageMarkupByType("Piercing", selectedItem.PercentPiercingDamage, selectedItem);
+        markup += getDamageMarkupByType("Crushing", selectedItem.PercentCrushingDamage, selectedItem);
+        markup += getDamageMarkupByType("Acid", selectedItem.PercentAcidDamage, selectedItem);
+        markup += getDamageMarkupByType("Poison", selectedItem.PercentPoisonDamage, selectedItem);
+        markup += getDamageMarkupByType("Fire", selectedItem.PercentFireDamage, selectedItem);
+        markup += getDamageMarkupByType("Shock", selectedItem.PercentShockDamage, selectedItem);
         return new MarkupString(markup);
     }
 
     // Return MarkupString of damage range of given type
-    public MarkupString checkDamage(string type, int percent, Item item)
+    public MarkupString getDamageMarkupByType(string type, int percent, Item item)
     {
         if (percent < 1)
         {
@@ -234,20 +212,20 @@
     }
 
     // Return all active Defenses in one MarkupString for display
-    public MarkupString checkAllDefenseTypes(Item item)
+    public MarkupString getAllDefenseMarkups(Item item)
     {
         string markup = "";
-        markup += checkDefense("Melee", item.MeleeDefense, item);
-        markup += checkDefense("Ranged", item.RangedDefense, item);
-        markup += checkDefense("Explosive", item.ExplosiveDefense, item);
-        markup += checkDefense("Kinetic", item.KineticDefense, item);
-        markup += checkDefense("Energy", item.EnergyDefense, item);
-        markup += checkDefense("Psychic", item.PsychicDefense, item);
+        markup += getDefenseMarkupByType("Melee", item.MeleeDefense, item);
+        markup += getDefenseMarkupByType("Ranged", item.RangedDefense, item);
+        markup += getDefenseMarkupByType("Explosive", item.ExplosiveDefense, item);
+        markup += getDefenseMarkupByType("Kinetic", item.KineticDefense, item);
+        markup += getDefenseMarkupByType("Energy", item.EnergyDefense, item);
+        markup += getDefenseMarkupByType("Psychic", item.PsychicDefense, item);
         return new MarkupString(markup);
     }
 
     // Return MarkupString of individual type Defense
-    public MarkupString checkDefense(string type, int defense, Item item)
+    public MarkupString getDefenseMarkupByType(string type, int defense, Item item)
     {
         if (defense < 1)
         {
@@ -258,24 +236,24 @@
     }
 
     // Return all active DRs in one MarkupString for desplay
-    public MarkupString checkAllDamageResistances(Item item)
+    public MarkupString getAllDamageResistanceMarkups(Item item)
     {
         string markup = "";
-        markup += checkDamageResistance("Kinetic", item.KineticDamageReduction, item);
-        markup += checkDamageResistance("Psychic", item.PsychicDamageReduction, item);
-        markup += checkDamageResistance("Energy", item.EnergyDamageReduction, item);
-        markup += checkDamageResistance("Piercing", item.KineticDamageReduction, item.PiercingDamageReduction, item);
-        markup += checkDamageResistance("Crushing", item.KineticDamageReduction, item.CrushingDamageReduction, item);
-        markup += checkDamageResistance("Slashing", item.KineticDamageReduction, item.SlashingDamageReduction, item);
-        markup += checkDamageResistance("Fire", item.EnergyDamageReduction, item.FireDamageReduction, item);
-        markup += checkDamageResistance("Acid", item.EnergyDamageReduction, item.AcidDamageReduction, item);
-        markup += checkDamageResistance("Poison", item.EnergyDamageReduction, item.PoisonDamageReduction, item);
-        markup += checkDamageResistance("Shock", item.EnergyDamageReduction, item.ShockDamageReduction, item);
+        markup += getDamageResistanceMarkupByType("Kinetic", item.KineticDamageReduction, item);
+        markup += getDamageResistanceMarkupByType("Psychic", item.PsychicDamageReduction, item);
+        markup += getDamageResistanceMarkupByType("Energy", item.EnergyDamageReduction, item);
+        markup += getDamageResistanceMarkupByType("Piercing", item.KineticDamageReduction, item.PiercingDamageReduction, item);
+        markup += getDamageResistanceMarkupByType("Crushing", item.KineticDamageReduction, item.CrushingDamageReduction, item);
+        markup += getDamageResistanceMarkupByType("Slashing", item.KineticDamageReduction, item.SlashingDamageReduction, item);
+        markup += getDamageResistanceMarkupByType("Fire", item.EnergyDamageReduction, item.FireDamageReduction, item);
+        markup += getDamageResistanceMarkupByType("Acid", item.EnergyDamageReduction, item.AcidDamageReduction, item);
+        markup += getDamageResistanceMarkupByType("Poison", item.EnergyDamageReduction, item.PoisonDamageReduction, item);
+        markup += getDamageResistanceMarkupByType("Shock", item.EnergyDamageReduction, item.ShockDamageReduction, item);
         return new MarkupString(markup);
     }
 
     // Return damage resistance MarkupString
-    public MarkupString checkDamageResistance(string type, int dr, Item item)
+    public MarkupString getDamageResistanceMarkupByType(string type, int dr, Item item)
     {
         if (dr < 1)
         {
@@ -287,7 +265,7 @@
 
     // Return damage resistance MarkupString if greater than DR of category.
     // Category DR applies to all damage types, (i.e. Energy applies to Fire, Acid, Shock and Poison, while Kinetic applies to Piercing, Slashing and Crushing)
-    public MarkupString checkDamageResistance(string type, int categoryDR, int typeDR, Item item)
+    public MarkupString getDamageResistanceMarkupByType(string type, int categoryDR, int typeDR, Item item)
     {
         if (typeDR <= categoryDR)
         {

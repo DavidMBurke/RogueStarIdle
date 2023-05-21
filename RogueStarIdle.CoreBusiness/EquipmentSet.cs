@@ -29,5 +29,22 @@
         public EquipmentSlot BodyCybernetic1 { get; set; } = new EquipmentSlot(25, null);
         public EquipmentSlot BodyCybernetic2 { get; set; } = new EquipmentSlot(26, null);
         public EquipmentSlot BodyCybernetic3 { get; set; } = new EquipmentSlot(27, null);
+
+        //get name of slot from ID for display purposes
+        public string getSlotNameById(int id)
+        {
+            foreach (var property in typeof(EquipmentSet).GetProperties())
+            {
+                if (property.PropertyType == typeof(EquipmentSlot))
+                {
+                    EquipmentSlot slot = (EquipmentSlot)property.GetValue(this);
+                    if (slot.Id == id)
+                    {
+                        return property.Name;
+                    }
+                }
+            }
+            return "Error";
+        }
     }
 }
