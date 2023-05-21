@@ -13,19 +13,27 @@
             </thead>
             <tbody style="max-height: 100%; overflow-y: auto;">
                 @{
+                    // group items by name. Items with different quality level or equipped status are treated as separate items for display purposes
                     var itemGroups = listItems.GroupBy(i => i.Name);
-                } 
-                @foreach (var group in itemGroups) 
+                }
+                @foreach (var group in itemGroups)
                 {
+                    // if only one item in group, display info in one row. (multiple of same item with quantity >1 considered 1 item for this purpose)
                     if (group.Count() == 1)
                     {
                         Item item = group.First();
                         <tr style="width: 100%; height: 30px; @(item.Equipped ? "background-color: blue;" : string.Empty)" @onclick="() => SelectItem(item)">
                             <td>@item.Quantity</td>
-                            <td>@item.Name @if (item.Equipped) {<text> <b> [Equipped]</b></text>}</td>
+                            <td>@item.Name @if (item.Equipped)
+                                {
+                                    <text> <b> [Equipped]</b></text>
+                                }</td>
                             <td>@item.QualityLevel / @item.MaxQualityLevel</td>
                         </tr>
-                    } else {
+                    }
+                    else
+                    {
+                        //display row with sum of all items of name, with dropdown to show individual quality levels and equipped status
                         <tr style="width: 100%; height: 30px; font: bold; @(group.Any(i => i.Equipped) && (!expandedViews.ContainsKey(group.Key) || (expandedViews.ContainsKey(group.Key) && !expandedViews[group.Key])) ? "background-color: blue;" : string.Empty)" @onclick="() => ToggleExpandedView(group.Key)">
                             <td>@group.Sum(i => i.Quantity)</td>
                             <td>@group.First().Name</td>
@@ -36,11 +44,14 @@
                             foreach (Item item in group)
                             {
                                 <tr style="width: 100%; height: 30px; @(item.Equipped ? "background-color: blue;" : string.Empty)"
-                                    @onclick="() => SelectItem(item)">
-                                <td>@item.Quantity</td>
-                                    <td>@item.Name @if (item.Equipped) {<text> <b> [Equipped]</b></text>}</td>
+                    @onclick="() => SelectItem(item)">
+                                    <td>@item.Quantity</td>
+                                    <td>@item.Name @if (item.Equipped)
+                                        {
+                                            <text> <b> [Equipped]</b></text>
+                                        }</td>
                                     <td>@item.QualityLevel / @item.MaxQualityLevel</td>
-                            </tr>
+                                </tr>
                             }
                         }
                     }
@@ -50,7 +61,7 @@
     </div>
     <div style="width:30%; border: 3px solid black; height: 100%; background-color: cornflowerblue">
         @if (selectedItem != null)
-        {   
+        {
             <h4>
                 @selectedItem.Name [@selectedItem.Quantity]
             </h4>
@@ -61,20 +72,24 @@
             }
             @if (selectedItem.IsWeapon)
             {
-                @checkType(selectedItem);
+                @checkType(selectedItem)
+                ;
                 <h5>Base Damage: @selectedItem.MinBaseDamage - @selectedItem.MaxBaseDamage</h5>
                 <h5>To-Hit Modifier: @selectedItem.ToHitModifier</h5>
-                @checkAllDamageTypes(selectedItem);
+                @checkAllDamageTypes(selectedItem)
+                ;
             }
             @if (selectedItem.IsArmor)
             {
-                @checkAllDefenseTypes(selectedItem);
-                @checkAllDamageResistances(selectedItem);
+                @checkAllDefenseTypes(selectedItem)
+                ;
+                @checkAllDamageResistances(selectedItem)
+                ;
             }
-            @foreach(var slot in selectedItem.EquipmentSlots)
+            @foreach (var slot in selectedItem.EquipmentSlots)
             {
                 <button @onclick="() => EquipItem(selectedItem, slot, equipmentState.MainCharacterEquipment)">
-                    Equip @getSlotName(selectedItem, slot, equipmentState.MainCharacterEquipment)
+                    Equip @getSlotName(slot, equipmentState.MainCharacterEquipment)
                 </button>
             }
         }
@@ -83,20 +98,24 @@
 
 
 @code {
-    private List<Item> listItems = new List<Item>();
+    [Parameter] public string searchTerm { get; set; } = string.Empty;
+    [Parameter] public EquipmentState equipmentState { get; set; } = new EquipmentState();
+    private List<Item> listItems = new List<Item>(); // Items from inventory after search/sort
+    public Item selectedItem = null; // Item stats are displayed for
+    private Dictionary<string, bool> expandedViews = new Dictionary<string, bool>(); // Stores item groups expanded view status
 
-    private bool reload = false;
+    // updates when parameters passed from parent are changes
+    protected override async Task OnParametersSetAsync()
+    {
+        listItems = (await inventoryState.GetItemsByNameAsync(searchTerm)).ToList();
+        listItems = listItems.Union(await inventoryState.GetItemsByTagAsync(searchTerm)).ToList();
+        listItems.RemoveAll(i => i.Quantity < 1);
+        listItems.Sort((x, y) => x.Equipped.CompareTo(y.Equipped));
+        listItems.Sort((x, y) => y.QualityLevel.CompareTo(x.QualityLevel));
+        listItems.Sort((x, y) => x.Name.CompareTo(y.Name));
+    }
 
-    [Parameter]
-    public string searchTerm { get; set; } = string.Empty;
-
-    [Parameter]
-    public EquipmentState equipmentState { get; set; } = new EquipmentState();
-
-    public Item selectedItem = null;
-
-    private Dictionary<string, bool> expandedViews = new Dictionary<string, bool>();
-
+    // update expandedViews dictionary to expand / collapse groups
     private void ToggleExpandedView(string key)
     {
         if (expandedViews.ContainsKey(key))
@@ -109,65 +128,63 @@
         }
     }
 
-    protected override async Task OnParametersSetAsync()
-    {
-        listItems = (await inventoryState.GetItemsByNameAsync(searchTerm)).ToList();
-        listItems = listItems.Union(await inventoryState.GetItemsByTagAsync(searchTerm)).ToList();
-        listItems.RemoveAll(i => i.Quantity < 1);
-        listItems.Sort((x,y) => x.Equipped.CompareTo(y.Equipped));
-        listItems.Sort((x, y) => y.QualityLevel.CompareTo(x.QualityLevel));
-        listItems.Sort((x, y) => x.Name.CompareTo(y.Name));
-    }
-
     private void SelectItem(Item item)
     {
         selectedItem = item;
     }
 
-    public async void EquipItem(Item item, int id, EquipmentSet equipmentSet)
+    public async void EquipItem(Item item, int slotId, EquipmentSet equipmentSet)
     {
         foreach (var property in typeof(EquipmentSet).GetProperties())
         {
-            if (property.PropertyType == typeof(EquipmentSlot))
+            if (property.PropertyType != typeof(EquipmentSlot))
             {
-                EquipmentSlot slot = (EquipmentSlot)property.GetValue(equipmentSet);
-                if (slot.Id == id)
-                {
-
-                    if (slot.Item != null)
-                    {
-                        Item unequippedItem = slot.Item.createCopy();
-                        unequippedItem.Equipped = false;
-                        var unequippedItemInInventory = inventoryState.inventory.FirstOrDefault(i => i.Id == unequippedItem.Id && i.QualityLevel == unequippedItem.QualityLevel, null);
-                        if (unequippedItemInInventory == null)
-                        {
-                            inventoryState.inventory.Add(unequippedItem);                            
-                        } else
-                        {
-                            unequippedItemInInventory.Quantity += unequippedItem.Quantity;
-                        }
-                        inventoryState.inventory.Remove(slot.Item);
-                    }
-
-                    item.Quantity -= 1;
-                    Item equippedItem = item.createCopy();
-                    equippedItem.Quantity = 1;
-                    equippedItem.Equipped = true;
-                    SelectItem(equippedItem);
-                    inventoryState.inventory.Add(equippedItem);
-                    slot.Item = equippedItem;
-                    if (item.Quantity == 0)
-                    {                        
-                        inventoryState.inventory.Remove(item);
-                    }
-                    break;
-                }
+                continue; // skip if not equipment slot
             }
+            EquipmentSlot slot = (EquipmentSlot)property.GetValue(equipmentSet);
+            if (slot.Id != slotId)
+            {
+                continue; // skip if not correct slot
+            }
+
+            // When item equipped / unequipped, item is replaced with item with updated status. This is tradeoff d/t storing duplicate items as one item with different Quantity.
+            if (slot.Item != null)
+            {
+                Item unequippedItem = slot.Item.createCopy();
+                unequippedItem.Equipped = false;
+                var unequippedItemInInventory = inventoryState.inventory.FirstOrDefault(i => i.Id == unequippedItem.Id && i.QualityLevel == unequippedItem.QualityLevel, null);
+                inventoryState.inventory.Remove(slot.Item);
+                inventoryState.inventory.Add(unequippedItem);
+                //if (unequippedItemInInventory == null)
+                //{
+                //    inventoryState.inventory.Add(unequippedItem);
+                //}
+                //else
+                //{
+                //    unequippedItemInInventory.Quantity += unequippedItem.Quantity;
+                //}
+            }
+
+            item.Quantity -= 1;
+            Item equippedItem = item.createCopy();
+            equippedItem.Quantity = 1;
+            equippedItem.Equipped = true;
+            SelectItem(equippedItem);
+            inventoryState.inventory.Add(equippedItem);
+            slot.Item = equippedItem;
+            if (item.Quantity == 0)
+            {
+                inventoryState.inventory.Remove(item);
+            }
+            break;
+
+
         }
         await OnParametersSetAsync();
     }
 
-    public string getSlotName(Item item, int id, EquipmentSet equipmentSet)
+    //get name of slot from ID for display purposes
+    public string getSlotName(int id, EquipmentSet equipmentSet)
     {
         foreach (var property in typeof(EquipmentSet).GetProperties())
         {
@@ -184,7 +201,7 @@
     }
 
     // Return MarkupString of weapon type for display
-    public MarkupString checkType( Item item)
+    public MarkupString checkType(Item item)
     {
         if (item.IsMelee)
         {
@@ -262,7 +279,7 @@
         markup += checkDamageResistance("Piercing", item.KineticDamageReduction, item.PiercingDamageReduction, item);
         markup += checkDamageResistance("Crushing", item.KineticDamageReduction, item.CrushingDamageReduction, item);
         markup += checkDamageResistance("Slashing", item.KineticDamageReduction, item.SlashingDamageReduction, item);
-        markup += checkDamageResistance("Fire", item.EnergyDamageReduction, item.FireDamageReduction, item); 
+        markup += checkDamageResistance("Fire", item.EnergyDamageReduction, item.FireDamageReduction, item);
         markup += checkDamageResistance("Acid", item.EnergyDamageReduction, item.AcidDamageReduction, item);
         markup += checkDamageResistance("Poison", item.EnergyDamageReduction, item.PoisonDamageReduction, item);
         markup += checkDamageResistance("Shock", item.EnergyDamageReduction, item.ShockDamageReduction, item);
@@ -280,7 +297,7 @@
         return new MarkupString(markup);
     }
 
-    // Return damage resistance MarkupString if greater than DR of category. 
+    // Return damage resistance MarkupString if greater than DR of category.
     // Category DR applies to all damage types, (i.e. Energy applies to Fire, Acid, Shock and Poison, while Kinetic applies to Piercing, Slashing and Crushing)
     public MarkupString checkDamageResistance(string type, int categoryDR, int typeDR, Item item)
     {
