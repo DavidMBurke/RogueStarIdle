@@ -29,6 +29,7 @@
         public EquipmentSlot BodyCybernetic1 { get; set; } = new EquipmentSlot(25, null);
         public EquipmentSlot BodyCybernetic2 { get; set; } = new EquipmentSlot(26, null);
         public EquipmentSlot BodyCybernetic3 { get; set; } = new EquipmentSlot(27, null);
+        public EquipmentSlot OmniLinkMod { get; set; } = new EquipmentSlot(28, null);
         public EquipmentStats StatBlock { get; set; } = new EquipmentStats();
 
         //get name of slot from ID for display purposes
@@ -36,14 +37,17 @@
         {
             foreach (var property in typeof(EquipmentSet).GetProperties())
             {
-                if (property.PropertyType == typeof(EquipmentSlot))
+                if (property.PropertyType != typeof(EquipmentSlot))
                 {
-                    EquipmentSlot slot = (EquipmentSlot)property.GetValue(this);
-                    if (slot.Id == id)
-                    {
-                        return property.Name;
-                    }
+                    continue;
                 }
+                EquipmentSlot slot = (EquipmentSlot)property.GetValue(this);
+                if (slot.Id != id)
+                {
+                    continue;
+                }
+                return property.Name;
+                
             }
             return "Error";
         }

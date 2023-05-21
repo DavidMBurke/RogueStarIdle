@@ -162,6 +162,10 @@
                 unequippedItem.Equipped = false;
                 inventoryState.addToInventory(unequippedItem);
             }
+            if (!itemToEquip.StacksInEquipmentSlot)
+            {
+                itemToEquip.Quantity = 1;
+            }
             slot.Item = itemToEquip; //equip item
             break;
         }
