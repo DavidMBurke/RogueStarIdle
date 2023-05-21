@@ -1,0 +1,19 @@
+﻿@page "/skills"
+@using RogueStarIdle.ServerApplication.Shared.State;
+@inject EquipmentState equipmentState
+@inject CharacterState characterState
+
+<div class="page-content-container">
+    <div class="column" style="width: 95%; align-content: center; ">
+        @displayStat("Melee", characterState.mainCharacter.MeleeLevel, characterState.mainCharacter.MeleeXp)
+    </div>
+</div>
+
+@code {
+    private MarkupString displayStat(string skillName, int level, int xp)
+    {
+        int xpToLevelUp = characterState.mainCharacter.miscellaneous.GetXpForNextLevel(level);
+        string markup = $"<p> {skillName}: {level}   XP: {xp}/{xpToLevelUp}";
+        return new MarkupString(markup);
+    }
+}

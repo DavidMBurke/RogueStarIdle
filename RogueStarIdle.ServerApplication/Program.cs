@@ -19,6 +19,7 @@ builder.Services.AddTransient<IViewItemsByNameUseCase, ViewItemsByNameUseCase>()
 builder.Services.AddTransient<IViewItemsByTagUseCase, ViewItemsByTagUseCase>();
 builder.Services.AddScoped<EquipmentState>();
 builder.Services.AddScoped<InventoryState>();
+builder.Services.AddScoped<CharacterState>();
 
 var app = builder.Build();
 
