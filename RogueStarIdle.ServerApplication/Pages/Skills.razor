@@ -4,12 +4,26 @@
 @inject CharacterState characterState
 
 <div class="page-content-container">
-    <div class="column" style="width: 95%; align-content: center; ">
-        @displayStat(characterState.mainCharacter.MeleeSkill)
+    <div class="column" style="width: 100%; height: 100%; background-color: cornflowerblue; overflow-y: scroll; align-content: center; ">
+        @displayAllStats(characterState.mainCharacter)
     </div>
 </div>
 
 @code {
+    private MarkupString displayAllStats(Character character)
+    {
+        string markup = "";
+        foreach (var property in typeof(Character).GetProperties())
+        {
+            if (property.PropertyType != typeof(Skill))
+            {
+                continue;
+            }
+            markup += displayStat(property.GetValue(character) as Skill);
+        }
+        return new MarkupString(markup);
+    }
+
     private MarkupString displayStat(Skill skill)
     {
         string markup = $"<p> {skill.Name}: {skill.Level}   XP: {skill.Xp}/{skill.GetXpForNextLevel()}";
