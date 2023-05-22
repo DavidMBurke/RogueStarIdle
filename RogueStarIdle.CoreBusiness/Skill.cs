@@ -1,13 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RogueStarIdle.CoreBusiness
+﻿namespace RogueStarIdle.CoreBusiness
 {
-    public class Miscellaneous
+    public class Skill
     {
+        public string Name { get; set; }
+        public int Level { get; set; }
+        public int Xp { get; set; }
+
+        public Skill(string name, int level, int xp)
+        {
+            Name = name;
+            Level = level;
+            Xp = xp;
+        }
+
         // Levels and XP required for each using formula XP = (lastLvl-1) * 250 * 1.05 ^ Level
         // Hardcoded because math is hard
         List<(int, int)> levelByXpTuple = new List<(int, int)>
@@ -57,25 +62,40 @@ namespace RogueStarIdle.CoreBusiness
 
             return level;
         }
-        public int GetXpForNextLevel(int currentLevel)
+        public int GetXpForNextLevel()
         {
             int xp = 0;
             bool secondToLast = false;
-            foreach(var levelXpPair in levelByXpTuple)
+            foreach (var levelXpPair in levelByXpTuple)
             {
-                if (currentLevel >= levelXpPair.Item1)
+                if (Level >= levelXpPair.Item1 || secondToLast == true)
                 {
+                    if (!secondToLast)
+                    {
+                        secondToLast = true;
+                        continue;
+                    }
                     xp = levelXpPair.Item2;
-                } else
-                {
                     if (secondToLast)
                     {
                         break;
                     }
-                    secondToLast = true;
+                }
+                else
+                {
+                    break;
                 }
             }
             return xp;
         }
+        public void checkLevel(int level, int Level)
+        {
+            int checkedLevel = GetLevelFromXp(Level);
+            if (checkedLevel > level)
+            {
+                level = checkedLevel;
+            }
+        }
+
     }
 }

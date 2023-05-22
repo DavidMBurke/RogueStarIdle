@@ -5,15 +5,14 @@
 
 <div class="page-content-container">
     <div class="column" style="width: 95%; align-content: center; ">
-        @displayStat("Melee", characterState.mainCharacter.MeleeLevel, characterState.mainCharacter.MeleeXp)
+        @displayStat(characterState.mainCharacter.MeleeSkill)
     </div>
 </div>
 
 @code {
-    private MarkupString displayStat(string skillName, int level, int xp)
+    private MarkupString displayStat(Skill skill)
     {
-        int xpToLevelUp = characterState.mainCharacter.miscellaneous.GetXpForNextLevel(level);
-        string markup = $"<p> {skillName}: {level}   XP: {xp}/{xpToLevelUp}";
+        string markup = $"<p> {skill.Name}: {skill.Level}   XP: {skill.Xp}/{skill.GetXpForNextLevel()}";
         return new MarkupString(markup);
     }
 }

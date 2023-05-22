@@ -4,54 +4,24 @@
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        //*********Skills************
-        public int MeleeXp { get; set; } = 0;
-        public int RangedXp { get; set; } = 0;
-        public int ExplosivesXp { get; set; } = 0;
-        public int PsychicXp { get; set; } = 0;
-        public int BlockXp { get; set; } = 0;
-        public int ArmorCraftingXp { get; set; } = 0;
-        public int WeaponSmithingXp { get; set; } = 0;
-        public int RoboticsXp { get; set; } = 0;
-        public int GeologyXp { get; set; } = 0;
-        public int ConstructionXp { get; set; } = 0;
-        public int FarmingXp { get; set; } = 0;
-        public int ForagingXp { get; set; } = 0;
-        public int SurvivalXp { get; set; } = 0;
-        public int AnimalsXp { get; set; } = 0;
-        public int LeadershipXp { get; set; } = 0;
-        public int DiplomacyXp { get; set; } = 0;
-        public int StealthXp { get; set; } = 0;
-        public int HerbalismXp { get; set; } = 0;
-        public int ScrappingXp { get; set; } = 0;
-        public int MeleeLevel { get; set; } = 0;
-        public int RangedLevel { get; set; } = 0;
-        public int ELevellosivesLevel { get; set; } = 0;
-        public int PsychicLevel { get; set; } = 0;
-        public int BlockLevel { get; set; } = 0;
-        public int ArmorCraftingLevel { get; set; } = 0;
-        public int WeaponSmithingLevel { get; set; } = 0;
-        public int RoboticsLevel { get; set; } = 0;
-        public int GeologyLevel { get; set; } = 0;
-        public int ConstructionLevel { get; set; } = 0;
-        public int FarmingLevel { get; set; } = 0;
-        public int ForagingLevel { get; set; } = 0;
-        public int SurvivalLevel { get; set; } = 0;
-        public int AnimalsLevel { get; set; } = 0;
-        public int LeadershipLevel { get; set; } = 0;
-        public int DiplomacyLevel { get; set; } = 0;
-        public int StealthLevel { get; set; } = 0;
-        public int HerbalismLevel { get; set; } = 0;
-        public int ScrappingLevel { get; set; } = 0;
-        public Miscellaneous miscellaneous = new Miscellaneous();
-
-        public void checkLevel(int level, int Level)
-        {
-            int checkedLevel = miscellaneous.GetLevelFromXp(Level);
-            if (checkedLevel > level)
-            {
-                level = checkedLevel;
-            }
-        }
+        public Skill MeleeSkill { get; set; } = new Skill("Melee", 1, 0);
+        public Skill RangedSkill { get; set; } = new Skill("Ranged", 1, 0);
+        public Skill ExplosivesSkill { get; set; } = new Skill("Explosives", 1, 0);
+        public Skill PsychicSkill { get; set; } = new Skill("Psychic", 1, 0);
+        public Skill BlockSkill { get; set; } = new Skill("Block", 1, 0);
+        public Skill ArmorCraftingSkill { get; set; } = new Skill("Armor Crafting", 1, 0);
+        public Skill WeaponSmithingSkill { get; set; } = new Skill("Weapon Smithing", 1, 0);
+        public Skill RoboticsSkill { get; set; } = new Skill("Robotics", 1, 0);
+        public Skill GeologySkill { get; set; } = new Skill("Geology", 1, 0);
+        public Skill ConstructionSkill { get; set; } = new Skill("Construction", 1, 0);
+        public Skill FarmingSkill { get; set; } = new Skill("Farming", 1, 0);
+        public Skill ForagingSkill { get; set; } = new Skill("Foraging", 1, 0);
+        public Skill SurvivalSkill { get; set; } = new Skill("Survival", 1, 0);
+        public Skill AnimalsSkill { get; set; } = new Skill("Animals", 1, 0);
+        public Skill LeadershipSkill { get; set; } = new Skill("Leadership", 1, 0);
+        public Skill DiplomacySkill { get; set; } = new Skill("Diplomacy", 1, 0);
+        public Skill StealthSkill { get; set; } = new Skill("Stealth", 1, 0);
+        public Skill HerbalismSkill { get; set; } = new Skill("Herbalism", 1, 0);
+        public Skill ScrappingSkill { get; set; } = new Skill("Scrapping", 1, 0);
     }
 }

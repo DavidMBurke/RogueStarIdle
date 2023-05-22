@@ -1,0 +1,24 @@
+﻿@inject IViewItemsByNameUseCase ViewItemsByNameUseCase
+@inject IViewItemsByTagUseCase ViewItemsByTagUseCase
+@using RogueStarIdle.ServerApplication.Shared.State;
+@inject CharacterState characterState;
+
+<div class="column" style="height:75%; width:100%; overflow-y: scroll;">
+
+    <h6>
+        @{
+            Character character = characterState.mainCharacter;
+        }
+        Animals: level: @character.AnimalsSkill.Level  xp: @character.AnimalsSkill.Xp / @character.AnimalsSkill.GetXpForNextLevel()
+    </h6>
+
+</div>
+
+
+@code {
+
+    private void addXp(int xp)
+    {
+        
+    }
+}
