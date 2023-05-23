@@ -12,13 +12,28 @@
         Animals: level: @character.AnimalsSkill.Level  xp: @character.AnimalsSkill.Xp / @character.AnimalsSkill.GetXpForNextLevel()
     </h6>
 
+    @foreach(var property in typeof(Character).GetProperties())
+    {
+        if (property.PropertyType != typeof(Skill))
+        {
+            continue;
+        }
+        Skill skill = property.GetValue(character) as Skill;
+        <div class="row">
+            <text>@skill.Name: Level: @skill.Level  XP: @skill.Xp / @skill.GetXpForNextLevel()</text><br/>
+            <button style="width:100px" @onclick="()=>skill.LevelUp()"> +1 Level</button>
+            <button style="width:100px" @onclick="()=>multiLevelUp(skill, 10)"> +10 Level</button>
+        </div>
+    }
 </div>
 
 
 @code {
-
-    private void addXp(int xp)
+    private void multiLevelUp(Skill skill, int num)
     {
-        
+        for (int i = 0; i < num; i++)
+        {
+            skill.LevelUp();
+        }
     }
 }
