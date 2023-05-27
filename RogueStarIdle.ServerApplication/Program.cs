@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using RogueStarIdle.PlugIns.InMemory;
-using RogueStarIdle.ServerApplication.Data;
 using RogueStarIdle.ServerApplication.Pages;
 using RogueStarIdle.ServerApplication.Shared.State;
 using RogueStarIdle.UseCases.Items;
@@ -13,7 +12,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<IItemsRepository, ItemsRepository>();
 builder.Services.AddTransient<IViewItemsByNameUseCase, ViewItemsByNameUseCase>();
 builder.Services.AddTransient<IViewItemsByTagUseCase, ViewItemsByTagUseCase>();

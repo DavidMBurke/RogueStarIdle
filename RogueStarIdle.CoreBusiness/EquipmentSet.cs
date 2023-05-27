@@ -62,33 +62,38 @@
                     EquipmentSlot slot = (EquipmentSlot)property.GetValue(this);
                     if (slot.Item != null)
                     {
-                        StatBlock.minDamage += slot.Item.MinBaseDamage;
-                        StatBlock.maxDamage += slot.Item.MaxBaseDamage;
-                        StatBlock.energyDefense += slot.Item.EnergyDefense;
-                        StatBlock.kineticDefense += slot.Item.KineticDefense;
-                        StatBlock.psychicDefense += slot.Item.PsychicDefense;
-                        StatBlock.meleeDefense += slot.Item.MeleeDefense;
-                        StatBlock.rangedDefense += slot.Item.RangedDefense;
-                        StatBlock.explosiveDefense += slot.Item.ExplosiveDefense;
-                        StatBlock.energyDR += slot.Item.EnergyDamageReduction;
-                        StatBlock.fireDR += Math.Max(slot.Item.EnergyDamageReduction, slot.Item.FireDamageReduction);
-                        StatBlock.acidDR += Math.Max(slot.Item.EnergyDamageReduction, slot.Item.AcidDamageReduction);
-                        StatBlock.poisonDR += Math.Max(slot.Item.EnergyDamageReduction, slot.Item.PoisonDamageReduction);
-                        StatBlock.shockDR += Math.Max(slot.Item.EnergyDamageReduction, slot.Item.ShockDamageReduction);
-                        StatBlock.kineticDR += slot.Item.KineticDamageReduction;
-                        StatBlock.piercingDR += Math.Max(slot.Item.KineticDamageReduction, slot.Item.PiercingDamageReduction);
-                        StatBlock.crushingDR += Math.Max(slot.Item.KineticDamageReduction, slot.Item.CrushingDamageReduction);
-                        StatBlock.slashingDR += Math.Max(slot.Item.KineticDamageReduction, slot.Item.SlashingDamageReduction);
-                        StatBlock.psychicDR += slot.Item.PsychicDamageReduction;
-                        StatBlock.fireDamage += slot.Item.PercentFireDamage;
-                        StatBlock.acidDamage += slot.Item.PercentFireDamage;
-                        StatBlock.poisonDamage += slot.Item.PercentPoisonDamage;
-                        StatBlock.shockDamage += slot.Item.PercentShockDamage;
-                        StatBlock.piercingDamage += slot.Item.PercentPiercingDamage;
-                        StatBlock.slashingDamage += slot.Item.PercentSlashingDamage;
-                        StatBlock.crushingDamage += slot.Item.PercentCrushingDamage;
+                        StatBlock.MinDamage += slot.Item.MinBaseDamage;
+                        StatBlock.MaxDamage += slot.Item.MaxBaseDamage;
+                        StatBlock.EnergyDefense += slot.Item.EnergyDefense;
+                        StatBlock.KineticDefense += slot.Item.KineticDefense;
+                        StatBlock.PsychicDefense += slot.Item.PsychicDefense;
+                        StatBlock.MeleeDefense += slot.Item.MeleeDefense;
+                        StatBlock.RangedDefense += slot.Item.RangedDefense;
+                        StatBlock.ExplosiveDefense += slot.Item.ExplosiveDefense;
+                        StatBlock.EnergyDR += slot.Item.EnergyDamageReduction;
+                        StatBlock.FireDR += Math.Max(slot.Item.EnergyDamageReduction, slot.Item.FireDamageReduction);
+                        StatBlock.AcidDR += Math.Max(slot.Item.EnergyDamageReduction, slot.Item.AcidDamageReduction);
+                        StatBlock.PoisonDR += Math.Max(slot.Item.EnergyDamageReduction, slot.Item.PoisonDamageReduction);
+                        StatBlock.ShockDR += Math.Max(slot.Item.EnergyDamageReduction, slot.Item.ShockDamageReduction);
+                        StatBlock.KineticDR += slot.Item.KineticDamageReduction;
+                        StatBlock.PiercingDR += Math.Max(slot.Item.KineticDamageReduction, slot.Item.PiercingDamageReduction);
+                        StatBlock.CrushingDR += Math.Max(slot.Item.KineticDamageReduction, slot.Item.CrushingDamageReduction);
+                        StatBlock.SlashingDR += Math.Max(slot.Item.KineticDamageReduction, slot.Item.SlashingDamageReduction);
+                        StatBlock.PsychicDR += slot.Item.PsychicDamageReduction;
+                        StatBlock.FireDamage += slot.Item.PercentFireDamage;
+                        StatBlock.AcidDamage += slot.Item.PercentFireDamage;
+                        StatBlock.PoisonDamage += slot.Item.PercentPoisonDamage;
+                        StatBlock.ShockDamage += slot.Item.PercentShockDamage;
+                        StatBlock.PiercingDamage += slot.Item.PercentPiercingDamage;
+                        StatBlock.SlashingDamage += slot.Item.PercentSlashingDamage;
+                        StatBlock.CrushingDamage += slot.Item.PercentCrushingDamage;
                     }
                 }
+            }
+            if (LeftWeapon != null && RightWeapon != null)
+            {
+                StatBlock.MinDamage = (StatBlock.MinDamage * 60) / 100;
+                StatBlock.MaxDamage = (StatBlock.MaxDamage * 60) / 100;
             }
         }
     }

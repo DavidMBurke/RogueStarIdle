@@ -5,18 +5,20 @@
 
 <div class="column" style="height:75%; width:100%; overflow-y: scroll;">
     <SearchInventoryComponent OnSearchInventory="OnInventorySearch" />
-    @foreach (Item item in listItems)
-    {
-        <h6>
-            @item.Name 
-            <input style="width:20px;" @bind-value="item.Quantity"/>
-            @if (item.MaxQualityLevel > 0)
-            {
-                <input style="width:20px;" @bind-value="item.QualityLevel"/>
-            }
-            <button @onclick="() => inventoryState.addToInventory(item)">Add Item</button>
-        </h6>
-    }
+    <div style="height:75%; width:100%; overflow-y: scroll;">
+        @foreach (Item item in listItems)
+        {
+            <h6>
+                @item.Name 
+                <input style="width:20px;" @bind-value="item.Quantity"/>
+                @if (item.MaxQualityLevel > 0)
+                {
+                    <input style="width:20px;" @bind-value="item.QualityLevel"/>
+                }
+                <button @onclick="() => inventoryState.addToInventory(item)">Add Item</button>
+            </h6>
+        }
+    </div>
 </div>
 
 

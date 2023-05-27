@@ -15,7 +15,7 @@
 
         // Levels and XP required for each using formula XP = (lastLvl-1) * 250 * 1.05 ^ Level
         // Hardcoded because math is hard
-        List<(int, int)> levelByXpTuple = new List<(int, int)>
+        List<(int, int)> LevelByXpTuple = new List<(int, int)>
         {
             (1, 0),
             (2, 275),
@@ -124,7 +124,7 @@
         {
             int level = 0;
 
-            foreach (var levelXpPair in levelByXpTuple)
+            foreach (var levelXpPair in LevelByXpTuple)
             {
                 if (Xp >= levelXpPair.Item2)
                 {
@@ -140,7 +140,7 @@
         }
         public int GetXpForNextLevel()
         {
-            foreach (var levelXpPair in levelByXpTuple)
+            foreach (var levelXpPair in LevelByXpTuple)
             {
                 if (levelXpPair.Item1 > Level)
                 {
@@ -149,7 +149,7 @@
             }
             return 0;
         }
-        public void updateLevel()
+        public void UpdateLevel()
         {
             int checkedLevel = GetLevelFromXp();
             if (checkedLevel > Level)
@@ -164,7 +164,7 @@
                 return;
             }
             Xp = GetXpForNextLevel();
-            updateLevel();
+            UpdateLevel();
         }
     }
 }

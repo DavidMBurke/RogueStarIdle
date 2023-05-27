@@ -10,7 +10,7 @@
                 <div class="inventory-slot locked" @onclick="() => unEquip(equipmentState.MainCharacterEquipment.BrainCybernetic1)">@displayEquipment(equipmentState.MainCharacterEquipment.BrainCybernetic1.Item?.Name, "Brain Cybernetic 1")</div>
                 <div class="inventory-slot locked" @onclick="() => unEquip(equipmentState.MainCharacterEquipment.BrainCybernetic2)">@displayEquipment(equipmentState.MainCharacterEquipment.BrainCybernetic2.Item?.Name, "Brain Cybernetic 2")</div>
                 <div class="inventory-slot locked" @onclick="() => unEquip(equipmentState.MainCharacterEquipment.BrainCybernetic3)">@displayEquipment(equipmentState.MainCharacterEquipment.BrainCybernetic3.Item?.Name, "Brain Cybernetic 3")</div>
-                <div class="inventory-spacer"/>
+                <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
@@ -111,6 +111,10 @@
 
     private void unEquip(EquipmentSlot equipmentSlot)
     {
+        if (equipmentSlot.Item == null)
+        {
+            return;
+        }
         Item unequippedItem = equipmentSlot.Item.createCopy();
         inventoryState.removeFromInventory(unequippedItem, unequippedItem.Quantity);
         unequippedItem.Equipped = false;
@@ -123,28 +127,28 @@
         equipment.CalculateStats();
         EquipmentStats s = equipment.StatBlock;
         string markup = "";
-        markup += weaponDamageMarkup("Slashing", s.minDamage, s.maxDamage, s.slashingDamage);
-        markup += weaponDamageMarkup("Piercing", s.minDamage, s.maxDamage, s.piercingDamage);
-        markup += weaponDamageMarkup("Crushing", s.minDamage, s.maxDamage, s.crushingDamage);
-        markup += weaponDamageMarkup("Fire", s.minDamage, s.maxDamage, s.fireDamage);
-        markup += weaponDamageMarkup("Acid", s.minDamage, s.maxDamage, s.acidDamage);
-        markup += weaponDamageMarkup("Poison", s.minDamage, s.maxDamage, s.poisonDamage);
-        markup += weaponDamageMarkup("Shock", s.minDamage, s.maxDamage, s.shockDamage);
-        markup += defenseMarkup("Kinetic", s.kineticDefense);
-        markup += defenseMarkup("Energy", s.energyDefense);
-        markup += defenseMarkup("Psychic", s.psychicDefense);
-        markup += defenseMarkup("Melee", s.meleeDefense);
-        markup += defenseMarkup("Ranged", s.rangedDefense);
-        markup += defenseMarkup("Explosive", s.explosiveDefense);
-        markup += damageResistanceMarkup("Energy", s.energyDR);
-        markup += damageResistanceMarkup("Fire", s.fireDR, s.energyDR);
-        markup += damageResistanceMarkup("Acid", s.acidDR, s.energyDR);
-        markup += damageResistanceMarkup("Poison", s.poisonDR, s.energyDR);
-        markup += damageResistanceMarkup("Shock", s.shockDR, s.energyDR);
-        markup += damageResistanceMarkup("Kinetic", s.kineticDR);
-        markup += damageResistanceMarkup("Piercing", s.piercingDR, s.kineticDR);
-        markup += damageResistanceMarkup("Slashing", s.slashingDR, s.kineticDR);
-        markup += damageResistanceMarkup("Crushing", s.crushingDR, s.kineticDR);
+        markup += weaponDamageMarkup("Slashing", s.MinDamage, s.MaxDamage, s.SlashingDamage);
+        markup += weaponDamageMarkup("Piercing", s.MinDamage, s.MaxDamage, s.PiercingDamage);
+        markup += weaponDamageMarkup("Crushing", s.MinDamage, s.MaxDamage, s.CrushingDamage);
+        markup += weaponDamageMarkup("Fire", s.MinDamage, s.MaxDamage, s.FireDamage);
+        markup += weaponDamageMarkup("Acid", s.MinDamage, s.MaxDamage, s.AcidDamage);
+        markup += weaponDamageMarkup("Poison", s.MinDamage, s.MaxDamage, s.PoisonDamage);
+        markup += weaponDamageMarkup("Shock", s.MinDamage, s.MaxDamage, s.ShockDamage);
+        markup += defenseMarkup("Kinetic", s.KineticDefense);
+        markup += defenseMarkup("Energy", s.EnergyDefense);
+        markup += defenseMarkup("Psychic", s.PsychicDefense);
+        markup += defenseMarkup("Melee", s.MeleeDefense);
+        markup += defenseMarkup("Ranged", s.RangedDefense);
+        markup += defenseMarkup("Explosive", s.ExplosiveDefense);
+        markup += damageResistanceMarkup("Energy", s.EnergyDR);
+        markup += damageResistanceMarkup("Fire", s.FireDR, s.EnergyDR);
+        markup += damageResistanceMarkup("Acid", s.AcidDR, s.EnergyDR);
+        markup += damageResistanceMarkup("Poison", s.PoisonDR, s.EnergyDR);
+        markup += damageResistanceMarkup("Shock", s.ShockDR, s.EnergyDR);
+        markup += damageResistanceMarkup("Kinetic", s.KineticDR);
+        markup += damageResistanceMarkup("Piercing", s.PiercingDR, s.KineticDR);
+        markup += damageResistanceMarkup("Slashing", s.SlashingDR, s.KineticDR);
+        markup += damageResistanceMarkup("Crushing", s.CrushingDR, s.KineticDR);
         return new MarkupString(markup);
     }
 
