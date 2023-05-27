@@ -11,4 +11,12 @@
     <ProjectReference Include="..\RogueStarIdle.UseCases\RogueStarIdle.UseCases.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Images\Marra.png" />
+  </ItemGroup>
+
 </Project>
