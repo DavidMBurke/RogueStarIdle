@@ -18,6 +18,7 @@ builder.Services.AddTransient<IViewItemsByTagUseCase, ViewItemsByTagUseCase>();
 builder.Services.AddScoped<EquipmentState>();
 builder.Services.AddScoped<InventoryState>();
 builder.Services.AddScoped<CharacterState>();
+builder.Services.AddScoped<TimeState>();
 
 var app = builder.Build();
 
@@ -39,3 +40,4 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 app.Run();
+

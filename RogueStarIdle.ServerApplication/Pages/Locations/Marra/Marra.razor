@@ -1,0 +1,44 @@
+﻿@page "/marra"
+@using RogueStarIdle.ServerApplication.Shared.State;
+
+<div class="page-content-container">
+    <div class="column" style="width: 100%">
+        <h1> Marra </h1>
+        <div class="row" style="width: 100%">
+            <div class="column" style="width:15%">
+                <button @onclick='() => SelectLocation("azuraliPlains")'>Azurali Plains</button>
+                <button @onclick='() => SelectLocation("noxiousWetlands")'>Noxious Wetlands</button>
+                <button @onclick='() => SelectLocation("rockyOutcropping")'>Rocky Outcropping</button>
+                <button @onclick='() => SelectLocation("ancientRuins")'>Ancient Ruins</button>
+                <button @onclick='() => SelectLocation("plateau")'>Plateau</button>
+                <button @onclick='() => SelectLocation("cobaltForest")'>Cobalt Forest</button>
+                <button @onclick='() => SelectLocation("darkChasm")'>Dark Chasm</button>
+                <button @onclick='() => SelectLocation("ancientFactory")'>Ancient Factory</button>
+            </div>
+            <div class="column">
+                @switch (location)
+                {
+                    case "azuraliPlains":
+                        {
+                            <h1> Azurali Plains </h1>
+                            break;
+                        }
+                    default:
+                        {
+                            break;
+                        }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private string location = "";
+
+    void SelectLocation(string name)
+    {
+        location = name;
+    }
+}

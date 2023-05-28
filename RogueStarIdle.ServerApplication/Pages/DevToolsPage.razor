@@ -1,14 +1,48 @@
 ﻿@page "/devTools"
 @using RogueStarIdle.ServerApplication.Shared.State;
+@inject TimeState timeState;
 
 <div class="page-content-container">
     <div class="column" style="width: 95%; align-content: center; ">
-        <ItemSelectionPopupComponent/>
+        <text>Time Elapsed: @($"{timeElapsed.Days}:{timeElapsed.Hours}:{timeElapsed.Minutes}:{timeElapsed.Seconds}:{timeElapsed.Milliseconds}")</text>
+        <text>Time Signed On: @($"{timeState.TimeSignedOn.Hour}:{timeState.TimeSignedOn.Minute}:{timeState.TimeSignedOn.Second}")</text>
+        <text>
+            <button @onclick="() => {timeState.addTicks(1500);}">Advance 1 minute</button>
+            <button @onclick="() => {timeState.addTicks(15000);}">Advance 10 minutes</button>
+            <button @onclick="() => {timeState.addTicks(90000);}">Advance 1 hour</button>
+            <button @onclick="() => {timeState.addTicks(900000);}">Advance 10 hours</button>
+            <button @onclick="() => {timeState.addTicks(2160000);}">Advance 1 day</button>
+
+        </text>
+        <ItemSelectionPopupComponent />
         <SkillPopupComponent/>
     </div>
 </div>
 
 @code {
+    private int ticks;
+    private int hours, minutes, seconds;
+    private TimeSpan timeElapsed;
 
+    protected override void OnInitialized()
+    {
+        ticks = timeState.Ticks;
+        timeState.OnChange += UpdateState;
+        base.OnInitialized();
+    }
 
+    private async Task UpdateState()
+    {
+        ticks = timeState.Ticks;
+        timeElapsed = TimeSpan.FromMilliseconds(ticks * 40);
+        hours = (ticks / 25) / 3600;
+        minutes = ((ticks / 25) % 3600) / 60;
+        seconds = (ticks / 25) % 60;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        timeState.OnChange -= UpdateState;
+    }
 }
