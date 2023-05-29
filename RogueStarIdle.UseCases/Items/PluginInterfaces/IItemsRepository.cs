@@ -11,5 +11,6 @@ namespace RogueStarIdle.UseCases.Items.PluginInterfaces
     {
         Task<IEnumerable<Item>> GetItemsByNameAsync(string name);
         Task<IEnumerable<Item>> GetItemsByTagAsync(string tag);
+        Task<Item> GetItemByIdAsync(int id);
     }
 }

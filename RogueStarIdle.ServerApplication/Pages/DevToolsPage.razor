@@ -34,7 +34,7 @@
     private async Task UpdateState()
     {
         ticks = timeState.Ticks;
-        timeElapsed = TimeSpan.FromMilliseconds(ticks * 40);
+        timeElapsed = TimeSpan.FromMilliseconds(timeState.TicksSinceLastSignIn * 40);
         hours = (ticks / 25) / 3600;
         minutes = ((ticks / 25) % 3600) / 60;
         seconds = (ticks / 25) % 60;

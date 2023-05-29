@@ -1,5 +1,6 @@
 ﻿using RogueStarIdle.CoreBusiness;
 using RogueStarIdle.UseCases.Items.PluginInterfaces;
+using System.ComponentModel;
 using System.Net.Http.Headers;
 using System.Xml.Linq;
 
@@ -7,7 +8,7 @@ namespace RogueStarIdle.PlugIns.InMemory
 {
     public class ItemsRepository : IItemsRepository
     {
-        private List<Item> _items;
+        public List<Item> _items;
 
         public ItemsRepository()
         {
@@ -198,6 +199,10 @@ namespace RogueStarIdle.PlugIns.InMemory
             }
             var taggedItems = _items.Where(x => x.Tags.Any(t => t.Contains(tag, StringComparison.OrdinalIgnoreCase)));
             return taggedItems;
+        }
+        public async Task<Item> GetItemByIdAsync(int id)
+        {
+            return _items.First(i => i.Id == id);
         }
     }
 }

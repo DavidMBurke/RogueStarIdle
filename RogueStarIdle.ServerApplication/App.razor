@@ -1,5 +1,8 @@
 ﻿@using RogueStarIdle.ServerApplication.Shared.State;
 @inject TimeState timeState;
+@inject InventoryState inventoryState;
+@inject ScavengingState scavengingState;
+@inject CharacterState characterState;
 
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">

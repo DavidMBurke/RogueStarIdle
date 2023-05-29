@@ -14,10 +14,12 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<IItemsRepository, ItemsRepository>();
 builder.Services.AddTransient<IViewItemsByNameUseCase, ViewItemsByNameUseCase>();
-builder.Services.AddTransient<IViewItemsByTagUseCase, ViewItemsByTagUseCase>();
+builder.Services.AddTransient<IViewItemsByTagUseCase, ViewItemsByTagUseCase>(); 
+builder.Services.AddTransient<IGetItemByIdUseCase, GetItemByIdUseCase>();
 builder.Services.AddScoped<EquipmentState>();
 builder.Services.AddScoped<InventoryState>();
 builder.Services.AddScoped<CharacterState>();
+builder.Services.AddScoped<ScavengingState>();
 builder.Services.AddScoped<TimeState>();
 
 var app = builder.Build();

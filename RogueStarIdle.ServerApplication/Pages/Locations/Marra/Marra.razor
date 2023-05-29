@@ -1,5 +1,8 @@
 ﻿@page "/marra"
+@using RogueStarIdle.PlugIns.InMemory;
 @using RogueStarIdle.ServerApplication.Shared.State;
+@inject ScavengingState scavengingState;
+@inject IGetItemByIdUseCase GetItemByIdUseCase
 
 <div class="page-content-container">
     <div class="column" style="width: 100%">
@@ -21,6 +24,8 @@
                     case "azuraliPlains":
                         {
                             <h1> Azurali Plains </h1>
+                            <button @onclick="() => Scavenge()"> Scavenge </button>
+
                             break;
                         }
                     default:
@@ -40,5 +45,16 @@
     void SelectLocation(string name)
     {
         location = name;
+    }
+
+    async void Scavenge ()
+    {
+        scavengingState.IsScavenging = true;
+        scavengingState.ScavengeableItems = new List<(Item item, int dropChanceNum, int dropChanceDenom, int quantityRangeMin, int quantityRangeMax)>()
+        {
+            (await GetItemByIdUseCase.ExecuteAsync(2), 1, 3, 1, 3),
+            (await GetItemByIdUseCase.ExecuteAsync(3), 1, 3, 1, 3)
+        };
+        scavengingState.SurvivalXpAtLocation = 1;
     }
 }

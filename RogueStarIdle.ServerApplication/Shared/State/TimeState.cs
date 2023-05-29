@@ -17,9 +17,11 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         public DateTime TimeSignedOn = DateTime.Now;
         public System.Timers.Timer GameTimer { get; set; } = new System.Timers.Timer(25);
         public event Func<Task> OnChange;
+        private readonly ScavengingState _scavengingState;
 
-        public TimeState()
+        public TimeState(ScavengingState scavengingState)
         {
+            _scavengingState = scavengingState;
             GameTimer.Elapsed += calculateElapsedTicks;
             GameTimer.Enabled = true;
             GameTimer.Start();
@@ -53,6 +55,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         // Update every state affected by time. 25 ticks elapse per second.
         public void Tick()
         {
+            _scavengingState.ScavengeTicks();
             Ticks -= 1;
         }
 
