@@ -13,6 +13,14 @@
             Xp = xp;
         }
 
+        public event Func<Task> OnChange;
+        private async Task NotifyStateChanged()
+        {
+            if (OnChange == null)
+                return;
+            await OnChange.Invoke();
+        }
+
         // Levels and XP required for each using formula XP = (lastLvl-1) * 250 * 1.05 ^ Level
         // Hardcoded because math is hard
         List<(int, int)> LevelByXpTuple = new List<(int, int)>
@@ -149,6 +157,12 @@
             }
             return 0;
         }
+
+        public void addXp(int xp)
+        {
+            Xp += xp;
+            UpdateLevel();
+        }
         public void UpdateLevel()
         {
             int checkedLevel = GetLevelFromXp();
@@ -156,6 +170,7 @@
             {
                 Level = checkedLevel;
             }
+            NotifyStateChanged();
         }
         public void LevelUp()
         {

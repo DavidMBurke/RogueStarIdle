@@ -10,6 +10,37 @@
 </div>
 
 @code {
+    protected override async Task OnInitializedAsync()
+    {
+        foreach (var property in typeof(Character).GetProperties())
+        {
+            if (property.PropertyType != typeof(Skill) || characterState == null)
+            {
+                continue;
+            }
+            (property.GetValue(characterState.mainCharacter) as Skill).OnChange += UpdateState;
+        }
+        await base.OnInitializedAsync();
+    }
+
+    async Task UpdateState()
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        foreach (var property in typeof(Character).GetProperties())
+        {
+            if (property.PropertyType != typeof(Skill) || characterState == null)
+            {
+                continue;
+            }
+            (property.GetValue(characterState.mainCharacter) as Skill).OnChange -= UpdateState;
+        }
+    }
+
+
     private MarkupString displayAllStats(Character character)
     {
         string markup = "";
