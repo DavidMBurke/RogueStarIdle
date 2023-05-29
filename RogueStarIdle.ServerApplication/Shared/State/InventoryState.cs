@@ -8,14 +8,19 @@ namespace RogueStarIdle.ServerApplication.Shared.State
     {
         public List<Item> inventory { get; set; } = new List<Item>();
         private Dictionary<string, bool> expandedViews = new Dictionary<string, bool>();
-
+        public event Func<Task> OnChange;
+        private async Task NotifyStateChanged()
+        {
+            if (OnChange == null)
+                return;
+            await OnChange.Invoke();
+        }
         public async Task<IEnumerable<Item>> GetItemsByNameAsync(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
                 return await Task.FromResult(inventory);
             }
-
             return inventory.Where(x => x.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
         }
         public async Task<IEnumerable<Item>> GetItemsByTagAsync(string tag)
@@ -30,7 +35,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
 
         // When item equipped / unequipped, item is replaced with item with updated status. This is tradeoff d/t storing duplicate items as one item with different Quantity.
 
-        public void addToInventory(Item item, int quantityAdded = 1)
+        public async void addToInventory(Item item, int quantityAdded = 1)
         {
             if (item == null)
             {
@@ -40,31 +45,26 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             {
                 quantityAdded = item.Quantity;
             }
-            Item matchingItem = inventory.FirstOrDefault(i => (i.Id == item.Id && i.QualityLevel == item.QualityLevel && i.Equipped == item.Equipped), null);
-            if (matchingItem != null)
-            {
-                matchingItem.Quantity += quantityAdded;
-                return;
-            }            
+            Item matchingItem = inventory.FirstOrDefault(i => (i.Id == item.Id && i.QualityLevel == item.QualityLevel && i.Equipped == item.Equipped), null); 
             Item newItem = item.createCopy();
             newItem.Quantity = quantityAdded;
             inventory.Add(newItem);
+            await NotifyStateChanged();
         }
 
-        public void removeFromInventory(Item item, int quantityRemoved = 1)
+        public async void removeFromInventory(Item item, int quantityRemoved = 1)
         {
             Item itemInInventory = inventory.FirstOrDefault(i => (i.Id == item.Id && i.QualityLevel == item.QualityLevel && i.Equipped == item.Equipped), null);
             if (itemInInventory == null)
             {
                 return;
             }
-            
             itemInInventory.Quantity -= quantityRemoved;
-            
             if (itemInInventory.Quantity <= 0)
             {
                 inventory.Remove(itemInInventory);
             }
+            await NotifyStateChanged();
         }
     }
 }

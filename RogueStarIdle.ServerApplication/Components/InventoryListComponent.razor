@@ -103,6 +103,23 @@
     public Item selectedItem = null; // Item stats are displayed for
     private Dictionary<string, bool> expandedViews = new Dictionary<string, bool>(); // Stores item groups expanded view status
 
+    protected override async Task OnInitializedAsync()
+    {
+        inventoryState.OnChange += UpdateState;
+        await base.OnInitializedAsync();
+    }
+
+    async Task UpdateState()
+    {
+        await OnParametersSetAsync();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        inventoryState.OnChange -= UpdateState;
+    }
+
     // updates when parameters passed from parent are changes
     protected override async Task OnParametersSetAsync()
     {
