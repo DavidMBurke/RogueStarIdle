@@ -55,6 +55,16 @@
 
 @code {
     private string location = "";
+    protected override async Task OnInitializedAsync()
+    {
+        inventoryState.OnChange += UpdateState;
+        await base.OnInitializedAsync();
+    }
+
+    async Task UpdateState()
+    {
+        await InvokeAsync(StateHasChanged);
+    }
 
     void SelectLocation(string name)
     {
