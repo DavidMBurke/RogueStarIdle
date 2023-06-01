@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http.Features;
 using RogueStarIdle.CoreBusiness;
 using RogueStarIdle.ServerApplication.Shared.State;
 using System;
+using System.ComponentModel;
+using System.Reflection;
 using System.Timers;
 
 namespace RogueStarIdle.ServerApplication.Shared.State
@@ -22,7 +24,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         public TimeState(ScavengingState scavengingState)
         {
             _scavengingState = scavengingState;
-            GameTimer.Elapsed += calculateElapsedTicks;
+            GameTimer.Elapsed += CalculateElapsedTicks;
             GameTimer.Enabled = true;
             GameTimer.Start();
         }
@@ -34,7 +36,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             await OnChange.Invoke();
         }
 
-        public void calculateElapsedTicks(object source, ElapsedEventArgs e)
+        public void CalculateElapsedTicks(object source, ElapsedEventArgs e)
         {
             TimeSpan timeElapsed = DateTime.Now - LastUpdateTime;
             LastUpdateTime = DateTime.Now;
@@ -45,21 +47,24 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 Ticks += 1;
                 TicksSinceLastSignIn += 1;
             }
-            for (int i = 0; i < Ticks; i++)
+            while (Ticks > 50000)
             {
-                Tick();
+                Tick(50000);
+                Ticks -= 50000;
+                System.Threading.Thread.Sleep(100);
             }
+            Tick(Ticks);
+            Ticks = 0;
             NotifyStateChanged();
         }
 
         // Update every state affected by time. 25 ticks elapse per second.
-        public void Tick()
+        public void Tick(int ticksElapsed)
         {
-            _scavengingState.ScavengeTicks();
-            Ticks -= 1;
+            _scavengingState.ScavengeTicks(ticksElapsed);
         }
 
-        public void addTicks(int ticks)
+        public void AddTicks(int ticks)
         {
             Ticks += ticks;
             TicksSinceLastSignIn += ticks;

@@ -19,19 +19,22 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             this.inventoryState = inventoryState;
             this.characterState = characterState;
         }
-        public void ScavengeTicks ()
+        public void ScavengeTicks (int ticksElapsed)
         {   
             if (!IsScavenging)
             {
                 return;
             }
-            if (TicksUntilScavengeAttempt > 0)
+            for (int i = 0; i < ticksElapsed; i++)
             {
-                TicksUntilScavengeAttempt--;
-                return;
+                if (TicksUntilScavengeAttempt > 0)
+                {
+                    TicksUntilScavengeAttempt--;
+                    continue;
+                }
+                Scavenge();
+                TicksUntilScavengeAttempt = TicksBetweenScavengeAttempts;
             }
-            Scavenge();
-            TicksUntilScavengeAttempt = TicksBetweenScavengeAttempts;
         }
 
         private static readonly object locker = new object();
