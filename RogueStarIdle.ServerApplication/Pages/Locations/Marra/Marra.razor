@@ -25,8 +25,20 @@
                     case "azuraliPlains":
                         {
                             <h1> Azurali Plains </h1>
-                            <button @onclick="() => Scavenge()"> Scavenge </button>
-                            <button @onclick="() => CollectAll()"> Collect gathered Items </button>
+                            <div class="row">
+                                <div class="column">
+                                    <button @onclick="() => Scavenge()"> Scavenge </button>
+                                    <button @onclick="() => CollectAll()"> Collect gathered Items </button>
+                                </div>
+                                @if (inventoryState.AzuraliPlainsStorage.Any<Item>())
+                                {
+                                    <text>Items to collect:<br/></text>
+                                }
+                                @foreach (Item item in inventoryState.AzuraliPlainsStorage)
+                                {
+                                    <text>@item.Quantity x @item.Name<br/></text>
+                                }
+                            </div>
 
                             break;
                         }
