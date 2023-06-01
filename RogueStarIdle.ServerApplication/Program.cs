@@ -15,7 +15,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<IItemsRepository, ItemsRepository>();
 builder.Services.AddTransient<IViewItemsByNameUseCase, ViewItemsByNameUseCase>();
 builder.Services.AddTransient<IViewItemsByTagUseCase, ViewItemsByTagUseCase>(); 
-builder.Services.AddTransient<IGetItemByIdUseCase, GetItemByIdUseCase>();
+builder.Services.AddTransient<IItemUseCases, ItemUseCases>();
 builder.Services.AddScoped<EquipmentState>();
 builder.Services.AddScoped<InventoryState>();
 builder.Services.AddScoped<CharacterState>();
