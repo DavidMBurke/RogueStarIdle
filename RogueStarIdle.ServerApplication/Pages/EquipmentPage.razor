@@ -116,9 +116,9 @@
             return;
         }
         Item unequippedItem = equipmentSlot.Item.createCopy();
-        inventoryState.removeFromInventory(unequippedItem, unequippedItem.Quantity);
+        inventoryState.RemoveFromInventory(inventoryState.Inventory, unequippedItem, unequippedItem.Quantity);
         unequippedItem.Equipped = false;
-        inventoryState.addToInventory(unequippedItem, unequippedItem.Quantity);
+        inventoryState.AddToInventory(inventoryState.Inventory, unequippedItem, unequippedItem.Quantity);
         equipmentSlot.Item = null;
     }
 

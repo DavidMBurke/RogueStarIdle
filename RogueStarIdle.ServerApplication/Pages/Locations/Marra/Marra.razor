@@ -2,6 +2,7 @@
 @using RogueStarIdle.PlugIns.InMemory;
 @using RogueStarIdle.ServerApplication.Shared.State;
 @inject ScavengingState scavengingState;
+@inject InventoryState inventoryState;
 @inject IGetItemByIdUseCase GetItemByIdUseCase
 
 <div class="page-content-container">
@@ -25,6 +26,7 @@
                         {
                             <h1> Azurali Plains </h1>
                             <button @onclick="() => Scavenge()"> Scavenge </button>
+                            <button @onclick="() => CollectAll()"> Collect gathered Items </button>
 
                             break;
                         }
@@ -52,9 +54,15 @@
         scavengingState.IsScavenging = true;
         scavengingState.ScavengeableItems = new List<(Item item, int dropChanceNum, int dropChanceDenom, int quantityRangeMin, int quantityRangeMax)>()
         {
-            (await GetItemByIdUseCase.ExecuteAsync(2), 1, 3, 1, 3),
-            (await GetItemByIdUseCase.ExecuteAsync(3), 1, 3, 1, 3)
+            (await GetItemByIdUseCase.ExecuteAsync(2), 10, 100, 1, 2),
+            (await GetItemByIdUseCase.ExecuteAsync(3), 10, 100, 1, 2)
         };
         scavengingState.SurvivalXpAtLocation = 1;
+        scavengingState.SelectedStorage = inventoryState.AzuraliPlainsStorage;
+    }
+
+    async void CollectAll ()
+    {
+        inventoryState.Transfer(inventoryState.AzuraliPlainsStorage, inventoryState.Inventory);
     }
 }

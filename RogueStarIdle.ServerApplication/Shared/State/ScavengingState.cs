@@ -10,6 +10,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         public int TicksBetweenScavengeAttempts { get; set; } = 50;
         public List<(Item item, int dropChanceNum, int dropChanceDenom, int quantityRangeMin, int quantityRangeMax)>? ScavengeableItems { get; set; } = null;
         public List<Item>? ScavengedItems { get; set; } = null;
+        public List<Item>? SelectedStorage { get; set; } = null;
         public InventoryState? inventoryState;
         public CharacterState? characterState;
         public int SurvivalXpAtLocation { get; set; } = 0;
@@ -33,6 +34,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             TicksUntilScavengeAttempt = TicksBetweenScavengeAttempts;
         }
 
+        private static readonly object locker = new object();
         public void Scavenge ()
         {
             if (ScavengeableItems == null)
@@ -44,17 +46,19 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             foreach (var item in ScavengeableItems)
             {
                 int roll = rand.Next(item.dropChanceDenom) + 1;
-                if (item.dropChanceNum >= roll)
+                if (roll <= item.dropChanceNum)
                 {
-                    continue;
+                    int qty = rand.Next(item.quantityRangeMax-item.quantityRangeMin) + item.quantityRangeMin;
+                    item.item.Quantity = qty;
+                    foundItems.Add(item.item);
                 }
-                int qty = rand.Next(item.quantityRangeMax-item.quantityRangeMin) + item.quantityRangeMin;
-                item.item.Quantity = qty;
-                foundItems.Add(item.item);
             }
-            foreach (var item in foundItems)
+            lock (locker)
             {
-                inventoryState.addToInventory(item, item.Quantity);
+                foreach (var item in foundItems)
+                {
+                    inventoryState.AddToInventory(SelectedStorage, item, item.Quantity);
+                }
             }
             characterState.mainCharacter.SurvivalSkill.Xp += SurvivalXpAtLocation;
             characterState.mainCharacter.SurvivalSkill.UpdateLevel();

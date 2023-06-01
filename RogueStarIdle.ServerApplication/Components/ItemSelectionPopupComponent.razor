@@ -15,7 +15,7 @@
                 {
                     <input style="width:20px;" @bind-value="item.QualityLevel"/>
                 }
-                <button @onclick="() => inventoryState.addToInventory(item)">Add Item</button>
+                <button @onclick="() => inventoryState.AddToInventory(inventoryState.Inventory, item)">Add Item</button>
             </h6>
         }
     </div>

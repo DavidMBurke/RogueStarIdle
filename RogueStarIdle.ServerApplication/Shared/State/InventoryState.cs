@@ -6,7 +6,16 @@ namespace RogueStarIdle.ServerApplication.Shared.State
 {
     public class InventoryState
     {
-        public List<Item> inventory { get; set; } = new List<Item>();
+        public List<Item> Inventory { get; set; } = new List<Item>();
+        public List<Item> ShipStorage { get; set; } = new List<Item>();
+        public List<Item> AzuraliPlainsStorage { get; set; } = new List<Item>();
+        public List<Item> NoxiousWetlandsStorage { get; set; } = new List<Item>();
+        public List<Item> rockyOutcroppingStorage { get; set; } = new List<Item>();
+        public List<Item> AncientRuinsStorage { get; set; } = new List<Item>();
+        public List<Item> PlateauStorage { get; set; } = new List<Item>();
+        public List<Item> CobaltForestStorage { get; set; } = new List<Item>();
+        public List<Item> DarkChasmStorage { get; set; } = new List<Item>();
+        public List<Item> AncientFactoryStorage { get; set; } = new List<Item>();
         private Dictionary<string, bool> expandedViews = new Dictionary<string, bool>();
         public event Func<Task> OnChange;
         private async Task NotifyStateChanged()
@@ -19,23 +28,23 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                return await Task.FromResult(inventory);
+                return await Task.FromResult(Inventory);
             }
-            return inventory.Where(x => x.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
+            return Inventory.Where(x => x.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
         }
         public async Task<IEnumerable<Item>> GetItemsByTagAsync(string tag)
         {
             if (string.IsNullOrWhiteSpace(tag))
             {
-                return await Task.FromResult(inventory);
+                return await Task.FromResult(Inventory);
             }
-            var taggedItems = inventory.Where(x => x.Tags.Any(t => t.Contains(tag, StringComparison.OrdinalIgnoreCase)));
+            var taggedItems = Inventory.Where(x => x.Tags.Any(t => t.Contains(tag, StringComparison.OrdinalIgnoreCase)));
             return taggedItems;
         }
 
         // When item equipped / unequipped, item is replaced with item with updated status. This is tradeoff d/t storing duplicate items as one item with different Quantity.
 
-        public async void addToInventory(Item item, int quantityAdded = 1)
+        public async void AddToInventory(List<Item> inventory, Item item, int quantityAdded = 1)
         {
             if (item == null)
             {
@@ -52,7 +61,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             await NotifyStateChanged();
         }
 
-        public async void removeFromInventory(Item item, int quantityRemoved = 1)
+        public async void RemoveFromInventory(List<Item> inventory, Item item, int quantityRemoved = 1)
         {
             Item itemInInventory = inventory.FirstOrDefault(i => (i.Id == item.Id && i.QualityLevel == item.QualityLevel && i.Equipped == item.Equipped), null);
             if (itemInInventory == null)
@@ -65,6 +74,15 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 inventory.Remove(itemInInventory);
             }
             await NotifyStateChanged();
+        }
+
+        public async void Transfer(List<Item> storageFrom, List<Item> storageTo)
+        {
+            foreach (Item item in storageFrom)
+            {
+                storageTo.Add(item);
+            }
+            storageFrom.Clear();
         }
     }
 }
