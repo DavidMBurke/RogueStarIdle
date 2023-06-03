@@ -6,10 +6,10 @@
     <div style="height: 100%; overflow-y: scroll; width:70%;">
         <table class="table" style="background-color: cornflowerblue;">
             <thead style="position:sticky; top: 0; background-color: cornflowerblue;">
-                <tr style=" border-bottom: 2px black solid">
-                    <th>Quantity</th>
-                    <th>Name</th>
-                    <th>Quality</th>
+                <tr style=" border-bottom: 2px black solid; height: 30px; padding: 2px; padding-left: 5px; margin 0;">
+                    <th style="width: 10%; padding: 2px; padding-left: 5px; margin: 0;">#</th>
+                    <th style="width: 75%; padding: 2px; padding-left: 5px; margin: 0">Item</th>
+                    <th style="width: 15%; padding: 2px; padding-left: 5px; margin: 0">Quality</th>
                 </tr>
             </thead>
             <tbody style="max-height: 100%; overflow-y: auto;">
@@ -23,38 +23,41 @@
                     if (group.Count() == 1)
                     {
                         Item item = group.First();
-                        <tr style="width: 100%; height: 30px; @(item.Equipped ? "background-color: blue;" : string.Empty)" @onclick="() => SelectItem(item)">
-                            <td>@item.Quantity</td>
-                            <td>
+                        <tr style="width: 100%; height: 30px; @(item.Equipped ? "background-color: blue;" : "")" @onclick="() => SelectItem(item)">
+                            <td style="padding: 2px; padding-left: 5px; margin: 0">@item.Quantity</td>
+                            <td style="padding: 2px; padding-left: 5px; margin: 0">
                                 @item.Name @if (item.Equipped)
                                 {
                                     <text> <b> [Equipped]</b></text>
                                 }
                             </td>
-                            <td>@(item.QualityLevel > 0 ? $"{item.QualityLevel} / {item.MaxQualityLevel}" : "")</td>
+                            <td style="padding: 2px; padding-left: 5px; margin: 0">
+                                @(
+                            item.QualityLevel > 0 ? $"{item.QualityLevel} / {item.MaxQualityLevel}" : ""
+                            )</td>
                         </tr>
                     }
                     else
                     {
                         //display row with sum of all items of name, with dropdown to show individual quality levels and equipped status
-                        <tr style="width: 100%; height: 30px; font: bold; @(group.Any(i => i.Equipped) && (!expandedViews.ContainsKey(group.Key) || (expandedViews.ContainsKey(group.Key) && !expandedViews[group.Key])) ? "background-color: blue;" : string.Empty)" @onclick="() => ToggleExpandedView(group.Key)">
-                            <td>@group.Sum(i => i.Quantity)</td>
-                            <td>@group.First().Name</td>
-                            <td></td>
+                        <tr style=@DropDownStyle(group) @onclick="() => ToggleExpandedView(group.Key)">
+                            <td style="padding: 2px; padding-left: 5px; margin: 0">@((expandedViews.ContainsKey(group.Key) && expandedViews[group.Key]) ? "▼" : $"► {group.Sum(i => i.Quantity)}")</td>
+                            <td style="padding: 2px; padding-left: 5px; margin: 0">@((expandedViews.ContainsKey(group.Key) && expandedViews[group.Key]) ? "" : $"{group.First().Name}")</td>
+                            <td style="padding: 2px; padding-left: 5px; margin: 0"></td>
                         </tr>
                         if (expandedViews.ContainsKey(group.Key) && expandedViews[group.Key])
                         {
                             foreach (Item item in group)
                             {
                                 <tr style="width: 100%; height: 30px; @(item.Equipped ? "background-color: blue;" : string.Empty)" @onclick="() => SelectItem(item)">
-                                    <td>@item.Quantity</td>
-                                    <td>
+                                    <td style="padding: 2px; padding-left: 5px; margin: 0">@item.Quantity </td>
+                                    <td style="padding: 2px; padding-left: 5px; margin: 0">
                                         @item.Name @if (item.Equipped)
                                         {
                                             <text> <b> [Equipped]</b></text>
                                         }
                                     </td>
-                                    <td>@(item.QualityLevel > 0 ? $"{item.QualityLevel} / {item.MaxQualityLevel}" : "")</td>
+                                    <td style="padding: 2px; padding-left: 5px; margin: 0">@(item.QualityLevel > 0 ? $"{item.QualityLevel} / {item.MaxQualityLevel}" : "")</td>
                                 </tr>
                             }
                         }
@@ -301,5 +304,21 @@
         }
         string markup = $"<h5>{type} Resistance: {typeDR}</h5>";
         return new MarkupString(markup);
+    }
+
+    //TODO - refactor this w/ css classes
+    public string DropDownStyle(IGrouping<string,Item> group) {
+        string styleString = "width: 100%; font: bold;";
+        bool containsEquippedItem = group.Any(i => i.Equipped);
+        bool isExpanded = expandedViews.ContainsKey(group.Key) && expandedViews[group.Key] == true;
+        if (containsEquippedItem && !isExpanded)
+        {
+            styleString += "background-color: blue; height: 30px;";
+        }
+        if (isExpanded)
+        {
+            styleString += "height: 10px;";
+        }
+        return styleString;
     }
 }
