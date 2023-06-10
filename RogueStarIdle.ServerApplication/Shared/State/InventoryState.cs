@@ -86,7 +86,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         {
             foreach (Item item in storageFrom)
             {
-                storageTo.Add(item);
+                AddToInventory(storageTo, item, item.Quantity);
             }
             storageFrom.Clear();
         }

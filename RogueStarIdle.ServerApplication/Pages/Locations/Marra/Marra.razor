@@ -27,7 +27,7 @@
                             <h1> Azurali Plains </h1>
                             <div class="row">
                                 <div class="column">
-                                    <button @onclick="() => Scavenge()"> Scavenge </button>
+                                    <button @onclick="() => StartScavenge()"> Scavenge </button>
                                     <button @onclick="() => CollectAll()"> Collect gathered Items </button>
                                 </div>
                                 @if (inventoryState.AzuraliPlainsStorage.Any<Item>())
@@ -71,7 +71,7 @@
         location = name;
     }
 
-    async void Scavenge ()
+    async void StartScavenge ()
     {
         scavengingState.IsScavenging = true;
         scavengingState.ScavengeableItems = new List<(Item item, int dropChanceNum, int dropChanceDenom, int quantityRangeMin, int quantityRangeMax)>()

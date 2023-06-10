@@ -33,7 +33,6 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     continue;
                 }
                 Scavenge();
-                TicksUntilScavengeAttempt = TicksBetweenScavengeAttempts;
             }
         }
 
@@ -51,7 +50,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 int roll = rand.Next(item.dropChanceDenom) + 1;
                 if (roll <= item.dropChanceNum)
                 {
-                    int qty = rand.Next(item.quantityRangeMax-item.quantityRangeMin) + item.quantityRangeMin;
+                    int qty = rand.Next(item.quantityRangeMax-item.quantityRangeMin + 1) + item.quantityRangeMin;
                     item.item.Quantity = qty;
                     foundItems.Add(item.item);
                 }
@@ -65,6 +64,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             }
             characterState.mainCharacter.SurvivalSkill.Xp += SurvivalXpAtLocation;
             characterState.mainCharacter.SurvivalSkill.UpdateLevel();
+            TicksUntilScavengeAttempt = TicksBetweenScavengeAttempts;
             return;
         }
     }
