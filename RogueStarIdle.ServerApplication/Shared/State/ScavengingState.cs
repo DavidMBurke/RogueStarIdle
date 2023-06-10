@@ -25,34 +25,44 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             {
                 return;
             }
-            for (int i = 0; i < ticksElapsed; i++)
+
+            // Bulke handling for time jumps
+            if (ticksElapsed > TicksBetweenScavengeAttempts)
             {
-                if (TicksUntilScavengeAttempt > 0)
-                {
-                    TicksUntilScavengeAttempt--;
-                    continue;
-                }
-                Scavenge();
+                int scavengeAttemptsToResolve = ticksElapsed / TicksBetweenScavengeAttempts;
+                TicksUntilScavengeAttempt = ticksElapsed % TicksBetweenScavengeAttempts;
+                Scavenge(scavengeAttemptsToResolve);
             }
+
+            if (TicksUntilScavengeAttempt > 0)
+            {
+                TicksUntilScavengeAttempt--;
+                return;
+            }
+            Scavenge();
+            
         }
 
         private static readonly object locker = new object();
-        public void Scavenge ()
+        public void Scavenge(int attempts = 1)
         {
             if (ScavengeableItems == null)
             {
                 return;
             }
             List<Item> foundItems = new List<Item>();
-            Random rand = new Random ();
-            foreach (var item in ScavengeableItems)
+            Random rand = new Random();
+            for (int i = 0; i < attempts; i++)
             {
-                int roll = rand.Next(item.dropChanceDenom) + 1;
-                if (roll <= item.dropChanceNum)
+                foreach (var item in ScavengeableItems)
                 {
-                    int qty = rand.Next(item.quantityRangeMax-item.quantityRangeMin + 1) + item.quantityRangeMin;
-                    item.item.Quantity = qty;
-                    foundItems.Add(item.item);
+                    int roll = rand.Next(item.dropChanceDenom) + 1;
+                    if (roll <= item.dropChanceNum)
+                    {
+                        int qty = rand.Next(item.quantityRangeMax-item.quantityRangeMin + 1) + item.quantityRangeMin;
+                        item.item.Quantity = qty;
+                        foundItems.Add(item.item);
+                    }
                 }
             }
             lock (locker)
@@ -62,7 +72,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     inventoryState.AddToInventory(SelectedStorage, item, item.Quantity);
                 }
             }
-            characterState.mainCharacter.SurvivalSkill.Xp += SurvivalXpAtLocation;
+            characterState.mainCharacter.SurvivalSkill.Xp += SurvivalXpAtLocation * attempts;
             characterState.mainCharacter.SurvivalSkill.UpdateLevel();
             TicksUntilScavengeAttempt = TicksBetweenScavengeAttempts;
             return;

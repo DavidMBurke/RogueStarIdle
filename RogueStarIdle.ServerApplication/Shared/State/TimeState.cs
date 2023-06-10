@@ -47,6 +47,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 Ticks += 1;
                 TicksSinceLastSignIn += 1;
             }
+            // Temp fix to help prevent crash on long time jumps
             while (Ticks > 50000)
             {
                 Tick(50000);
