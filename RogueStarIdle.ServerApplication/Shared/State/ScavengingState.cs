@@ -6,8 +6,8 @@ namespace RogueStarIdle.ServerApplication.Shared.State
 {
     public class ScavengingState {
         public bool IsScavenging { get; set; } = false;
-        public int TicksUntilScavengeAttempt { get; set; } = 0;
-        public int TicksBetweenScavengeAttempts { get; set; } = 50;
+        public int TicksBetweenScavengeAttempts { get; set; } = 100;
+        public int TicksUntilScavengeAttempt { get; set; } = 100;
         public List<(Item item, int dropChanceNum, int dropChanceDenom, int quantityRangeMin, int quantityRangeMax)>? ScavengeableItems { get; set; } = null;
         public List<Item>? ScavengedItems { get; set; } = null;
         public List<Item>? SelectedStorage { get; set; } = null;
@@ -26,7 +26,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 return;
             }
 
-            // Bulke handling for time jumps
+            // Bulk handling for time jumps
             if (ticksElapsed > TicksBetweenScavengeAttempts)
             {
                 int scavengeAttemptsToResolve = ticksElapsed / TicksBetweenScavengeAttempts;

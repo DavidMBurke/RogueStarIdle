@@ -13,11 +13,16 @@ namespace RogueStarIdle.ServerApplication.Shared.State
     public class TimeState
     {
         public int Ticks { get; set; } = 0;
+        public int TickDuration = 20;
+        public int TicksPerSecond = 50;
         public int TicksSinceLastSignIn { get; set; } = 0;
         public double MillisecondsElapsed { get; set; } = 0;
         public DateTime LastUpdateTime { get; set; } = DateTime.Now;
         public DateTime TimeSignedOn = DateTime.Now;
-        public System.Timers.Timer GameTimer { get; set; } = new System.Timers.Timer(25);
+        //TODO: Ticks break if timer isn't set to same length as TickDuration, though it shouldn't matter because elapsed ticks calculated
+        //      based on time elapsed since last time function was run. Will need to look into why and fix so gametimer can be optimized for performance
+        //      and guarantee time consistency.
+        public System.Timers.Timer GameTimer { get; set; } = new System.Timers.Timer(20);
         public event Func<Task> OnChange;
         private readonly ScavengingState _scavengingState;
 
@@ -38,28 +43,22 @@ namespace RogueStarIdle.ServerApplication.Shared.State
 
         public void CalculateElapsedTicks(object source, ElapsedEventArgs e)
         {
+            // Breaks when adding 10 hours or more and runs Tick multiple times without resetting
             TimeSpan timeElapsed = DateTime.Now - LastUpdateTime;
             LastUpdateTime = DateTime.Now;
             MillisecondsElapsed += timeElapsed.TotalMilliseconds;
-            while (MillisecondsElapsed >= 40)
+            while (MillisecondsElapsed >= TickDuration)
             {
-                MillisecondsElapsed -= 40;
+                MillisecondsElapsed -= TickDuration;
                 Ticks += 1;
                 TicksSinceLastSignIn += 1;
-            }
-            // Temp fix to help prevent crash on long time jumps
-            while (Ticks > 50000)
-            {
-                Tick(50000);
-                Ticks -= 50000;
-                System.Threading.Thread.Sleep(100);
             }
             Tick(Ticks);
             Ticks = 0;
             NotifyStateChanged();
         }
 
-        // Update every state affected by time. 25 ticks elapse per second.
+        // Update every state affected by time.
         public void Tick(int ticksElapsed)
         {
             _scavengingState.ScavengeTicks(ticksElapsed);
