@@ -80,20 +80,20 @@
                     StatBlock.CrushingDR += Math.Max(slot.Item.KineticDamageReduction, slot.Item.CrushingDamageReduction);
                     StatBlock.SlashingDR += Math.Max(slot.Item.KineticDamageReduction, slot.Item.SlashingDamageReduction);
                     StatBlock.PsychicDR += slot.Item.PsychicDamageReduction;
-                    StatBlock.FireDamageMin += slot.Item.PercentFireDamage * slot.Item.MinBaseDamage;
-                    StatBlock.FireDamageMax += slot.Item.PercentFireDamage * slot.Item.MaxBaseDamage;
-                    StatBlock.AcidDamageMin += slot.Item.PercentFireDamage * slot.Item.MinBaseDamage;
-                    StatBlock.AcidDamageMax += slot.Item.PercentFireDamage * slot.Item.MaxBaseDamage;
-                    StatBlock.PoisonDamageMin += slot.Item.PercentPoisonDamage * slot.Item.MinBaseDamage;
-                    StatBlock.PoisonDamageMax += slot.Item.PercentPoisonDamage * slot.Item.MaxBaseDamage;
-                    StatBlock.ShockDamageMin += slot.Item.PercentShockDamage * slot.Item.MinBaseDamage;
-                    StatBlock.ShockDamageMax += slot.Item.PercentShockDamage * slot.Item.MaxBaseDamage;
-                    StatBlock.PiercingDamageMin += slot.Item.PercentPiercingDamage * slot.Item.MinBaseDamage;
-                    StatBlock.PiercingDamageMax += slot.Item.PercentPiercingDamage * slot.Item.MaxBaseDamage;
-                    StatBlock.SlashingDamageMin += slot.Item.PercentSlashingDamage * slot.Item.MinBaseDamage;
-                    StatBlock.SlashingDamageMax += slot.Item.PercentSlashingDamage * slot.Item.MaxBaseDamage;
-                    StatBlock.CrushingDamageMin += slot.Item.PercentCrushingDamage * slot.Item.MinBaseDamage;
-                    StatBlock.CrushingDamageMax += slot.Item.PercentCrushingDamage * slot.Item.MaxBaseDamage;
+                    StatBlock.FireDamageMin += slot.Item.PercentFireDamage * slot.Item.MinBaseDamage / 100;
+                    StatBlock.FireDamageMax += slot.Item.PercentFireDamage * slot.Item.MaxBaseDamage / 100;
+                    StatBlock.AcidDamageMin += slot.Item.PercentFireDamage * slot.Item.MinBaseDamage / 100;
+                    StatBlock.AcidDamageMax += slot.Item.PercentFireDamage * slot.Item.MaxBaseDamage / 100;
+                    StatBlock.PoisonDamageMin += slot.Item.PercentPoisonDamage * slot.Item.MinBaseDamage / 100;
+                    StatBlock.PoisonDamageMax += slot.Item.PercentPoisonDamage * slot.Item.MaxBaseDamage / 100;
+                    StatBlock.ShockDamageMin += slot.Item.PercentShockDamage * slot.Item.MinBaseDamage / 100;
+                    StatBlock.ShockDamageMax += slot.Item.PercentShockDamage * slot.Item.MaxBaseDamage / 100;
+                    StatBlock.PiercingDamageMin += slot.Item.PercentPiercingDamage * slot.Item.MinBaseDamage / 100;
+                    StatBlock.PiercingDamageMax += slot.Item.PercentPiercingDamage * slot.Item.MaxBaseDamage / 100;
+                    StatBlock.SlashingDamageMin += slot.Item.PercentSlashingDamage * slot.Item.MinBaseDamage / 100;
+                    StatBlock.SlashingDamageMax += slot.Item.PercentSlashingDamage * slot.Item.MaxBaseDamage / 100;
+                    StatBlock.CrushingDamageMin += slot.Item.PercentCrushingDamage * slot.Item.MinBaseDamage / 100;
+                    StatBlock.CrushingDamageMax += slot.Item.PercentCrushingDamage * slot.Item.MaxBaseDamage / 100;
                 }
             }
             if (LeftWeapon.Item != null && RightWeapon.Item != null)
