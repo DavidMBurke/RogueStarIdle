@@ -2,8 +2,6 @@
 {
     public class EquipmentStats
     {
-        public int MinDamage { get; set; } = 0;
-        public int MaxDamage { get; set; } = 0;
         public int EnergyDefense { get; set; } = 0;
         public int KineticDefense { get; set; } = 0;
         public int PsychicDefense { get; set; } = 0;
@@ -20,12 +18,19 @@
         public int CrushingDR { get; set; } = 0;
         public int SlashingDR { get; set; } = 0;
         public int PsychicDR { get; set; } = 0;
-        public int FireDamage { get; set; } = 0;
-        public int AcidDamage { get; set; } = 0;
-        public int PoisonDamage { get; set; } = 0;
-        public int ShockDamage { get; set; } = 0;
-        public int PiercingDamage { get; set; } = 0;
-        public int CrushingDamage { get; set; } = 0;
-        public int SlashingDamage { get; set; } = 0;
+        public int FireDamageMin { get; set; } = 0;
+        public int FireDamageMax { get; set; } = 0;
+        public int AcidDamageMin { get; set; } = 0;
+        public int AcidDamageMax { get; set; } = 0;
+        public int PoisonDamageMin { get; set; } = 0;
+        public int PoisonDamageMax { get; set; } = 0;
+        public int ShockDamageMin { get; set; } = 0;
+        public int ShockDamageMax { get; set; } = 0;
+        public int PiercingDamageMin { get; set; } = 0;
+        public int PiercingDamageMax { get; set; } = 0;
+        public int CrushingDamageMin { get; set; } = 0;
+        public int CrushingDamageMax { get; set; } = 0;
+        public int SlashingDamageMin { get; set; } = 0;
+        public int SlashingDamageMax { get; set; } = 0;
     }
 }

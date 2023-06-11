@@ -127,13 +127,13 @@
         equipment.CalculateStats();
         EquipmentStats s = equipment.StatBlock;
         string markup = "";
-        markup += weaponDamageMarkup("Slashing", s.MinDamage, s.MaxDamage, s.SlashingDamage);
-        markup += weaponDamageMarkup("Piercing", s.MinDamage, s.MaxDamage, s.PiercingDamage);
-        markup += weaponDamageMarkup("Crushing", s.MinDamage, s.MaxDamage, s.CrushingDamage);
-        markup += weaponDamageMarkup("Fire", s.MinDamage, s.MaxDamage, s.FireDamage);
-        markup += weaponDamageMarkup("Acid", s.MinDamage, s.MaxDamage, s.AcidDamage);
-        markup += weaponDamageMarkup("Poison", s.MinDamage, s.MaxDamage, s.PoisonDamage);
-        markup += weaponDamageMarkup("Shock", s.MinDamage, s.MaxDamage, s.ShockDamage);
+        markup += weaponDamageMarkup("Slashing", s.SlashingDamageMin, s.SlashingDamageMax);
+        markup += weaponDamageMarkup("Piercing", s.PiercingDamageMin, s.PiercingDamageMax);
+        markup += weaponDamageMarkup("Crushing", s.CrushingDamageMin, s.CrushingDamageMax);
+        markup += weaponDamageMarkup("Fire", s.FireDamageMin, s.FireDamageMax);
+        markup += weaponDamageMarkup("Acid", s.AcidDamageMin, s.AcidDamageMax);
+        markup += weaponDamageMarkup("Poison", s.PoisonDamageMin, s.PoisonDamageMax);
+        markup += weaponDamageMarkup("Shock", s.ShockDamageMin, s.ShockDamageMax);
         markup += defenseMarkup("Kinetic", s.KineticDefense);
         markup += defenseMarkup("Energy", s.EnergyDefense);
         markup += defenseMarkup("Psychic", s.PsychicDefense);
@@ -152,15 +152,13 @@
         return new MarkupString(markup);
     }
 
-    MarkupString weaponDamageMarkup(string type, int minDamage, int maxDamage, int percentage)
+    MarkupString weaponDamageMarkup(string type, int minDamage, int maxDamage)
     {
-        if (percentage == 0)
+        if (minDamage == 0 && maxDamage == 0)
         {
             return new MarkupString("");
         }
-        int minTypedDamage = (minDamage * percentage) / 100;
-        int maxTypedDamage = (maxDamage * percentage) / 100;
-        string markup = $"<p>{minTypedDamage} - {maxTypedDamage} Slashing Damage</p>";
+        string markup = $"<p>{minDamage} - {maxDamage} Slashing Damage</p>";
         return new MarkupString(markup);
     }
 
