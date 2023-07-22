@@ -125,7 +125,7 @@
     private MarkupString getTotalEquipmentStatMarkup(EquipmentSet equipment)
     {
         equipment.CalculateStats();
-        EquipmentStats s = equipment.StatBlock;
+        Stats s = equipment.StatBlock;
         string markup = "";
         markup += weaponDamageMarkup("Slashing", s.SlashingDamageMin, s.SlashingDamageMax);
         markup += weaponDamageMarkup("Piercing", s.PiercingDamageMin, s.PiercingDamageMax);

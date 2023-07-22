@@ -42,6 +42,41 @@
 
                             break;
                         }
+                    case "noxiousWetlands":
+                        {
+                            <h1>Noxious Wetlands</h1>
+                            break;
+                        }
+                    case "rockyOutcropping":
+                        {
+                            <h1>Rocky Outcropping</h1>
+                            break;
+                        }
+                    case "ancientRuins":
+                                            {
+                            <h1>Ancient Ruins</h1>
+                            break;
+                        }
+                    case "plateau":
+                        {
+                            <h1>Plateau</h1>
+                            break;
+                        }
+                    case "cobaltForest":
+                        {
+                            <h1>Cobalt Forest</h1>
+                            break;
+                        }
+                    case "darkChasm":
+                        {
+                            <h1>Dark Chasm</h1>
+                            break;
+                        }
+                    case "ancientFactory":
+                        {
+                            <h1>Ancient Factory</h1>
+                            break;
+                        }
                     default:
                         {
                             break;
@@ -55,6 +90,7 @@
 
 @code {
     private string location = "";
+
     protected override async Task OnInitializedAsync()
     {
         inventoryState.OnChange += UpdateState;
@@ -71,7 +107,7 @@
         location = name;
     }
 
-    async void SelectScavenge ()
+    async void SelectScavenge()
     {
         if (scavengingState.IsScavenging)
         {
@@ -88,7 +124,12 @@
         scavengingState.SelectedStorage = inventoryState.AzuraliPlainsStorage;
     }
 
-    async void CollectAll ()
+    async void SelectHunt()
+    {
+
+    }
+
+    async void CollectAll()
     {
         inventoryState.Transfer(inventoryState.AzuraliPlainsStorage, inventoryState.Inventory);
     }

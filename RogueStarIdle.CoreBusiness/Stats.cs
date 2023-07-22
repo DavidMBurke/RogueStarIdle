@@ -1,7 +1,9 @@
 ﻿namespace RogueStarIdle.CoreBusiness
 {
-    public class EquipmentStats
+    public class Stats
     {
+        public int CurrentHealth {  get; set; } = 0;
+        public int MaxHealth { get; set; } = 0;
         public int EnergyDefense { get; set; } = 0;
         public int KineticDefense { get; set; } = 0;
         public int PsychicDefense { get; set; } = 0;

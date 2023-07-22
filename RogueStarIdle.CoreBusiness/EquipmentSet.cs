@@ -30,7 +30,7 @@
         public EquipmentSlot BodyCybernetic2 { get; set; } = new EquipmentSlot(26, null);
         public EquipmentSlot BodyCybernetic3 { get; set; } = new EquipmentSlot(27, null);
         public EquipmentSlot OmniLinkMod { get; set; } = new EquipmentSlot(28, null);
-        public EquipmentStats StatBlock { get; set; } = new EquipmentStats();
+        public Stats StatBlock { get; set; } = new Stats();
 
         //get name of slot from ID for display purposes
         public string getSlotNameById(int id)
@@ -54,7 +54,7 @@
 
         public void CalculateStats()
         {
-            StatBlock = new EquipmentStats();
+            StatBlock = new Stats();
             foreach (var property in typeof(EquipmentSet).GetProperties())
             {
                 if (property.PropertyType == typeof(EquipmentSlot))

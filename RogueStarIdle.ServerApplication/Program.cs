@@ -13,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<IItemsRepository, ItemsRepository>();
+builder.Services.AddSingleton<IMobsRepository, MobsRepository>();
 builder.Services.AddTransient<IViewItemsByNameUseCase, ViewItemsByNameUseCase>();
 builder.Services.AddTransient<IViewItemsByTagUseCase, ViewItemsByTagUseCase>(); 
 builder.Services.AddTransient<IItemUseCases, ItemUseCases>();

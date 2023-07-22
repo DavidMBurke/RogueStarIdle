@@ -3,46 +3,19 @@ using RogueStarIdle.UseCases.Items.Interfaces;
 using RogueStarIdle.UseCases.Items.PluginInterfaces;
 
 
-namespace RogueStarIdle.UseCases.Items
+namespace RogueStarIdle.UseCases.Mobs
 {
-    public class ItemUseCases : IItemUseCases
+    public class MobUseCases : IMobUseCases
     {
-        private readonly IItemsRepository itemsRepository;
+        private readonly IMobsRepository mobsRepository;
 
-        public ItemUseCases(IItemsRepository itemsRepository)
+        public MobUseCases(IMobsRepository mobsRepository)
         {
-            this.itemsRepository = itemsRepository;
+            this.mobsRepository = mobsRepository;
         }
-        public async Task<Item> ExecuteAsync(int id)
+        public async Task<Mob> ExecuteAsync(int id)
         {
-            return await itemsRepository.GetItemByIdAsync(id);
-        }
-    }
-    public class ViewItemsByNameUseCase : IViewItemsByNameUseCase
-    {
-        private readonly IItemsRepository itemsRepository;
-
-        public ViewItemsByNameUseCase(IItemsRepository itemsRepository)
-        {
-            this.itemsRepository = itemsRepository;
-        }
-        public async Task<IEnumerable<Item>> ExecuteAsync(string name = "")
-        {
-            return await itemsRepository.GetItemsByNameAsync(name);
-        }
-    }
-    public class ViewItemsByTagUseCase : IViewItemsByTagUseCase
-    {
-        private readonly IItemsRepository itemsRepository;
-
-        public ViewItemsByTagUseCase(IItemsRepository itemsRepository)
-        {
-            this.itemsRepository = itemsRepository;
-        }
-        public async Task<IEnumerable<Item>> ExecuteAsync(string tag = "")
-        {
-            var items = await itemsRepository.GetItemsByTagAsync(tag);
-            return items;
+            return await mobsRepository.GetMobByIdAsync(id);
         }
     }
 }
