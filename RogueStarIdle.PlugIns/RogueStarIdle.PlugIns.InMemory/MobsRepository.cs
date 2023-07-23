@@ -6,6 +6,7 @@ namespace RogueStarIdle.PlugIns.InMemory
     public class MobsRepository : IMobsRepository
     {
         public List<Mob> mobs;
+        public ItemsRepository itemsRepository = new ItemsRepository();
 
         public MobsRepository()
         {
@@ -19,13 +20,14 @@ namespace RogueStarIdle.PlugIns.InMemory
                         CurrentHealth = 100,
                         MaxHealth = 100,
                         SlashingDamageMin = 0,
-                        SlashingDamageMax = 10
+                        SlashingDamageMax = 10,
+                        AttackSpeed = 75 // 1.5 sec
                     },
                     Loot = new List<ItemDrop>() 
                     {
-                        //new ItemDrop (itemsRepository.items[0], 1, 1, 1, 2),
-                        //new ItemDrop (itemsRepository.items[2], 1, 1, 1, 1),
-                        //new ItemDrop (itemsRepository.items[13], 1, 1, 1, 1)
+                        new ItemDrop (itemsRepository.items[0], 1, 1, 1, 2),
+                        new ItemDrop (itemsRepository.items[2], 1, 1, 1, 1),
+                        new ItemDrop (itemsRepository.items[13], 1, 1, 1, 1)
                     }
                 }
             };

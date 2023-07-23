@@ -21,6 +21,7 @@
         /// *************SPECIFIC TO WEAPONS****************
 
         // stores Item IDs of ammo types that are allowed to be used with weapon
+        public int AttackSpeed { get; set; } = 0;
         public List<int> AllowedAmmo { get; set; } = new List<int>();
         public bool IsMelee { get; set; } = false;
         public bool IsRanged { get; set; } = false;
@@ -67,146 +68,7 @@
 
         public Item createCopy()
         {
-            return new Item
-            {
-                Id = Id,
-                Name = Name,
-                Quantity = Quantity,
-                BuyPrice = BuyPrice,
-                SellPrice = SellPrice,
-                Tags = Tags,
-                IsEquippable = IsEquippable,
-                Equipped = Equipped,
-                EquipmentSlots = EquipmentSlots,
-                StacksInEquipmentSlot = StacksInEquipmentSlot,
-                IsWeapon = IsWeapon,
-                IsArmor = IsArmor,
-                AllowedAmmo = AllowedAmmo,
-                IsMelee = IsMelee,
-                IsRanged = IsRanged,
-                IsExplosive = IsExplosive,
-                ToHitModifier = ToHitModifier,
-                MinBaseDamage = MinBaseDamage,
-                MaxBaseDamage = MaxBaseDamage,
-                PercentFireDamage = PercentFireDamage,
-                PercentPoisonDamage = PercentPoisonDamage,
-                PercentAcidDamage = PercentAcidDamage,
-                PercentShockDamage = PercentShockDamage,
-                PercentPiercingDamage = PercentPiercingDamage,
-                PercentSlashingDamage = PercentSlashingDamage,
-                PercentCrushingDamage = PercentCrushingDamage,
-                QualityLevel = QualityLevel,
-                MaxQualityLevel = MaxQualityLevel,
-                MeleeDefense = MeleeDefense,
-                RangedDefense = RangedDefense,
-                ExplosiveDefense = ExplosiveDefense,
-                KineticDefense = KineticDefense,
-                EnergyDefense = EnergyDefense,
-                PsychicDefense = PsychicDefense,
-                PsychicDamageReduction = PsychicDamageReduction,
-                KineticDamageReduction = KineticDamageReduction,
-                PiercingDamageReduction = PiercingDamageReduction,
-                SlashingDamageReduction = SlashingDamageReduction,
-                CrushingDamageReduction = CrushingDamageReduction,
-                EnergyDamageReduction = EnergyDamageReduction,
-                FireDamageReduction = FireDamageReduction,
-                PoisonDamageReduction = PoisonDamageReduction,
-                AcidDamageReduction = AcidDamageReduction,
-                ShockDamageReduction = ShockDamageReduction
-            };
-
-            Item createComponent(int id, string name, int quantity, int buyPrice, int sellPrice, List<string> tags)
-            {
-                Item component = new Item
-                {
-                    Id = id,
-                    Name = name,
-                    Quantity = quantity,
-                    BuyPrice = buyPrice,
-                    SellPrice = sellPrice,
-                    Tags = tags
-                };
-                return component;
-            }
-
-            Item createWeapon(int id, string name, int quantity, int buyPrice, int sellPrice, List<string> tags, List<int> equipmentSlots, int toHitModifier, int minBaseDamage, int maxBaseDamage,
-                List<int> allowedAmmo = null, bool isMelee = false, bool isRanged = false, bool isExplosive = false, int percentAcidDamage = 0, int percentFireDamage = 0,
-                int percentPoisonDamage = 0, int percentShockDamage = 0, int percentPiercingDamage = 0, int percentSlashingDamage = 0, int percentCrushingDamage = 0,
-                int qualityLevel = 0, int maxQualityLevel = 5)
-            {
-                Item weapon = new Item
-                {
-                    Id = id,
-                    Name = name,
-                    Quantity = quantity,
-                    BuyPrice = buyPrice,
-                    SellPrice = sellPrice,
-                    Tags = tags,
-                    IsEquippable = true,
-                    EquipmentSlots = equipmentSlots,
-                    IsWeapon = true,
-                    AllowedAmmo = allowedAmmo ?? new List<int>(),
-                    IsMelee = isMelee,
-                    IsRanged = isRanged,
-                    IsExplosive = isExplosive,
-                    ToHitModifier = toHitModifier,
-                    MinBaseDamage = minBaseDamage,
-                    MaxBaseDamage = maxBaseDamage,
-                    PercentAcidDamage = percentAcidDamage,
-                    PercentFireDamage = percentFireDamage,
-                    PercentPoisonDamage = percentPoisonDamage,
-                    PercentShockDamage = percentShockDamage,
-                    PercentCrushingDamage = percentCrushingDamage,
-                    PercentPiercingDamage = percentPiercingDamage,
-                    PercentSlashingDamage = percentSlashingDamage,
-                    QualityLevel = qualityLevel,
-                    MaxQualityLevel = maxQualityLevel
-                };
-                return weapon;
-            }
-
-            Item createArmor(int id, string name, int quantity, int buyPrice, int sellPrice, List<string> tags, List<int> equipmentSlots, int meleeDef = 0, int rangedDef = 0, int explosivesDef = 0,
-                int kineticDef = 0, int energyDef = 0, int psychicDef = 0, int psychicDR = 0, int kineticDR = 0, int piercingDR = 0, int slashingDR = 0, int crushingDR = 0,
-                int energyDR = 0, int fireDR = 0, int poisonDR = 0, int acidDR = 0, int shockDR = 0, int qualityLevel = 0, int maxQualityLevel = 0)
-            {
-                Item component = new Item
-                {
-                    Id = id,
-                    Name = name,
-                    Quantity = quantity,
-                    BuyPrice = buyPrice,
-                    SellPrice = sellPrice,
-                    Tags = tags,
-                    IsEquippable = true,
-                    Equipped = false,
-                    EquipmentSlots = equipmentSlots,
-                    IsArmor = true,
-                    MeleeDefense = meleeDef,
-                    RangedDefense = rangedDef,
-                    ExplosiveDefense = explosivesDef,
-                    KineticDefense = kineticDef,
-                    EnergyDefense = energyDef,
-                    PsychicDefense = psychicDef,
-                    PsychicDamageReduction = psychicDR,
-                    KineticDamageReduction = kineticDR,
-                    PiercingDamageReduction = (piercingDR > kineticDR) ? piercingDR : kineticDR,
-                    SlashingDamageReduction = (slashingDR > kineticDR) ? slashingDR : kineticDR,
-                    CrushingDamageReduction = (crushingDR > kineticDR) ? crushingDR : kineticDR,
-                    EnergyDamageReduction = energyDR,
-                    FireDamageReduction = (fireDR > energyDR) ? fireDR : energyDR,
-                    AcidDamageReduction = (acidDR > energyDR) ? acidDR : energyDR,
-                    PoisonDamageReduction = (poisonDR > energyDR) ? poisonDR : energyDR,
-                    ShockDamageReduction = (shockDR > energyDR) ? shockDR : energyDR,
-                    QualityLevel = qualityLevel,
-                    MaxQualityLevel = maxQualityLevel
-
-
-                };
-                return component;
-            }
+            return (Item)MemberwiseClone();
         }
-
     }
-
-
 }

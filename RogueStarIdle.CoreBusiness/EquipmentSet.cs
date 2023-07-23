@@ -112,6 +112,17 @@
                 StatBlock.SlashingDamageMax = DualWieldPenalty(StatBlock.SlashingDamageMax);
                 StatBlock.CrushingDamageMin = DualWieldPenalty(StatBlock.CrushingDamageMin);
                 StatBlock.CrushingDamageMax = DualWieldPenalty(StatBlock.CrushingDamageMax);
+                StatBlock.AttackSpeed = (LeftWeapon.Item.AttackSpeed + RightWeapon.Item.AttackSpeed) / 2;
+            }
+            if (LeftWeapon.Item == null && RightWeapon.Item == null)
+            {
+                StatBlock.AttackSpeed = 100; // 2 sec
+            }
+            if (LeftWeapon.Item == null && RightWeapon.Item != null) { 
+                StatBlock.AttackSpeed = RightWeapon.Item.AttackSpeed;
+            }
+            if (LeftWeapon.Item != null && RightWeapon.Item == null) {
+                StatBlock.AttackSpeed = LeftWeapon.Item.AttackSpeed;
             }
         }
         public int DualWieldPenalty(int damage)

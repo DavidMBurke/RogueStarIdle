@@ -13,7 +13,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
     public class TimeState
     {
         public int Ticks { get; set; } = 0;
-        public int TickDuration = 20;
+        public int TickDuration = 20; //milliseconds
         public int TicksPerSecond = 50;
         public int TicksSinceLastSignIn { get; set; } = 0;
         public double MillisecondsElapsed { get; set; } = 0;

@@ -48,6 +48,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     BuyPrice = 10,
                     SellPrice = 50,
                     IsWeapon= true,
+                    AttackSpeed = 100,
                     Tags = new List<string>{"Weapon", "Knife", "One-Handed" },
                     IsEquippable = true,
                     IsMelee = true,
@@ -191,9 +192,16 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Id = 13,
                     Name = "Tardihop Guts",
                     BuyPrice = 10,
-                    SellPrice = 50,
+                    SellPrice = 5,
                     Tags = new List<string>{"Tardihop", "Component"},
-                    Quantity = 1}
+                    Quantity = 1},
+                new Item {
+                    Id = 14,
+                    Name = "Stick",
+                    BuyPrice = 2,
+                    SellPrice = 1,
+                    Tags = new List<string>{"Plant", "Forageable"},
+                    Quantity = 1 },
             };
         }
         public async Task<IEnumerable<Item>> GetItemsByNameAsync(string name)

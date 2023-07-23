@@ -133,6 +133,7 @@
         equipment.CalculateStats();
         Stats s = equipment.StatBlock;
         string markup = "";
+        markup += $"<p>Attack Speed: {s.AttackSpeed}";
         markup += weaponDamageMarkup("Slashing", s.SlashingDamageMin, s.SlashingDamageMax);
         markup += weaponDamageMarkup("Piercing", s.PiercingDamageMin, s.PiercingDamageMax);
         markup += weaponDamageMarkup("Crushing", s.CrushingDamageMin, s.CrushingDamageMax);
