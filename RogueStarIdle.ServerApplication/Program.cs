@@ -21,6 +21,7 @@ builder.Services.AddScoped<EquipmentState>();
 builder.Services.AddScoped<InventoryState>();
 builder.Services.AddScoped<CharacterState>();
 builder.Services.AddScoped<ScavengingState>();
+builder.Services.AddScoped<CombatState>();
 builder.Services.AddScoped<TimeState>();
 
 var app = builder.Build();

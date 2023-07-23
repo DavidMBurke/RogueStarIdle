@@ -8,7 +8,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         public bool IsScavenging { get; set; } = false;
         public int TicksBetweenScavengeAttempts { get; set; } = 100;
         public int TicksUntilScavengeAttempt { get; set; } = 100;
-        public List<(Item item, int dropChanceNum, int dropChanceDenom, int quantityRangeMin, int quantityRangeMax)>? ScavengeableItems { get; set; } = null;
+        public List<DroppableItem>? ScavengeableItems { get; set; } = null;
         public List<Item>? ScavengedItems { get; set; } = null;
         public List<Item>? SelectedStorage { get; set; } = null;
         public InventoryState? inventoryState;
@@ -56,12 +56,12 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             {
                 foreach (var item in ScavengeableItems)
                 {
-                    int roll = rand.Next(item.dropChanceDenom) + 1;
-                    if (roll <= item.dropChanceNum)
+                    int roll = rand.Next(item.DropChanceDenominator) + 1;
+                    if (roll <= item.DropChanceNumerator)
                     {
-                        int qty = rand.Next(item.quantityRangeMax-item.quantityRangeMin + 1) + item.quantityRangeMin;
-                        item.item.Quantity = qty;
-                        foundItems.Add(item.item);
+                        int qty = rand.Next(item.QuantityRangeMax-item.QuantityRangeMin + 1) + item.QuantityRangeMin;
+                        item.Item.Quantity = qty;
+                        foundItems.Add(item.Item);
                     }
                 }
             }

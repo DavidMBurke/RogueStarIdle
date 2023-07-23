@@ -82,7 +82,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             await NotifyStateChanged();
         }
 
-        public async void Transfer(List<Item> storageFrom, List<Item> storageTo)
+        public async Task Transfer(List<Item> storageFrom, List<Item> storageTo)
         {
             foreach (Item item in storageFrom)
             {

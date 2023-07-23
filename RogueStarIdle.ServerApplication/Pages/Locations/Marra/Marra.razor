@@ -2,6 +2,7 @@
 @using RogueStarIdle.PlugIns.InMemory;
 @using RogueStarIdle.ServerApplication.Shared.State;
 @inject ScavengingState scavengingState;
+@inject CombatState combatState;
 @inject InventoryState inventoryState;
 @inject IItemUseCases GetItemByIdUseCase
 
@@ -28,6 +29,7 @@
                             <div class="row">
                                 <div class="column">
                                     <button @onclick="() => SelectScavenge()" style=@(scavengingState.IsScavenging? "background-color: green" : "")> Scavenge </button>
+                                    <button @onclick="() => SelectHunt()" style=@(combatState.IsInCombat? "background-color: green" : "")> Hunt </button>
                                     <button @onclick="() => CollectAll()"> Collect gathered Items </button>
                                 </div>
                                 @if (inventoryState.AzuraliPlainsStorage.Any<Item>())
@@ -107,6 +109,8 @@
         location = name;
     }
 
+
+    // TODO Factor out and pass in list of droppable items
     async void SelectScavenge()
     {
         if (scavengingState.IsScavenging)
@@ -115,10 +119,11 @@
             return;
         }
         scavengingState.IsScavenging = true;
-        scavengingState.ScavengeableItems = new List<(Item item, int dropChanceNum, int dropChanceDenom, int quantityRangeMin, int quantityRangeMax)>()
+        combatState.IsInCombat = false;
+        scavengingState.ScavengeableItems = new List<DroppableItem>()
         {
-            (await GetItemByIdUseCase.ExecuteAsync(2), 10, 100, 1, 2),
-            (await GetItemByIdUseCase.ExecuteAsync(3), 10, 100, 1, 2)
+            new DroppableItem (await GetItemByIdUseCase.ExecuteAsync(2), 10, 100, 1, 2),
+            new DroppableItem (await GetItemByIdUseCase.ExecuteAsync(3), 10, 100, 1, 2)
         };
         scavengingState.SurvivalXpAtLocation = 1;
         scavengingState.SelectedStorage = inventoryState.AzuraliPlainsStorage;
@@ -126,11 +131,16 @@
 
     async void SelectHunt()
     {
-
+        if (combatState.IsInCombat)
+        {
+            combatState.IsInCombat = false;
+        }
+        combatState.IsInCombat = true;
+        scavengingState.IsScavenging = false;
     }
 
     async void CollectAll()
     {
-        inventoryState.Transfer(inventoryState.AzuraliPlainsStorage, inventoryState.Inventory);
+        await inventoryState.Transfer(inventoryState.AzuraliPlainsStorage, inventoryState.Inventory);
     }
 }
