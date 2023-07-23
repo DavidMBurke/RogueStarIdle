@@ -28,7 +28,7 @@
                             <h1> Azurali Plains </h1>
                             <div class="row">
                                 <div class="column">
-                                    <button @onclick="() => SelectScavenge()" style=@(scavengingState.IsScavenging? "background-color: green" : "")> Scavenge </button>
+                                    <button @onclick="() => SelectScavenge(azuraliPlainsScavengeables)" style=@(scavengingState.IsScavenging? "background-color: green" : "")> Scavenge </button>
                                     <button @onclick="() => SelectHunt()" style=@(combatState.IsInCombat? "background-color: green" : "")> Hunt </button>
                                     <button @onclick="() => CollectAll()"> Collect gathered Items </button>
                                 </div>
@@ -92,11 +92,17 @@
 
 @code {
     private string location = "";
+    private List<DroppableItem> azuraliPlainsScavengeables = new List<DroppableItem>();
 
     protected override async Task OnInitializedAsync()
     {
         inventoryState.OnChange += UpdateState;
         await base.OnInitializedAsync();
+        azuraliPlainsScavengeables = new List<DroppableItem>
+        {
+            new DroppableItem (await GetItemByIdUseCase.ExecuteAsync(2), 10, 100, 1, 2),
+            new DroppableItem (await GetItemByIdUseCase.ExecuteAsync(3), 10, 100, 1, 2)
+        };
     }
 
     async Task UpdateState()
@@ -109,9 +115,7 @@
         location = name;
     }
 
-
-    // TODO Factor out and pass in list of droppable items
-    async void SelectScavenge()
+    async void SelectScavenge(List<DroppableItem> scavengables)
     {
         if (scavengingState.IsScavenging)
         {
@@ -120,11 +124,7 @@
         }
         scavengingState.IsScavenging = true;
         combatState.IsInCombat = false;
-        scavengingState.ScavengeableItems = new List<DroppableItem>()
-        {
-            new DroppableItem (await GetItemByIdUseCase.ExecuteAsync(2), 10, 100, 1, 2),
-            new DroppableItem (await GetItemByIdUseCase.ExecuteAsync(3), 10, 100, 1, 2)
-        };
+        scavengingState.ScavengeableItems = scavengables;
         scavengingState.SurvivalXpAtLocation = 1;
         scavengingState.SelectedStorage = inventoryState.AzuraliPlainsStorage;
     }
