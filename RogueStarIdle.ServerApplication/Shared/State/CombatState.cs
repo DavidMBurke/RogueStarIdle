@@ -9,6 +9,8 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         public List<Item>? SelectedStorage { get; set; } = null;
         public InventoryState? inventoryState;
         public CharacterState? characterState;
+        public Character character;
+        public List<int> combatCounters;
         public CombatState(InventoryState inventoryState, CharacterState characterState)
         {
             this.inventoryState = inventoryState;

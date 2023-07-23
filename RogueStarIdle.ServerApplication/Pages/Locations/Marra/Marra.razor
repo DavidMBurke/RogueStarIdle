@@ -5,6 +5,7 @@
 @inject CombatState combatState;
 @inject InventoryState inventoryState;
 @inject IItemUseCases GetItemByIdUseCase
+@inject IMobUseCases GetMobByIdUseCase
 
 <div class="page-content-container">
     <div class="column" style="width: 100%">
@@ -92,17 +93,23 @@
 
 @code {
     private string location = "";
-    private List<DroppableItem> azuraliPlainsScavengeables = new List<DroppableItem>();
+    private List<ItemDrop> azuraliPlainsScavengeables = new List<ItemDrop>();
+    private List<MobSpawn> azuraliPlainsMobs = new List<MobSpawn>();
 
     protected override async Task OnInitializedAsync()
     {
         inventoryState.OnChange += UpdateState;
         await base.OnInitializedAsync();
-        azuraliPlainsScavengeables = new List<DroppableItem>
+        azuraliPlainsScavengeables = new List<ItemDrop>
         {
-            new DroppableItem (await GetItemByIdUseCase.ExecuteAsync(2), 10, 100, 1, 2),
-            new DroppableItem (await GetItemByIdUseCase.ExecuteAsync(3), 10, 100, 1, 2)
+            new ItemDrop (await GetItemByIdUseCase.ExecuteAsync(2), 10, 100, 1, 2),
+            new ItemDrop (await GetItemByIdUseCase.ExecuteAsync(3), 10, 100, 1, 2)
         };
+        azuraliPlainsMobs = new List<MobSpawn>
+        {
+            new MobSpawn (await GetMobByIdUseCase.ExecuteAsync(0), 10)
+        };
+        
     }
 
     async Task UpdateState()
@@ -115,7 +122,7 @@
         location = name;
     }
 
-    async void SelectScavenge(List<DroppableItem> scavengables)
+    async void SelectScavenge(List<ItemDrop> scavengables)
     {
         if (scavengingState.IsScavenging)
         {

@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
+        public EquipmentSet Equipment { get; set; } = new EquipmentSet();
         public Skill MeleeSkill { get; set; } = new Skill("Melee", 1, 0);
         public Skill RangedSkill { get; set; } = new Skill("Ranged", 1, 0);
         public Skill ExplosivesSkill { get; set; } = new Skill("Explosives", 1, 0);

@@ -8,7 +8,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         public bool IsScavenging { get; set; } = false;
         public int TicksBetweenScavengeAttempts { get; set; } = 100;
         public int TicksUntilScavengeAttempt { get; set; } = 100;
-        public List<DroppableItem>? ScavengeableItems { get; set; } = null;
+        public List<ItemDrop>? ScavengeableItems { get; set; } = null;
         public List<Item>? ScavengedItems { get; set; } = null;
         public List<Item>? SelectedStorage { get; set; } = null;
         public InventoryState? inventoryState;

@@ -8,25 +8,32 @@ namespace RogueStarIdle.PlugIns.InMemory
 {
     public class ItemsRepository : IItemsRepository
     {
-        public List<Item> _items;
+        public List<Item> items;
 
         public ItemsRepository()
         {
-            _items = new List<Item>()
+            items = new List<Item>()
             {
                 new Item {
-                    Id = 1,
+                    Id = 0,
                     Name = "Animal Parts",
                     BuyPrice = 10,
                     SellPrice = 50,
                     Tags = new List<string>{"Component", "Scrap"},
                     Quantity = 1 },
                 new Item {
-                    Id = 2,
+                    Id = 1,
                     Name = "Animal Skins",
                     BuyPrice = 10,
                     SellPrice = 50,
                     Tags = new List<string>{"Component", "Scrap"},
+                    Quantity = 1 },
+                new Item {
+                    Id = 2,
+                    Name = "Small Bones",
+                    BuyPrice = 10,
+                    SellPrice = 50,
+                    Tags = new List<string>{"Tardihop", "Component"},
                     Quantity = 1 },
                 new Item {
                     Id = 3,
@@ -179,30 +186,37 @@ namespace RogueStarIdle.PlugIns.InMemory
                     EnergyDamageReduction = 1,
                     ShockDamageReduction = 5,
                     QualityLevel = 1,
-                    MaxQualityLevel = 15}
+                    MaxQualityLevel = 15},
+                new Item {
+                    Id = 13,
+                    Name = "Tardihop Guts",
+                    BuyPrice = 10,
+                    SellPrice = 50,
+                    Tags = new List<string>{"Tardihop", "Component"},
+                    Quantity = 1}
             };
         }
         public async Task<IEnumerable<Item>> GetItemsByNameAsync(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                return await Task.FromResult(_items);
+                return await Task.FromResult(items);
             }
 
-            return _items.Where(x => x.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
+            return items.Where(x => x.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
         }
         public async Task<IEnumerable<Item>> GetItemsByTagAsync(string tag)
         {
             if (string.IsNullOrWhiteSpace(tag))
             {
-                return await Task.FromResult(_items);
+                return await Task.FromResult(items);
             }
-            var taggedItems = _items.Where(x => x.Tags.Any(t => t.Contains(tag, StringComparison.OrdinalIgnoreCase)));
+            var taggedItems = items.Where(x => x.Tags.Any(t => t.Contains(tag, StringComparison.OrdinalIgnoreCase)));
             return taggedItems;
         }
         public async Task<Item> GetItemByIdAsync(int id)
         {
-            return _items.First(i => i.Id == id);
+            return items.First(i => i.Id == id);
         }
     }
 }

@@ -6,6 +6,7 @@ using RogueStarIdle.ServerApplication.Shared.State;
 using RogueStarIdle.UseCases.Items;
 using RogueStarIdle.UseCases.Items.Interfaces;
 using RogueStarIdle.UseCases.Items.PluginInterfaces;
+using RogueStarIdle.UseCases.Mobs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +18,7 @@ builder.Services.AddSingleton<IMobsRepository, MobsRepository>();
 builder.Services.AddTransient<IViewItemsByNameUseCase, ViewItemsByNameUseCase>();
 builder.Services.AddTransient<IViewItemsByTagUseCase, ViewItemsByTagUseCase>(); 
 builder.Services.AddTransient<IItemUseCases, ItemUseCases>();
-builder.Services.AddScoped<EquipmentState>();
+builder.Services.AddTransient<IMobUseCases, MobUseCases>();
 builder.Services.AddScoped<InventoryState>();
 builder.Services.AddScoped<CharacterState>();
 builder.Services.AddScoped<ScavengingState>();

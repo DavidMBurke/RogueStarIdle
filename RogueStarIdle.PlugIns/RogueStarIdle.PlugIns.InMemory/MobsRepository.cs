@@ -1,21 +1,18 @@
 ﻿using RogueStarIdle.CoreBusiness;
 using RogueStarIdle.UseCases.Items.PluginInterfaces;
-using System.ComponentModel;
-using System.Net.Http.Headers;
-using System.Xml.Linq;
 
 namespace RogueStarIdle.PlugIns.InMemory
 {
     public class MobsRepository : IMobsRepository
     {
-        public List<Mob> _mobs;
+        public List<Mob> mobs;
 
         public MobsRepository()
         {
-            _mobs = new List<Mob>()
+            mobs = new List<Mob>()
             {
                 new Mob {
-                    Id = 1,
+                    Id = 0,
                     Name = "Tardihop",
                     Stats = new Stats()
                     {
@@ -23,6 +20,12 @@ namespace RogueStarIdle.PlugIns.InMemory
                         MaxHealth = 100,
                         SlashingDamageMin = 0,
                         SlashingDamageMax = 10
+                    },
+                    Loot = new List<ItemDrop>() 
+                    {
+                        //new ItemDrop (itemsRepository.items[0], 1, 1, 1, 2),
+                        //new ItemDrop (itemsRepository.items[2], 1, 1, 1, 1),
+                        //new ItemDrop (itemsRepository.items[13], 1, 1, 1, 1)
                     }
                 }
             };
@@ -30,7 +33,7 @@ namespace RogueStarIdle.PlugIns.InMemory
         }
         public async Task<Mob> GetMobByIdAsync(int id)
         {
-            return _mobs.First(i => i.Id == id);
+            return mobs.First(i => i.Id == id);
         }
     }
 }

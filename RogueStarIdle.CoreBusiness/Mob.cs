@@ -5,5 +5,6 @@
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public Stats Stats { get; set; } = new Stats();
+        public List<ItemDrop> Loot { get; set; } = new List<ItemDrop>();
     }
 }
