@@ -4,6 +4,7 @@
 @inject ScavengingState scavengingState;
 @inject CombatState combatState;
 @inject InventoryState inventoryState;
+@inject CharacterState characterState;
 @inject IItemUseCases GetItemByIdUseCase
 @inject IMobUseCases GetMobByIdUseCase
 
@@ -30,7 +31,7 @@
                             <div class="row">
                                 <div class="column">
                                     <button @onclick="() => SelectScavenge(azuraliPlainsScavengeables)" style=@(scavengingState.IsScavenging? "background-color: green" : "")> Scavenge </button>
-                                    <button @onclick="() => SelectHunt()" style=@(combatState.IsInCombat? "background-color: green" : "")> Hunt </button>
+                                    <button @onclick="() => SelectHunt(azuraliPlainsMobs)" style=@(combatState.IsInCombat? "background-color: green" : "")> Hunt </button>
                                     <button @onclick="() => CollectAll()"> Collect gathered Items </button>
                                 </div>
                                 @if (inventoryState.AzuraliPlainsStorage.Any<Item>())
@@ -109,7 +110,7 @@
         {
             new MobSpawn (await GetMobByIdUseCase.ExecuteAsync(0), 10)
         };
-        
+
     }
 
     async Task UpdateState()
@@ -122,7 +123,7 @@
         location = name;
     }
 
-    async void SelectScavenge(List<ItemDrop> scavengables)
+    void SelectScavenge(List<ItemDrop> scavengables)
     {
         if (scavengingState.IsScavenging)
         {
@@ -136,14 +137,17 @@
         scavengingState.SelectedStorage = inventoryState.AzuraliPlainsStorage;
     }
 
-    async void SelectHunt()
+    void SelectHunt(List<MobSpawn> mobs)
     {
+        characterState.mainCharacter.Equipment.CalculateStats();
         if (combatState.IsInCombat)
         {
             combatState.IsInCombat = false;
+            return;
         }
         combatState.IsInCombat = true;
         scavengingState.IsScavenging = false;
+        combatState.PossibleMobs = mobs;
     }
 
     async void CollectAll()

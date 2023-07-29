@@ -5,6 +5,7 @@
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public EquipmentSet Equipment { get; set; } = new EquipmentSet();
+        public int AttackCounter;
         public Skill MeleeSkill { get; set; } = new Skill("Melee", 1, 0);
         public Skill RangedSkill { get; set; } = new Skill("Ranged", 1, 0);
         public Skill ExplosivesSkill { get; set; } = new Skill("Explosives", 1, 0);
@@ -24,5 +25,18 @@
         public Skill StealthSkill { get; set; } = new Skill("Stealth", 1, 0);
         public Skill HerbalismSkill { get; set; } = new Skill("Herbalism", 1, 0);
         public Skill ScrappingSkill { get; set; } = new Skill("Scrapping", 1, 0);
+
+        public void Attack(MobSpawn defender)
+        {
+            Random rand = new Random();
+            int hitRoll = MeleeSkill.Level + rand.Next(20);
+            int blockRoll = defender.Mob.Stats.MeleeDefense + rand.Next(20);
+            if (hitRoll > blockRoll)
+            {
+                // TODO create method to total all damages and subtract all defenses
+                int damage = Equipment.StatBlock.CrushingDamageMin + rand.Next(Equipment.StatBlock.CrushingDamageMax - Equipment.StatBlock.CrushingDamageMin);
+                defender.Mob.Stats.CurrentHealth -= damage;
+            }
+        }
     }
 }

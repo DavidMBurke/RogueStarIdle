@@ -25,10 +25,12 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         public System.Timers.Timer GameTimer { get; set; } = new System.Timers.Timer(20);
         public event Func<Task> OnChange;
         private readonly ScavengingState _scavengingState;
+        private readonly CombatState _combatState;
 
-        public TimeState(ScavengingState scavengingState)
+        public TimeState(ScavengingState scavengingState, CombatState combatState)
         {
             _scavengingState = scavengingState;
+            _combatState = combatState;
             GameTimer.Elapsed += CalculateElapsedTicks;
             GameTimer.Enabled = true;
             GameTimer.Start();
@@ -62,6 +64,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         public void Tick(int ticksElapsed)
         {
             _scavengingState.ScavengeTicks(ticksElapsed);
+            _combatState.CombatTicks(ticksElapsed);
         }
 
         public void AddTicks(int ticks)
