@@ -181,14 +181,14 @@
                 continue; // skip if not correct slot
             }
             // replace unequipped item with equipped item
-            Item itemToEquip = item.createCopy();
+            Item itemToEquip = item.CreateCopy();
             itemToEquip.Equipped = true;
             inventoryState.RemoveFromInventory(inventoryState.Inventory, item);
             inventoryState.AddToInventory(inventoryState.Inventory, itemToEquip);
             if (slot.Item != null)
             {
                 // replace previously equipped item with unequipped item
-                Item unequippedItem = slot.Item.createCopy();
+                Item unequippedItem = slot.Item.CreateCopy();
                 inventoryState.RemoveFromInventory(inventoryState.Inventory, unequippedItem);
                 unequippedItem.Equipped = false;
                 inventoryState.AddToInventory(inventoryState.Inventory, unequippedItem);

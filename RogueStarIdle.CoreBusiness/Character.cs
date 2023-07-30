@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public EquipmentSet Equipment { get; set; } = new EquipmentSet();
-        public int AttackCounter;
+        public int AttackCounter { get; set; }
         public Skill MeleeSkill { get; set; } = new Skill("Melee", 1, 0);
         public Skill RangedSkill { get; set; } = new Skill("Ranged", 1, 0);
         public Skill ExplosivesSkill { get; set; } = new Skill("Explosives", 1, 0);
@@ -28,15 +28,46 @@
 
         public void Attack(MobSpawn defender)
         {
+            if (defender == null)
+            {
+                return;
+            }
+            Console.WriteLine($"Player attacks {defender.Mob.Name}!");
             Random rand = new Random();
             int hitRoll = MeleeSkill.Level + rand.Next(20);
             int blockRoll = defender.Mob.Stats.MeleeDefense + rand.Next(20);
             if (hitRoll > blockRoll)
             {
                 // TODO create method to total all damages and subtract all defenses
-                int damage = Equipment.StatBlock.CrushingDamageMin + rand.Next(Equipment.StatBlock.CrushingDamageMax - Equipment.StatBlock.CrushingDamageMin);
+                int damage = CalculateTotalDamage(Equipment.Stats, defender.Mob.Stats);
                 defender.Mob.Stats.CurrentHealth -= damage;
+                Console.WriteLine($"Player hits for {damage} damage! {defender.Mob.Name} HP: ({defender.Mob.Stats.CurrentHealth}/{defender.Mob.Stats.MaxHealth})");
+            } else
+            {
+                Console.WriteLine("Player misses!");
             }
+        }
+
+        public int CalculateTotalDamage(Stats attacker, Stats defender)
+        {
+            Random rand = new Random();
+            int damage = 0;
+            damage += CalculateDamageByType(attacker.PiercingDamageMin, attacker.PiercingDamageMax, defender.PiercingDR);
+            damage += CalculateDamageByType(attacker.SlashingDamageMin, attacker.SlashingDamageMax, defender.SlashingDR);
+            damage += CalculateDamageByType(attacker.CrushingDamageMin, attacker.CrushingDamageMax, defender.CrushingDR);
+            damage += CalculateDamageByType(attacker.AcidDamageMin, attacker.AcidDamageMax, defender.AcidDR);
+            damage += CalculateDamageByType(attacker.FireDamageMin, attacker.FireDamageMax, defender.FireDR);
+            damage += CalculateDamageByType(attacker.ShockDamageMin, attacker.ShockDamageMax, defender.ShockDR);
+            damage += CalculateDamageByType(attacker.PoisonDamageMin, attacker.PoisonDamageMax, defender.PoisonDR);
+            return damage;
+        }
+
+        public int CalculateDamageByType(int min, int max, int dr)
+        {
+            Random rand = new Random();
+            int baseDamage = min + rand.Next(1 + max - min) * dr;
+            int reducedDamage = (baseDamage * (100 - dr)) / 100;
+            return reducedDamage;
         }
     }
 }

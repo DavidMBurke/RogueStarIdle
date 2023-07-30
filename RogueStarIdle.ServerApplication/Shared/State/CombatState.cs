@@ -6,7 +6,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
 {
     public class CombatState {
         public bool IsInCombat { get; set; } = false;
-        public bool MobsSpawned { get; set; } = false;
+        public bool MobsAreSpawned { get; set; } = false;
         public List<Item>? SelectedStorage { get; set; } = null;
         public InventoryState? inventoryState;
         public CharacterState? characterState;
@@ -28,13 +28,13 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             for (int i = 0; i < ticksElapsed; i++)
             {
 
-                if (MobsSpawned == false)
+                if (MobsAreSpawned == false)
                 {
                     respawnCounter -= 1;
                     if (respawnCounter <= 0)
                     {
                         respawnCounter = respawnTime;
-                        MobsSpawned = true;
+                        MobsAreSpawned = true;
                         SpawnMobs();
                     } else
                     {
@@ -45,36 +45,41 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 characterState.mainCharacter.AttackCounter -= 1;
                 if (characterState.mainCharacter.AttackCounter <= 0)
                 {
-                    PlayerAttack();
-                    characterState.mainCharacter.AttackCounter = characterState.mainCharacter.Equipment.StatBlock.AttackSpeed;
+                    characterState.mainCharacter.Equipment.CalculateStats();
+                    characterState.mainCharacter.Attack(SpawnedMobs.FirstOrDefault());
+                    characterState.mainCharacter.AttackCounter = characterState.mainCharacter.Equipment.Stats.AttackSpeed;
                 }
-                foreach (MobSpawn mob in SpawnedMobs)
+                foreach (MobSpawn mobSpawn in SpawnedMobs)
                 {
-                    mob.AttackCounter -= 1;
-                    if (mob.AttackCounter <= 0)
+                    mobSpawn.AttackCounter -= 1;
+                    if (mobSpawn.AttackCounter <= 0)
                     {
-                        MobAttack();
-                        mob.AttackCounter = mob.Mob.Stats.AttackSpeed;
+                        mobSpawn.Mob.Attack(characterState.mainCharacter);
+                        mobSpawn.AttackCounter = mobSpawn.Mob.Stats.AttackSpeed;
                     }
+                    if (mobSpawn.Mob.Stats.CurrentHealth <= 0)
+                    {
+                        Console.WriteLine($"{mobSpawn.Mob.Name} has been slain!");
+                        SpawnedMobs.Remove(mobSpawn);
+                    }
+                }
+                if (SpawnedMobs.Count == 0)
+                {
+                    MobsAreSpawned = false;
                 }
             }
         }
 
-        public void PlayerAttack()
-        {
-            Console.WriteLine("Player attacks");
-        }
-
-        public void MobAttack()
-        {
-            Console.WriteLine("Mob attacks");
-        }
-
         public void SpawnMobs()
         {
+            // TODO randomize selection
             SpawnedMobs.Add(PossibleMobs[0]);
-            MobsSpawned = true;
-            Console.WriteLine("Mob spawned!");
+            foreach (MobSpawn mob in SpawnedMobs)
+            {
+                mob.Mob.Stats.CurrentHealth = mob.Mob.Stats.MaxHealth;
+            }
+            MobsAreSpawned = true;
+            Console.WriteLine($"{PossibleMobs[0].Mob.Name} spawned!");
         }
     }
 }

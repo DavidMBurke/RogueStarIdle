@@ -55,7 +55,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 quantityAdded = item.Quantity;
             }
             Item matchingItem = inventory.FirstOrDefault(i => (i.Id == item.Id && i.QualityLevel == item.QualityLevel && i.Equipped == item.Equipped), null); 
-            Item newItem = item.createCopy();
+            Item newItem = item.CreateCopy();
             if (matchingItem == null)
             {
                 newItem.Quantity = quantityAdded;

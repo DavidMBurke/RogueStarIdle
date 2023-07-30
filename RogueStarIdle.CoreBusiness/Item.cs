@@ -66,7 +66,7 @@
 
         // ************CONSUMABLES**************
 
-        public Item createCopy()
+        public Item CreateCopy()
         {
             return (Item)MemberwiseClone();
         }

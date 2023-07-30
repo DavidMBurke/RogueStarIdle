@@ -121,7 +121,7 @@
         {
             return;
         }
-        Item unequippedItem = equipmentSlot.Item.createCopy();
+        Item unequippedItem = equipmentSlot.Item.CreateCopy();
         inventoryState.RemoveFromInventory(inventoryState.Inventory, unequippedItem, unequippedItem.Quantity);
         unequippedItem.Equipped = false;
         inventoryState.AddToInventory(inventoryState.Inventory, unequippedItem, unequippedItem.Quantity);
@@ -131,7 +131,7 @@
     private MarkupString getTotalEquipmentStatMarkup(EquipmentSet equipment)
     {
         equipment.CalculateStats();
-        Stats s = equipment.StatBlock;
+        Stats s = equipment.Stats;
         string markup = "";
         markup += $"<p>Attack Speed: {s.AttackSpeed}";
         markup += weaponDamageMarkup("Slashing", s.SlashingDamageMin, s.SlashingDamageMax);
