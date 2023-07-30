@@ -81,7 +81,8 @@
             {
                 @getTypeMarkup(selectedItem);
                 <h5>Base Damage: @selectedItem.MinBaseDamage - @selectedItem.MaxBaseDamage</h5>
-                <h5>To-Hit Modifier: @selectedItem.ToHitModifier</h5>
+                <h5>Melee Attack Modifier: @selectedItem.MeleeToHit</h5>
+                <h5>Ranged Attack Modifier: @selectedItem.RangedToHit</h5>
                 @getAllDamageTypeMarkups(selectedItem);
             }
             @if (selectedItem.IsArmor)

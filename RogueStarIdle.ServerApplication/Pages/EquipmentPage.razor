@@ -130,7 +130,7 @@
 
     private MarkupString getTotalEquipmentStatMarkup(EquipmentSet equipment)
     {
-        equipment.CalculateStats();
+        equipment.CalculateStats(characterState.mainCharacter);
         Stats s = equipment.Stats;
         string markup = "";
         markup += $"<p>Attack Speed: {s.AttackSpeed}";

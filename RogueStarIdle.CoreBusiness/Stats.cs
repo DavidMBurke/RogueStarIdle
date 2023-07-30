@@ -2,6 +2,14 @@
 {
     public class Stats
     {
+        public bool IsUsingMelee { get; set; } = false;
+        public bool IsUsingRanged { get; set; } = false;
+        public bool IsUsingPsychic { get; set; } = false;
+        public bool IsUsingExplosive { get; set; } = false;
+        public int MeleeToHit { get; set; } = 0;
+        public int RangedToHit { get; set; } = 0;
+        public int PsychicToHit { get; set; } = 0;
+        public int ExplosiveToHit { get; set; } = 0;
         public int AttackSpeed { get; set; } = 0; //Ticks between attacks, lower is faster (1 tick = 20 ms)
         public int CurrentHealth { get; set; } = 0;
         public int MaxHealth { get; set; } = 0;

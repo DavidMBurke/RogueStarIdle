@@ -54,7 +54,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     IsMelee = true,
                     Quantity = 1,
                     EquipmentSlots = new List<int>{9,13},
-                    ToHitModifier = 10,
+                    MeleeToHit = 5,
                     MinBaseDamage = 10,
                     MaxBaseDamage = 20,
                     PercentSlashingDamage = 100,

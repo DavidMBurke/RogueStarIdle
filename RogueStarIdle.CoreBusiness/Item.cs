@@ -26,7 +26,11 @@
         public bool IsMelee { get; set; } = false;
         public bool IsRanged { get; set; } = false;
         public bool IsExplosive { get; set; } = false;
-        public int ToHitModifier { get; set; } = 0;
+        public bool IsPsychic { get; set; } = false;
+        public int MeleeToHit { get; set; } = 0;
+        public int RangedToHit { get; set; } = 0;
+        public int PsychicToHit { get; set; } = 0;
+        public int ExplosiveToHit { get; set; } = 0;
         // Base damage never actually used directly, but will be calculated when adding damage type totals to equipment stats
         public int MinBaseDamage { get; set; } = 0;
         public int MaxBaseDamage { get; set; } = 0;

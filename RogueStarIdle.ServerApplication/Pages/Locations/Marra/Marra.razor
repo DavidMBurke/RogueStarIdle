@@ -139,7 +139,7 @@
 
     void SelectHunt(List<MobSpawn> mobs)
     {
-        characterState.mainCharacter.Equipment.CalculateStats();
+        characterState.mainCharacter.Equipment.CalculateStats(characterState.mainCharacter);
         if (combatState.IsInCombat)
         {
             combatState.IsInCombat = false;

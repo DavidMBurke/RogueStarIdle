@@ -45,7 +45,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 characterState.mainCharacter.AttackCounter -= 1;
                 if (characterState.mainCharacter.AttackCounter <= 0)
                 {
-                    characterState.mainCharacter.Equipment.CalculateStats();
+                    characterState.mainCharacter.Equipment.CalculateStats(characterState.mainCharacter);
                     characterState.mainCharacter.Attack(SpawnedMobs.FirstOrDefault());
                     characterState.mainCharacter.AttackCounter = characterState.mainCharacter.Equipment.Stats.AttackSpeed;
                 }

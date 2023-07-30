@@ -34,7 +34,24 @@
             }
             Console.WriteLine($"Player attacks {defender.Mob.Name}!");
             Random rand = new Random();
-            int hitRoll = MeleeSkill.Level + rand.Next(20);
+            int hitRoll = rand.Next(20);
+            if (Equipment.Stats.IsUsingMelee)
+            {
+                hitRoll += Equipment.Stats.MeleeToHit;
+            }
+            if (Equipment.Stats.IsUsingRanged)
+            {
+                hitRoll += Equipment.Stats.RangedToHit;
+            }
+            if (Equipment.Stats.IsUsingExplosive)
+            {
+                hitRoll += Equipment.Stats.ExplosiveToHit;
+            }
+            if (Equipment.Stats.IsUsingPsychic)
+            {
+                hitRoll += Equipment.Stats.PsychicToHit;
+            }
+
             int blockRoll = defender.Mob.Stats.MeleeDefense + rand.Next(20);
             if (hitRoll > blockRoll)
             {

@@ -52,9 +52,15 @@
             return "Error";
         }
 
-        public void CalculateStats()
+        public void CalculateStats(Character character)
         {
-            Stats = new Stats();
+            Stats = new Stats()
+            {
+                MeleeToHit = character.MeleeSkill.Level,
+                RangedToHit = character.RangedSkill.Level,
+                PsychicToHit = character.PsychicSkill.Level,
+                ExplosiveToHit = character.ExplosivesSkill.Level
+            };
             foreach (var property in typeof(EquipmentSet).GetProperties())
             {
                 if (property.PropertyType == typeof(EquipmentSlot))
@@ -64,6 +70,10 @@
                     {
                         continue;
                     }
+                    Stats.MeleeToHit += slot.Item.MeleeToHit;
+                    Stats.RangedToHit += slot.Item.RangedToHit;
+                    Stats.PsychicToHit += slot.Item.PsychicToHit;
+                    Stats.ExplosiveToHit += slot.Item.ExplosiveToHit;
                     Stats.EnergyDefense += slot.Item.EnergyDefense;
                     Stats.KineticDefense += slot.Item.KineticDefense;
                     Stats.PsychicDefense += slot.Item.PsychicDefense;
@@ -96,6 +106,7 @@
                     Stats.CrushingDamageMax += slot.Item.PercentCrushingDamage * slot.Item.MaxBaseDamage / 100;
                 }
             }
+            SetAttackType(LeftWeapon.Item, RightWeapon.Item);
             if (LeftWeapon.Item != null && RightWeapon.Item != null)
             {
                 Stats.FireDamageMin = DualWieldPenalty(Stats.FireDamageMin);
@@ -113,12 +124,18 @@
                 Stats.CrushingDamageMin = DualWieldPenalty(Stats.CrushingDamageMin);
                 Stats.CrushingDamageMax = DualWieldPenalty(Stats.CrushingDamageMax);
                 Stats.AttackSpeed = (LeftWeapon.Item.AttackSpeed + RightWeapon.Item.AttackSpeed) / 2;
+                //Subtract average of previously added toHit of weapons so as to take average but not cancel bonuses from other equipment
+                Stats.MeleeToHit -= (LeftWeapon.Item.MeleeToHit + RightWeapon.Item.MeleeToHit) / 2;
+                Stats.RangedToHit -= (LeftWeapon.Item.RangedToHit + RightWeapon.Item.RangedToHit) / 2;
             }
             if (LeftWeapon.Item == null && RightWeapon.Item == null)
             {
                 Stats.AttackSpeed = 100; // 2 sec
+                Stats.IsUsingMelee = true;
+                Stats.CrushingDamageMin = 0;
+                Stats.CrushingDamageMax = character.MeleeSkill.Level;
             }
-            if (LeftWeapon.Item == null && RightWeapon.Item != null) { 
+            if (LeftWeapon.Item == null && RightWeapon.Item != null) {
                 Stats.AttackSpeed = RightWeapon.Item.AttackSpeed;
             }
             if (LeftWeapon.Item != null && RightWeapon.Item == null) {
@@ -129,6 +146,14 @@
         {
             int reducedDamage = (damage * 60) / 100;
             return reducedDamage;
+        }
+
+        public void SetAttackType(Item? leftWeapon = null, Item? rightWeapon = null)
+        {
+            Stats.IsUsingMelee = (leftWeapon?.IsMelee ?? false) || (rightWeapon?.IsMelee?? false);
+            Stats.IsUsingRanged = (leftWeapon?.IsRanged?? false) || (rightWeapon?.IsRanged?? false);
+            Stats.IsUsingPsychic = (leftWeapon?.IsPsychic?? false) || (rightWeapon?.IsPsychic?? false);
+            Stats.IsUsingExplosive = (leftWeapon?.IsExplosive?? false) || (rightWeapon?.IsExplosive?? false);
         }
     }
 
