@@ -82,7 +82,7 @@
         public int CalculateDamageByType(int min, int max, int dr)
         {
             Random rand = new Random();
-            int baseDamage = min + rand.Next(1 + max - min) * dr;
+            int baseDamage = min + rand.Next(1 + max - min);
             int reducedDamage = (baseDamage * (100 - dr)) / 100;
             return reducedDamage;
         }

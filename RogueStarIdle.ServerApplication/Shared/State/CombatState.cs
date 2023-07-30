@@ -31,17 +31,14 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 if (MobsAreSpawned == false)
                 {
                     respawnCounter -= 1;
-                    if (respawnCounter <= 0)
-                    {
-                        respawnCounter = respawnTime;
-                        MobsAreSpawned = true;
-                        SpawnMobs();
-                    } else
+                    if (respawnCounter > 0)
                     {
                         return;
                     }
+                    respawnCounter = respawnTime;
+                    MobsAreSpawned = true;
+                    SpawnMobs();
                 }
-            
                 characterState.mainCharacter.AttackCounter -= 1;
                 if (characterState.mainCharacter.AttackCounter <= 0)
                 {
@@ -60,6 +57,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     if (mobSpawn.Mob.Stats.CurrentHealth <= 0)
                     {
                         Console.WriteLine($"{mobSpawn.Mob.Name} has been slain!");
+                        Loot(mobSpawn);
                         SpawnedMobs.Remove(mobSpawn);
                     }
                 }
@@ -80,6 +78,22 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             }
             MobsAreSpawned = true;
             Console.WriteLine($"{PossibleMobs[0].Mob.Name} spawned!");
+        }
+
+        public void Loot(MobSpawn mobSpawn)
+        {
+
+            Random rand = new Random();
+            foreach (ItemDrop itemDrop in mobSpawn.Loot)
+            {
+                int roll = rand.Next(itemDrop.DropChanceDenominator);
+                if (roll < itemDrop.DropChanceNumerator) {
+                    int qty = itemDrop.QuantityRangeMin + rand.Next(itemDrop.QuantityRangeMax - itemDrop.QuantityRangeMin + 1);
+                    itemDrop.Item.Quantity = qty;
+                    inventoryState.AddToInventory(SelectedStorage, itemDrop.Item, itemDrop.Item.Quantity);
+                    Console.WriteLine($"{mobSpawn.Mob.Name} dropped {qty} X {itemDrop.Item.Name}");
+                }
+            }
         }
     }
 }

@@ -56,8 +56,8 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             {
                 foreach (var item in ScavengeableItems)
                 {
-                    int roll = rand.Next(item.DropChanceDenominator) + 1;
-                    if (roll <= item.DropChanceNumerator)
+                    int roll = rand.Next(item.DropChanceDenominator);
+                    if (roll < item.DropChanceNumerator)
                     {
                         int qty = rand.Next(item.QuantityRangeMax-item.QuantityRangeMin + 1) + item.QuantityRangeMin;
                         item.Item.Quantity = qty;
