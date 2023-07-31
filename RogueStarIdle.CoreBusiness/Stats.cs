@@ -11,7 +11,6 @@
         public int PsychicToHit { get; set; } = 0;
         public int ExplosiveToHit { get; set; } = 0;
         public int AttackSpeed { get; set; } = 0; //Ticks between attacks, lower is faster (1 tick = 20 ms)
-        public int CurrentHealth { get; set; } = 0;
         public int MaxHealth { get; set; } = 0;
         public int EnergyDefense { get; set; } = 0;
         public int KineticDefense { get; set; } = 0;

@@ -6,6 +6,7 @@
         public string Name { get; set; } = string.Empty;
         public EquipmentSet Equipment { get; set; } = new EquipmentSet();
         public int AttackCounter { get; set; }
+        public int CurrentHealth { get; set; } = 0;
         public Skill MeleeSkill { get; set; } = new Skill("Melee", 1, 0);
         public Skill RangedSkill { get; set; } = new Skill("Ranged", 1, 0);
         public Skill ExplosivesSkill { get; set; } = new Skill("Explosives", 1, 0);
@@ -57,8 +58,8 @@
             {
                 // TODO create method to total all damages and subtract all defenses
                 int damage = CalculateTotalDamage(Equipment.Stats, defender.Mob.Stats);
-                defender.Mob.Stats.CurrentHealth -= damage;
-                Console.WriteLine($"Player hits for {damage} damage! {defender.Mob.Name} HP: ({defender.Mob.Stats.CurrentHealth}/{defender.Mob.Stats.MaxHealth})");
+                defender.Mob.CurrentHealth -= damage;
+                Console.WriteLine($"Player hits for {damage} damage! {defender.Mob.Name} HP: ({defender.Mob.CurrentHealth}/{defender.Mob.Stats.MaxHealth})");
             } else
             {
                 Console.WriteLine("Player misses!");

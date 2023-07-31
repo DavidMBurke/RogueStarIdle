@@ -6,22 +6,23 @@
         public string Name { get; set; } = string.Empty;
         public Stats Stats { get; set; } = new Stats();
         public List<ItemDrop> Loot { get; set; } = new List<ItemDrop>();
+        public int CurrentHealth { get; set; } = 0;
+        public string Image { get; set; } = "";
         public void Attack(Character defender)
         {
             if (defender == null)
             {
                 return;
             }
-            Console.WriteLine($"Player attacks {defender.Name}!");
+            Console.WriteLine($"{Name} attacks player!");
             Random rand = new Random();
             int hitRoll = rand.Next(20);
             int blockRoll = defender.Equipment.Stats.MeleeDefense + rand.Next(20);
             if (hitRoll > blockRoll)
             {
-                // TODO create method to total all damages and subtract all defenses
                 int damage = CalculateTotalDamage(Stats, defender.Equipment.Stats);
-                defender.Equipment.Stats.CurrentHealth -= damage;
-                Console.WriteLine($"{Name} hits for {damage} damage! {defender.Name} HP: ({defender.Equipment.Stats.CurrentHealth}/{defender.Equipment.Stats.MaxHealth})");
+                defender.CurrentHealth -= damage;
+                Console.WriteLine($"{Name} hits for {damage} damage! {defender.Name} HP: ({defender.CurrentHealth}/{defender.Equipment.Stats.MaxHealth})");
             }
             else
             {
@@ -46,7 +47,7 @@
         public int CalculateDamageByType(int min, int max, int dr)
         {
             Random rand = new Random();
-            int baseDamage = min + rand.Next(1 + max - min) * dr;
+            int baseDamage = min + rand.Next(1 + max - min);
             int reducedDamage = (baseDamage * (100 - dr)) / 100;
             return reducedDamage;
         }

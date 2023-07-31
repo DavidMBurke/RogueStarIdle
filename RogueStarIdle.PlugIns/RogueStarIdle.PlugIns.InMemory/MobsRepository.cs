@@ -17,12 +17,13 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Name = "Tardihop",
                     Stats = new Stats()
                     {
-                        CurrentHealth = 100,
                         MaxHealth = 100,
                         SlashingDamageMin = 0,
                         SlashingDamageMax = 10,
                         AttackSpeed = 75 // 1.5 sec
                     },
+                    CurrentHealth = 100,
+                    Image = "/Images/Tardihop.png",
                     Loot = new List<ItemDrop>() 
                     {
                         new ItemDrop (itemsRepository.items[0], 1, 1, 1, 2),

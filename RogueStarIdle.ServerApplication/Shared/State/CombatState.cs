@@ -14,12 +14,19 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         public List<MobSpawn> SpawnedMobs = new List<MobSpawn>();
         public int respawnTime = 200; //4 sec
         public int respawnCounter = 200;
+        public event Func<Task> OnChange;
+        private async Task NotifyStateChanged()
+        {
+            if (OnChange == null)
+                return;
+            await OnChange.Invoke();
+        }
         public CombatState(InventoryState inventoryState, CharacterState characterState)
         {
             this.inventoryState = inventoryState;
             this.characterState = characterState;
         }
-        public void CombatTicks(int ticksElapsed)
+        public async void CombatTicks(int ticksElapsed)
         {
             if (!IsInCombat) { 
                 return; 
@@ -33,7 +40,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     respawnCounter -= 1;
                     if (respawnCounter > 0)
                     {
-                        return;
+                        continue;
                     }
                     respawnCounter = respawnTime;
                     MobsAreSpawned = true;
@@ -46,7 +53,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     characterState.mainCharacter.Attack(SpawnedMobs.FirstOrDefault());
                     characterState.mainCharacter.AttackCounter = characterState.mainCharacter.Equipment.Stats.AttackSpeed;
                 }
-                foreach (MobSpawn mobSpawn in SpawnedMobs)
+                foreach (MobSpawn mobSpawn in SpawnedMobs.ToList())
                 {
                     mobSpawn.AttackCounter -= 1;
                     if (mobSpawn.AttackCounter <= 0)
@@ -54,7 +61,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                         mobSpawn.Mob.Attack(characterState.mainCharacter);
                         mobSpawn.AttackCounter = mobSpawn.Mob.Stats.AttackSpeed;
                     }
-                    if (mobSpawn.Mob.Stats.CurrentHealth <= 0)
+                    if (mobSpawn.Mob.CurrentHealth <= 0)
                     {
                         Console.WriteLine($"{mobSpawn.Mob.Name} has been slain!");
                         Loot(mobSpawn);
@@ -66,6 +73,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     MobsAreSpawned = false;
                 }
             }
+            await NotifyStateChanged();
         }
 
         public void SpawnMobs()
@@ -74,7 +82,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             SpawnedMobs.Add(PossibleMobs[0]);
             foreach (MobSpawn mob in SpawnedMobs)
             {
-                mob.Mob.Stats.CurrentHealth = mob.Mob.Stats.MaxHealth;
+                mob.Mob.CurrentHealth = mob.Mob.Stats.MaxHealth;
             }
             MobsAreSpawned = true;
             Console.WriteLine($"{PossibleMobs[0].Mob.Name} spawned!");

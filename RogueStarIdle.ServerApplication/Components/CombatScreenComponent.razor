@@ -1,0 +1,35 @@
+﻿@using RogueStarIdle.ServerApplication.Shared.State;
+@using System.Diagnostics;
+@inject InventoryState inventoryState;
+@inject CombatState combatState;
+@inject CharacterState characterState;
+
+<div style="border:solid 2px black; height:270px; width:480px;">
+    <div class="row" style="height:100%; padding: 0;">
+        <div style="height:100%; width:50%; margin: 0; padding: 0;">
+            Player side
+            <CharacterComponent/>
+        </div>    
+        <div style="height:100%; width:50%; margin: 0; padding: 0;">
+            Enemy side
+            @foreach (MobSpawn mobSpawn in combatState.SpawnedMobs)
+            {
+                <EnemyComponent mob=mobSpawn.Mob/>
+            }
+        </div>
+    </div>
+</div>
+
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        combatState.OnChange += UpdateState;
+        await base.OnInitializedAsync();
+    }
+
+    async Task UpdateState()
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+}

@@ -22,26 +22,16 @@
                 <button @onclick='() => SelectLocation("darkChasm")'>Dark Chasm</button>
                 <button @onclick='() => SelectLocation("ancientFactory")'>Ancient Factory</button>
             </div>
-            <div class="column">
+            <div class="column" style="width: 85%;">
                 @switch (location)
                 {
                     case "azuraliPlains":
                         {
                             <h1> Azurali Plains </h1>
                             <div class="row">
-                                <div class="column">
-                                    <button @onclick="() => SelectScavenge(azuraliPlainsScavengeables)" style=@(scavengingState.IsScavenging? "background-color: green" : "")> Scavenge </button>
-                                    <button @onclick="() => SelectHunt(azuraliPlainsMobs)" style=@(combatState.IsInCombat? "background-color: green" : "")> Hunt </button>
-                                    <button @onclick="() => CollectAll()"> Collect gathered Items </button>
-                                </div>
-                                @if (inventoryState.AzuraliPlainsStorage.Any<Item>())
-                                {
-                                    <text>Items to collect:<br/></text>
-                                }
-                                @foreach (Item item in inventoryState.AzuraliPlainsStorage)
-                                {
-                                    <text>@item.Quantity x @item.Name<br/></text>
-                                }
+                                <button @onclick="() => SelectScavenge(azuraliPlainsScavengeables)" style=@("height: 30px; width: 33%;" + (scavengingState.IsScavenging? "background-color: green" : ""))> Scavenge </button>
+                                <button @onclick="() => SelectHunt(azuraliPlainsMobs)" style=@("height: 30px; width: 33%;" + (combatState.IsInCombat? "background-color: green" : ""))> Hunt </button>
+                                <button @onclick="() => CollectAll()" style="height: 30px; width:33%;"> Collect gathered Items </button>
                             </div>
 
                             break;
@@ -86,6 +76,22 @@
                             break;
                         }
                 }
+                <div class="row">
+                    @if (combatState.IsInCombat)
+                    {
+                        <CombatScreenComponent />
+                    }
+                    <div class="column">
+                        @if (inventoryState.AzuraliPlainsStorage.Any<Item>())
+                        {
+                            <text>Items to collect:<br/></text>
+                        }
+                        @foreach (Item item in inventoryState.AzuraliPlainsStorage)
+                        {
+                            <text>@item.Quantity x @item.Name<br/></text>
+                        }                    
+                    </div>
+                </div>
             </div>
         </div>
     </div>

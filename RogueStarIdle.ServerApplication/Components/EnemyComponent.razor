@@ -1,0 +1,44 @@
+﻿@using RogueStarIdle.ServerApplication.Shared.State;
+@using System.Diagnostics;
+
+<div style="display: flex; justify-content: center; border:solid 1px red; height:30%; width:30%;">
+    <div class="column" style="display: flex; justify-content: center; width: 100%; height: 100%">
+        <img style="width: 100%; transform: scaleX(-1)" src=@mob.Image />
+        <div style=@("border: solid black 1px; width: 100%; height: 12%; display:flex; align-items: center; justify-content: center;" + HealthBarStyle(mob.CurrentHealth, mob.Stats.MaxHealth))>
+            <text style="font-size: 8px; align-content: center; text-align: center;">@(mob.CurrentHealth) / @(mob.Stats.MaxHealth)</text>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public Mob mob { get; set; }
+
+    private string HealthBarStyle(int currentHealth, int maxHealth)
+    {
+        int percent = currentHealth * 100 / maxHealth;
+        string color;
+        switch (percent)
+        {
+            case var c when percent >= 66: {
+                    color = "green";
+                    break;
+                }
+            case var c when (percent < 66 && percent >= 33): {
+                    color = "yellow";
+                    break;
+                }
+            case var c when (percent < 33 && percent >= 0): {
+                    color = "red";
+                    break;
+                }
+            default:
+                {
+                    color = "transparent";
+                    break;
+                };
+        }
+        return $"background: linear-gradient(to right, {color} {percent}%, transparent {percent}%);";
+    }
+}

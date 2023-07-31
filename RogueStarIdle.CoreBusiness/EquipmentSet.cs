@@ -1,4 +1,6 @@
-﻿namespace RogueStarIdle.CoreBusiness
+﻿using System.Reflection.Metadata;
+
+namespace RogueStarIdle.CoreBusiness
 {
     public class EquipmentSet
     {
@@ -59,7 +61,8 @@
                 MeleeToHit = character.MeleeSkill.Level,
                 RangedToHit = character.RangedSkill.Level,
                 PsychicToHit = character.PsychicSkill.Level,
-                ExplosiveToHit = character.ExplosivesSkill.Level
+                ExplosiveToHit = character.ExplosivesSkill.Level,
+                MaxHealth = GetTotalLevel(character)
             };
             foreach (var property in typeof(EquipmentSet).GetProperties())
             {
@@ -154,6 +157,20 @@
             Stats.IsUsingRanged = (leftWeapon?.IsRanged?? false) || (rightWeapon?.IsRanged?? false);
             Stats.IsUsingPsychic = (leftWeapon?.IsPsychic?? false) || (rightWeapon?.IsPsychic?? false);
             Stats.IsUsingExplosive = (leftWeapon?.IsExplosive?? false) || (rightWeapon?.IsExplosive?? false);
+        }
+
+        public int GetTotalLevel(Character character)
+        {
+            int totalLevel = 0;
+            foreach (var property in typeof(Character).GetProperties())
+            {
+                if (property.PropertyType == typeof(Skill))
+                {
+                    Skill skill = (Skill)property.GetValue(character);
+                    totalLevel += skill.Level;
+                }
+            }
+            return totalLevel;
         }
     }
 
