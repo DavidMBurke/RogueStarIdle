@@ -1,0 +1,21 @@
+﻿@using RogueStarIdle.ServerApplication.Shared.State;
+@using System.Diagnostics;
+
+<div style=@($"display: flex; justify-content: center; border:solid 1px red; height:{size}%; width:{size}%;")>
+    <div class="column" style="display: flex; justify-content: center; width: 100%; height: 100%">
+        <img style="width: 100%;" src=@character.Image />
+        <div style="width: 100%; height: 8%;">
+            <HealthBar currentHealth=character.CurrentHealth maxHealth=character.Equipment.Stats.MaxHealth/>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public Character character { get; set; }
+
+    [Parameter]
+    public string size { get; set; }
+
+}

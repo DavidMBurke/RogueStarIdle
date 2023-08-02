@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33403.182
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RogueStarIdle.ServerApplication", "RogueStarIdle.ServerApplication\RogueStarIdle.ServerApplication.csproj", "{4DA1FCDE-22DD-4973-958A-250D31D7BED7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RogueStarIdle.ServerApplication", "RogueStarIdle.ServerApplication\RogueStarIdle.ServerApplication.csproj", "{4DA1FCDE-22DD-4973-958A-250D31D7BED7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RogueStarIdle.UseCases", "RogueStarIdle.UseCases\RogueStarIdle.UseCases.csproj", "{2C725AF6-991D-4CE0-95B7-9163DAAA173E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RogueStarIdle.UseCases", "RogueStarIdle.UseCases\RogueStarIdle.UseCases.csproj", "{2C725AF6-991D-4CE0-95B7-9163DAAA173E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RogueStarIdle.CoreBusiness", "RogueStarIdle.CoreBusiness\RogueStarIdle.CoreBusiness.csproj", "{2962372E-C836-4D6C-9115-1B560AB39E88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RogueStarIdle.CoreBusiness", "RogueStarIdle.CoreBusiness\RogueStarIdle.CoreBusiness.csproj", "{2962372E-C836-4D6C-9115-1B560AB39E88}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RogueStarIdle.PlugIns", "RogueStarIdle.PlugIns", "{605B455C-5DCA-441B-BDC6-E03DD72D974F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RogueStarIdle.PlugIns.InMemory", "RogueStarIdle.PlugIns\RogueStarIdle.PlugIns.InMemory\RogueStarIdle.PlugIns.InMemory.csproj", "{C429530F-0252-440C-8D45-6E66F130BD46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RogueStarIdle.PlugIns.InMemory", "RogueStarIdle.PlugIns\RogueStarIdle.PlugIns.InMemory\RogueStarIdle.PlugIns.InMemory.csproj", "{C429530F-0252-440C-8D45-6E66F130BD46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
