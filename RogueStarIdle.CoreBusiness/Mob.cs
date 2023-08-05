@@ -17,7 +17,7 @@
             Console.WriteLine($"{Name} attacks player!");
             Random rand = new Random();
             int hitRoll = rand.Next(20);
-            int blockRoll = defender.Equipment.Stats.MeleeDefense + rand.Next(20);
+            int blockRoll = defender.Equipment.Stats.MeleeDefense + defender.BlockSkill.Level + rand.Next(20);
             if (hitRoll > blockRoll)
             {
                 int damage = CalculateTotalDamage(Stats, defender.Equipment.Stats);
