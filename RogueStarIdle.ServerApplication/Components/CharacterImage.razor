@@ -1,0 +1,57 @@
+﻿@using System.Timers;
+
+<div style="position: relative; width: 100%;">
+    @foreach (var image in selectAnimation())
+    {
+            <img src="@image" alt="Image" style="width: 100%; position: absolute; left: 0; top: 0;" />
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Character character { get; set; } = new Character();
+    public Timer attackAnimationTimer = new Timer(500);
+    public string[] selectedAnimation = new string[] { };
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        attackAnimationTimer.AutoReset = false;
+    }
+    private string[] stationaryImageUrls = new string[]
+    {
+        "/Images/Player/Legs.png",
+        "/Images/Player/Head.png",
+        "/Images/Player/Sword.png",
+        "/Images/Player/Pants.png",
+        "/Images/Player/Shirt.png",
+        "/Images/Player/Arms.png",
+        "/Images/Player/Shoes.png"
+    };
+
+    private string[] attackImageUrls = new string[]
+    {
+        "/Images/Player/Attack_Legs.gif",
+        "/Images/Player/Attack_Head.gif",
+        "/Images/Player/Attack_Sword.gif",
+        "/Images/Player/Attack_Pants.gif",
+        "/Images/Player/Attack_Shirt.gif",
+        "/Images/Player/Attack_Arms.gif",
+        "/Images/Player/Attack_Shoes.gif"
+    };
+
+    public string[] selectAnimation()
+    {
+        if (attackAnimationTimer.Enabled)
+        {
+            return attackImageUrls;
+        }
+        if (character.TriggerAttackAnimation)
+        {
+            character.TriggerAttackAnimation = false;
+            attackAnimationTimer.Start();
+            return attackImageUrls;
+        };
+        return stationaryImageUrls;
+    }
+}

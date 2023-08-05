@@ -9,17 +9,17 @@
         <div style="height:100%; width:45%; margin: 0; padding: 0; display: flex; align-items: flex-end; justify-content: flex-end;">
             <div class="column">
                 <div class="row">
-                     <CombatCharacterComponent character=@(characterState.mainCharacter ?? null) size="50" />
-                    <CombatCharacterComponent character=@(characterState.mainCharacter ?? null) size="50" />
+                    <CombatCharacterComponent character=@(GetCharacterOrNull(characterState.Characters, 1)) size="50" />
+                    <CombatCharacterComponent character=@(GetCharacterOrNull(characterState.Characters, 0)) size="50" />
                 </div>
                 <div class="row" style="margin-top: -25%">
                     <div style="height: 50%; width: 25%"/>
-                    <CombatCharacterComponent character=@(characterState.mainCharacter ?? null) size="50" />
+                    <CombatCharacterComponent character=@(characterState.MainCharacter ?? null) size="50" />
                     <div style="height: 50%; width: 25%" />
                 </div>
                 <div class="row" style="margin-top: -25% ">
-                    <CombatCharacterComponent character=@(characterState.mainCharacter ?? null) size="50" />
-                    <CombatCharacterComponent character=@(characterState.mainCharacter ?? null) size="50" />
+                    <CombatCharacterComponent character=@(GetCharacterOrNull(characterState.Characters, 3)) size="50" />
+                    <CombatCharacterComponent character=@(GetCharacterOrNull(characterState.Characters, 2)) size="50" />
                 </div>
             </div>
         </div>
@@ -55,5 +55,14 @@
     async Task UpdateState()
     {
         await InvokeAsync(StateHasChanged);
+    }
+
+    public Character? GetCharacterOrNull (List<Character> characters, int i)
+    {
+        if (i > characters.Count() - 1)
+        {
+            return null;
+        }
+        return characters[i];
     }
 }

@@ -4,7 +4,7 @@
 
 <div class="page-content-container">
     <div class="column" style="width: 100%; height: 100%; background-color: cornflowerblue; overflow-y: scroll; align-content: center; ">
-        @displayAllStats(characterState.mainCharacter)
+        @displayAllStats(characterState.MainCharacter)
     </div>
 </div>
 
@@ -17,7 +17,7 @@
             {
                 continue;
             }
-            (property.GetValue(characterState.mainCharacter) as Skill).OnChange += UpdateState;
+            (property.GetValue(characterState.MainCharacter) as Skill).OnChange += UpdateState;
         }
         await base.OnInitializedAsync();
     }
@@ -35,7 +35,7 @@
             {
                 continue;
             }
-            (property.GetValue(characterState.mainCharacter) as Skill).OnChange -= UpdateState;
+            (property.GetValue(characterState.MainCharacter) as Skill).OnChange -= UpdateState;
         }
     }
 

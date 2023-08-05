@@ -46,19 +46,19 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     MobsAreSpawned = true;
                     SpawnMobs();
                 }
-                characterState.mainCharacter.AttackCounter -= 1;
-                if (characterState.mainCharacter.AttackCounter <= 0)
+                characterState.MainCharacter.AttackCounter -= 1;
+                if (characterState.MainCharacter.AttackCounter <= 0)
                 {
-                    characterState.mainCharacter.Equipment.CalculateStats(characterState.mainCharacter);
-                    characterState.mainCharacter.Attack(SpawnedMobs.FirstOrDefault());
-                    characterState.mainCharacter.AttackCounter = characterState.mainCharacter.Equipment.Stats.AttackSpeed;
+                    characterState.MainCharacter.Equipment.CalculateStats(characterState.MainCharacter);
+                    characterState.MainCharacter.Attack(SpawnedMobs.FirstOrDefault());
+                    characterState.MainCharacter.AttackCounter = characterState.MainCharacter.Equipment.Stats.AttackSpeed;
                 }
                 foreach (MobSpawn mobSpawn in SpawnedMobs.ToList())
                 {
                     mobSpawn.AttackCounter -= 1;
                     if (mobSpawn.AttackCounter <= 0)
                     {
-                        mobSpawn.Mob.Attack(characterState.mainCharacter);
+                        mobSpawn.Mob.Attack(characterState.MainCharacter);
                         mobSpawn.AttackCounter = mobSpawn.Mob.Stats.AttackSpeed;
                     }
                     if (mobSpawn.Mob.CurrentHealth <= 0)

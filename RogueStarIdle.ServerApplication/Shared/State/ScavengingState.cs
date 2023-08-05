@@ -72,8 +72,8 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     inventoryState.AddToInventory(SelectedStorage, item, item.Quantity);
                 }
             }
-            characterState.mainCharacter.SurvivalSkill.Xp += SurvivalXpAtLocation * attempts;
-            characterState.mainCharacter.SurvivalSkill.UpdateLevel();
+            characterState.MainCharacter.SurvivalSkill.Xp += SurvivalXpAtLocation * attempts;
+            characterState.MainCharacter.SurvivalSkill.UpdateLevel();
             TicksUntilScavengeAttempt = TicksBetweenScavengeAttempts;
             return;
         }

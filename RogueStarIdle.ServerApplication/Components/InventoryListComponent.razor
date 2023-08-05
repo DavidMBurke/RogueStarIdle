@@ -92,8 +92,8 @@
             }
             @foreach (var slot in selectedItem.EquipmentSlots)
             {
-                <button @onclick="() => EquipItem(selectedItem, slot, characterState.mainCharacter.Equipment)">
-                    Equip @characterState.mainCharacter.Equipment.getSlotNameById(slot)
+                <button @onclick="() => EquipItem(selectedItem, slot, characterState.MainCharacter.Equipment)">
+                    Equip @characterState.MainCharacter.Equipment.getSlotNameById(slot)
                 </button>
             }
         }

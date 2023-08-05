@@ -7,6 +7,7 @@
         public EquipmentSet Equipment { get; set; } = new EquipmentSet();
         public int AttackCounter { get; set; }
         public int CurrentHealth { get; set; } = 0;
+        public bool TriggerAttackAnimation { get; set; } = false;
         public Skill MeleeSkill { get; set; } = new Skill("Melee", 1, 0);
         public Skill RangedSkill { get; set; } = new Skill("Ranged", 1, 0);
         public Skill ExplosivesSkill { get; set; } = new Skill("Explosives", 1, 0);
@@ -30,6 +31,7 @@
 
         public void Attack(MobSpawn defender)
         {
+            TriggerAttackAnimation = true;
             if (defender == null)
             {
                 return;

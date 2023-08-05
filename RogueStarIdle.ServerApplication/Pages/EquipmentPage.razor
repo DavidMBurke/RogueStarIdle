@@ -103,7 +103,7 @@
 
     protected override void OnInitialized()
     {
-        selectedCharacter = characterState.mainCharacter;
+        selectedCharacter = characterState.MainCharacter;
     }
 
     private string displayEquipment(string itemName, string slotName)
@@ -130,7 +130,7 @@
 
     private MarkupString getTotalEquipmentStatMarkup(EquipmentSet equipment)
     {
-        equipment.CalculateStats(characterState.mainCharacter);
+        equipment.CalculateStats(characterState.MainCharacter);
         Stats s = equipment.Stats;
         string markup = "";
         markup += $"<p>Attack Speed: {s.AttackSpeed}";
