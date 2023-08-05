@@ -59,7 +59,13 @@ namespace RogueStarIdle.PlugIns.InMemory
                     MaxBaseDamage = 20,
                     PercentSlashingDamage = 100,
                     QualityLevel = 1,
-                    MaxQualityLevel = 15},
+                    MaxQualityLevel = 15,
+                    Images = new ImageUrls
+                        {
+                            Stationary = "/Images/Player/Sword.png",
+                            Attacking2HandMelee = "/Images/Player/Attack_Sword.gif"
+                        }
+                    },
                 new Item {
                     Id = 5,
                     Name = "Tardihop Fur Hat",
@@ -107,7 +113,13 @@ namespace RogueStarIdle.PlugIns.InMemory
                     EnergyDamageReduction = 1,
                     ShockDamageReduction = 5,
                     QualityLevel = 1,
-                    MaxQualityLevel = 15},
+                    MaxQualityLevel = 15,
+                    Images= new ImageUrls
+                        {
+                            Stationary = "/Images/Player/Shirt_Pink.png",
+                            Attacking2HandMelee = "/Images/Player/Attack_Shirt_Pink.gif"
+                        }
+                    },
                 new Item {
                     Id = 8,
                     Name = "Tardihop Fur Pants",

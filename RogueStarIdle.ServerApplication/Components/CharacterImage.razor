@@ -12,22 +12,49 @@
     public Character character { get; set; } = new Character();
     public Timer attackAnimationTimer = new Timer(500);
     public string[] selectedAnimation = new string[] { };
+    private string[] stationaryImageUrls = new string[]{};
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
         attackAnimationTimer.AutoReset = false;
-    }
-    private string[] stationaryImageUrls = new string[]
-    {
-        "/Images/Player/Legs.png",
-        "/Images/Player/Head.png",
-        "/Images/Player/Sword.png",
-        "/Images/Player/Pants.png",
-        "/Images/Player/Shirt.png",
-        "/Images/Player/Arms.png",
-        "/Images/Player/Shoes.png"
+        stationaryImageUrls = new string[] {
+            character.Images.Legs.Stationary,
+            character.Images.Head.Stationary,
+            character.Images.Eyes.Stationary,
+            character.Images.Mouth.Stationary,
+            character.Images.Nose.Stationary,
+            character.Images.Hair.Stationary,
+            SelectImageUrl(character.Images.LeftArm.Stationary, character.Equipment.Torso.Item?.AuxImages1.Stationary ?? ""),
+            character.Equipment.LeftWeapon.Item?.Images.Stationary ?? "",
+            SelectImageUrl(character.Images.Torso.Stationary, character.Equipment.Torso.Item?.Images.Stationary ?? ""),
+            SelectImageUrl(character.Images.RightArm.Stationary, character.Equipment.Torso.Item?.AuxImages2.Stationary ?? ""),
+            character.Equipment.RightWeapon.Item?.Images.Stationary ?? "",
+            SelectImageUrl(character.Images.Legs.Stationary, character.Equipment.Legs.Item?.Images.Stationary ?? ""),
+            SelectImageUrl(character.Images.Feet.Stationary, character.Equipment.Feet.Item?.Images.Stationary ?? ""),
+            character.Images.Hands.Stationary,
+            character.Equipment.RightWeapon.Item?.Images.Stationary ?? "" 
     };
+        attackImageUrls = new string[]
+        {
+            character.Images.Legs.Attacking2HandMelee,
+            character.Images.Head.Attacking2HandMelee,
+            character.Images.Eyes.Attacking2HandMelee,
+            character.Images.Mouth.Attacking2HandMelee,
+            character.Images.Nose.Attacking2HandMelee,
+            character.Images.Hair.Attacking2HandMelee,
+            SelectImageUrl(character.Images.LeftArm.Attacking2HandMelee, character.Equipment.Torso.Item?.AuxImages1.Attacking2HandMelee ?? ""),
+            character.Equipment.LeftWeapon.Item?.Images.Attacking2HandMelee ?? "",
+            SelectImageUrl(character.Images.Torso.Attacking2HandMelee, character.Equipment.Torso.Item?.Images.Attacking2HandMelee ?? ""),
+            SelectImageUrl(character.Images.RightArm.Attacking2HandMelee, character.Equipment.Torso.Item?.AuxImages2.Attacking2HandMelee ?? ""),
+            character.Equipment.RightWeapon.Item?.Images.Attacking2HandMelee ?? "",
+            SelectImageUrl(character.Images.Legs.Attacking2HandMelee, character.Equipment.Legs.Item?.Images.Attacking2HandMelee ?? ""),
+            SelectImageUrl(character.Images.Feet.Attacking2HandMelee, character.Equipment.Feet.Item?.Images.Attacking2HandMelee ?? ""),
+            character.Images.Hands.Attacking2HandMelee,
+            character.Equipment.RightWeapon.Item?.Images.Attacking2HandMelee ?? ""
+        };
+    }
+
 
     private string[] attackImageUrls = new string[]
     {
@@ -53,5 +80,15 @@
             return attackImageUrls;
         };
         return stationaryImageUrls;
+    }
+
+    //if no equipment or empty string for url, return character default
+    public string SelectImageUrl(string character, string equipment)
+    {
+        if (equipment == String.Empty)
+        {
+            return character;
+        }
+        return equipment;
     }
 }

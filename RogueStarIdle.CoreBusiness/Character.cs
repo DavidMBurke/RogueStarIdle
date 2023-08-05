@@ -27,7 +27,7 @@
         public Skill StealthSkill { get; set; } = new Skill("Stealth", 1, 0);
         public Skill HerbalismSkill { get; set; } = new Skill("Herbalism", 1, 0);
         public Skill ScrappingSkill { get; set; } = new Skill("Scrapping", 1, 0);
-        public string Image = "";
+        public CharacterImageUrls Images { get; set; } = new CharacterImageUrls();
 
         public void Attack(MobSpawn defender)
         {

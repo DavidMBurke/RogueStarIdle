@@ -67,7 +67,10 @@
         public int PoisonDamageReduction { get; set; } = 0;
         public int AcidDamageReduction { get; set; } = 0;
         public int ShockDamageReduction { get; set; } = 0;
-
+        public ImageUrls Images { get; set; } = new ImageUrls();
+        // AuxImages for cases where more than one body part animation covered by same equipment, ex: Tops covering torso and both arms
+        public ImageUrls AuxImages1 { get; set; } = new ImageUrls();
+        public ImageUrls AuxImages2 { get; set; } = new ImageUrls();
         // ************CONSUMABLES**************
 
         public Item CreateCopy()

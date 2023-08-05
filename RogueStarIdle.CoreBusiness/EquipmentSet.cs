@@ -6,7 +6,7 @@ namespace RogueStarIdle.CoreBusiness
     {
         public EquipmentSlot Head { get; set; } = new EquipmentSlot(1, null);
         public EquipmentSlot Neck { get; set; } = new EquipmentSlot(2, null);
-        public EquipmentSlot Chest { get; set; } = new EquipmentSlot(3, null);
+        public EquipmentSlot Torso { get; set; } = new EquipmentSlot(3, null);
         public EquipmentSlot Belt { get; set; } = new EquipmentSlot(4, null);
         public EquipmentSlot Legs { get; set; } = new EquipmentSlot(5, null);
         public EquipmentSlot Feet { get; set; } = new EquipmentSlot(6, null);
