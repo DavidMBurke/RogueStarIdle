@@ -20,28 +20,36 @@ namespace RogueStarIdle.PlugIns.InMemory
                     BuyPrice = 10,
                     SellPrice = 50,
                     Tags = new List<string>{"Component", "Scrap"},
-                    Quantity = 1 },
+                    Quantity = 1,
+                    Thumbnail = "/Images/Thumbnails/AnimalParts.png"
+                    },
                 new Item {
                     Id = 1,
                     Name = "Animal Skins",
                     BuyPrice = 10,
                     SellPrice = 50,
                     Tags = new List<string>{"Component", "Scrap"},
-                    Quantity = 1 },
+                    Quantity = 1,
+                    Thumbnail = "/Images/Thumbnails/AnimalSkins.png"
+                    },
                 new Item {
                     Id = 2,
                     Name = "Small Bones",
                     BuyPrice = 10,
                     SellPrice = 50,
                     Tags = new List<string>{"Tardihop", "Component"},
-                    Quantity = 1 },
+                    Quantity = 1,
+                    Thumbnail = "/Images/Thumbnails/SmallBones.png"
+                    },
                 new Item {
                     Id = 3,
                     Name = "Azurali Grass",
                     BuyPrice = 10,
                     SellPrice = 50,
                     Tags = new List<string>{"Plant", "Forageable"},
-                    Quantity = 1 },
+                    Quantity = 1,
+                    Thumbnail = "/Images/Thumbnails/AzuraliGrass.png"
+                    },
                 new Item {
                     Id = 4,
                     Name = "Bone Knife",
@@ -60,6 +68,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     PercentSlashingDamage = 100,
                     QualityLevel = 1,
                     MaxQualityLevel = 15,
+                    Thumbnail = "/Images/Thumbnails/BoneKnife.png",
                     Images = new ImageUrls
                         {
                             Stationary = "/Images/Player/Sword.png",
@@ -81,7 +90,9 @@ namespace RogueStarIdle.PlugIns.InMemory
                     EnergyDamageReduction = 1,
                     ShockDamageReduction = 5,
                     QualityLevel = 1,
-                    MaxQualityLevel = 15},
+                    MaxQualityLevel = 15,
+                    Thumbnail = "/Images/Thumbnails/TardihopFurHat.png"
+                    },
                 new Item {
                     Id = 6,
                     Name = "Tardihop Fur Gloves",
@@ -97,13 +108,15 @@ namespace RogueStarIdle.PlugIns.InMemory
                     EnergyDamageReduction = 1,
                     ShockDamageReduction = 5,
                     QualityLevel = 1,
-                    MaxQualityLevel = 15},
+                    MaxQualityLevel = 15,
+                    Thumbnail = "/Images/Thumbnails/TardihopFurGloves.png"
+                    },
                 new Item {
                     Id = 7,
                     Name = "Tardihop Fur Shirt",
                     BuyPrice = 10,
                     SellPrice = 10,
-                    Tags = new List<string> {"Armor", "Head"},
+                    Tags = new List<string> {"Armor", "Torso"},
                     IsEquippable = true,
                     Quantity = 1,
                     EquipmentSlots = new List<int>{3},
@@ -114,6 +127,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     ShockDamageReduction = 5,
                     QualityLevel = 1,
                     MaxQualityLevel = 15,
+                    Thumbnail = "/Images/Thumbnails/TardihopFurShirt.png",
                     Images= new ImageUrls
                         {
                             Stationary = "/Images/Player/Shirt_Pink.png",
@@ -125,7 +139,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Name = "Tardihop Fur Pants",
                     BuyPrice = 10,
                     SellPrice = 10,
-                    Tags = new List<string> {"Armor", "Head"},
+                    Tags = new List<string> {"Armor", "Legs"},
                     IsEquippable = true,
                     Quantity = 1,
                     EquipmentSlots = new List<int>{5},
@@ -135,13 +149,15 @@ namespace RogueStarIdle.PlugIns.InMemory
                     EnergyDamageReduction = 1,
                     ShockDamageReduction = 5,
                     QualityLevel = 1,
-                    MaxQualityLevel = 15},
+                    MaxQualityLevel = 15,
+                    Thumbnail = "Images/Thumbnails/TardihopFurPants.png"
+                    },
                 new Item {
                     Id = 9,
                     Name = "Tardihop Fur Boots",
                     BuyPrice = 10,
                     SellPrice = 10,
-                    Tags = new List<string> {"Armor", "Head"},
+                    Tags = new List<string> {"Armor", "Feet"},
                     IsEquippable = true,
                     Quantity = 1,
                     EquipmentSlots = new List<int>{6},
@@ -151,13 +167,15 @@ namespace RogueStarIdle.PlugIns.InMemory
                     EnergyDamageReduction = 1,
                     ShockDamageReduction = 5,
                     QualityLevel = 1,
-                    MaxQualityLevel = 15},
+                    MaxQualityLevel = 15,
+                    Thumbnail = "Images/Thumbnails/TardihopFurBoots.png"
+                    },
                 new Item {
                     Id = 10,
                     Name = "Carapig Chitin Mask",
                     BuyPrice = 10,
                     SellPrice = 10,
-                    Tags = new List<string> {"Armor", "Head"},
+                    Tags = new List<string> {"Armor", "Face"},
                     IsEquippable = true,
                     Quantity = 1,
                     EquipmentSlots = new List<int>{1},
@@ -167,13 +185,15 @@ namespace RogueStarIdle.PlugIns.InMemory
                     EnergyDamageReduction = 1,
                     ShockDamageReduction = 5,
                     QualityLevel = 1,
-                    MaxQualityLevel = 15},
+                    MaxQualityLevel = 15,
+                    Thumbnail = "Images/Thumbnails/CarapigChitinMask.png"
+                    },
                 new Item {
                     Id = 11,
                     Name = "Carapig Chitin Armor Top",
                     BuyPrice = 10,
                     SellPrice = 10,
-                    Tags = new List<string> {"Armor", "Chest"},
+                    Tags = new List<string> {"Armor", "Torso"},
                     IsEquippable = true,
                     Quantity = 1,
                     EquipmentSlots = new List<int>{3},
@@ -183,7 +203,9 @@ namespace RogueStarIdle.PlugIns.InMemory
                     EnergyDamageReduction = 1,
                     ShockDamageReduction = 5,
                     QualityLevel = 1,
-                    MaxQualityLevel = 15},
+                    MaxQualityLevel = 15,
+                    Thumbnail = "Images/Thumbnails/CarapigChitinArmorTop.png"
+                    },
                 new Item {
                     Id = 12,
                     Name = "Carapig Chitin Armor Legs",
@@ -199,21 +221,25 @@ namespace RogueStarIdle.PlugIns.InMemory
                     EnergyDamageReduction = 1,
                     ShockDamageReduction = 5,
                     QualityLevel = 1,
-                    MaxQualityLevel = 15},
+                    MaxQualityLevel = 15,
+                    Thumbnail = "Images/Thumbnails/CarapigChitinArmorLegs.png"
+                    },
                 new Item {
                     Id = 13,
                     Name = "Tardihop Guts",
                     BuyPrice = 10,
                     SellPrice = 5,
                     Tags = new List<string>{"Tardihop", "Component"},
-                    Quantity = 1},
+                    Quantity = 1
+                    },
                 new Item {
                     Id = 14,
                     Name = "Stick",
                     BuyPrice = 2,
                     SellPrice = 1,
                     Tags = new List<string>{"Plant", "Forageable"},
-                    Quantity = 1 },
+                    Quantity = 1
+                    }
             };
         }
         public async Task<IEnumerable<Item>> GetItemsByNameAsync(string name)

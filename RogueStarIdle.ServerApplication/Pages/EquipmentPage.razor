@@ -7,74 +7,74 @@
     <div class="row" style="width:auto; height: 75px;">
         <div class="inventory-grid-container">
             <div class="equipment-row">
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.BrainCybernetic1)">@displayEquipment(selectedCharacter.Equipment.BrainCybernetic1.Item?.Name, "Brain Cybernetic 1")</div>
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.BrainCybernetic2)">@displayEquipment(selectedCharacter.Equipment.BrainCybernetic2.Item?.Name, "Brain Cybernetic 2")</div>
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.BrainCybernetic3)">@displayEquipment(selectedCharacter.Equipment.BrainCybernetic3.Item?.Name, "Brain Cybernetic 3")</div>
+                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.BrainCybernetic1)">@displayEquipment(selectedCharacter.Equipment.BrainCybernetic1.Item?.Thumbnail, "Brain Cybernetic 1")</div>
+                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.BrainCybernetic2)">@displayEquipment(selectedCharacter.Equipment.BrainCybernetic2.Item?.Thumbnail, "Brain Cybernetic 2")</div>
+                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.BrainCybernetic3)">@displayEquipment(selectedCharacter.Equipment.BrainCybernetic3.Item?.Thumbnail, "Brain Cybernetic 3")</div>
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.Droid)">@displayEquipment(selectedCharacter.Equipment.Droid.Item?.Name, "Droid")</div>
+                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.Droid)">@displayEquipment(selectedCharacter.Equipment.Droid.Item?.Thumbnail, "Droid")</div>
             </div>
             <div class="equipment-row">
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.BodyCybernetic1)">@displayEquipment(selectedCharacter.Equipment.BodyCybernetic1.Item?.Name, "Body Cybernetic 1")</div>
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.BodyCybernetic2)">@displayEquipment(selectedCharacter.Equipment.BodyCybernetic2.Item?.Name, "Body Cybernetic 2")</div>
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.BodyCybernetic3)">@displayEquipment(selectedCharacter.Equipment.BodyCybernetic3.Item?.Name, "Body Cybernetic 3")</div>
+                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.BodyCybernetic1)">@displayEquipment(selectedCharacter.Equipment.BodyCybernetic1.Item?.Thumbnail, "Body Cybernetic 1")</div>
+                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.BodyCybernetic2)">@displayEquipment(selectedCharacter.Equipment.BodyCybernetic2.Item?.Thumbnail, "Body Cybernetic 2")</div>
+                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.BodyCybernetic3)">@displayEquipment(selectedCharacter.Equipment.BodyCybernetic3.Item?.Thumbnail, "Body Cybernetic 3")</div>
                 <div class="inventory-spacer" />
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Head)"> @displayEquipment(selectedCharacter.Equipment.Head.Item?.Name, "Head") </div>
+                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Head)"> @displayEquipment(selectedCharacter.Equipment.Head.Item?.Thumbnail, "Head") </div>
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.DroidMod)">@displayEquipment(selectedCharacter.Equipment.DroidMod.Item?.Name, "Droid Mod")</div>
+                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.DroidMod)">@displayEquipment(selectedCharacter.Equipment.DroidMod.Item?.Thumbnail, "Droid Mod")</div>
             </div>
             <div class="equipment-row">
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Neck)">@displayEquipment(selectedCharacter.Equipment.Neck.Item?.Name, "Neck")</div>
+                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Neck)">@displayEquipment(selectedCharacter.Equipment.Neck.Item?.Thumbnail, "Neck")</div>
                 <div class="inventory-spacer" />
-                <div class="inventory-spacer" />
-                <div class="inventory-spacer" />
-            </div>
-            <div class="equipment-row">
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.LeftWeapon)">@displayEquipment(selectedCharacter.Equipment.LeftWeapon.Item?.Name, "Left Weapon")</div>
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.RightWeapon)">@displayEquipment(selectedCharacter.Equipment.RightWeapon.Item?.Name, "Right Weapon")</div>
-                <div class="inventory-spacer" />
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Back)">@displayEquipment(selectedCharacter.Equipment.Back.Item?.Name, "Back")</div>
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Torso)">@displayEquipment(selectedCharacter.Equipment.Torso.Item?.Name, "Chest")</div>
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.OmniLinkMod)">@displayEquipment(selectedCharacter.Equipment.OmniLinkMod.Item?.Name, "OmniLink Mod")</div>
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
             </div>
             <div class="equipment-row">
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.LeftWeaponMod1)">@displayEquipment(selectedCharacter.Equipment.LeftWeaponMod1.Item?.Name, "Left Weapon Mod 1")</div>
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.RightWeaponMod1)">@displayEquipment(selectedCharacter.Equipment.RightWeaponMod1.Item?.Name, "Right Weapon Mod 1")</div>
+                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.LeftWeapon)">@displayEquipment(selectedCharacter.Equipment.LeftWeapon.Item?.Thumbnail, "Left Weapon")</div>
+                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.RightWeapon)">@displayEquipment(selectedCharacter.Equipment.RightWeapon.Item?.Thumbnail, "Right Weapon")</div>
                 <div class="inventory-spacer" />
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Hands)">@displayEquipment(selectedCharacter.Equipment.Hands.Item?.Name, "Hands")</div>
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Belt)">@displayEquipment(selectedCharacter.Equipment.Belt.Item?.Name, "Belt")</div>
+                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Back)">@displayEquipment(selectedCharacter.Equipment.Back.Item?.Thumbnail, "Back")</div>
+                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Torso)">@displayEquipment(selectedCharacter.Equipment.Torso.Item?.Thumbnail, "Torso")</div>
+                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.OmniLinkMod)">@displayEquipment(selectedCharacter.Equipment.OmniLinkMod.Item?.Thumbnail, "OmniLink Mod")</div>
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Stim)">@displayEquipment(selectedCharacter.Equipment.Stim.Item?.Name, "Stim")</div>
             </div>
             <div class="equipment-row">
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.LeftWeaponMod2)">@displayEquipment(selectedCharacter.Equipment.LeftWeaponMod2.Item?.Name, "Left Weapon Mod 2")</div>
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.RightWeaponMod2)">@displayEquipment(selectedCharacter.Equipment.RightWeaponMod2.Item?.Name, "Right Weapon Mod 2")</div>
+                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.LeftWeaponMod1)">@displayEquipment(selectedCharacter.Equipment.LeftWeaponMod1.Item?.Thumbnail, "Left Weapon Mod 1")</div>
+                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.RightWeaponMod1)">@displayEquipment(selectedCharacter.Equipment.RightWeaponMod1.Item?.Thumbnail, "Right Weapon Mod 1")</div>
+                <div class="inventory-spacer" />
+                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Hands)">@displayEquipment(selectedCharacter.Equipment.Hands.Item?.Thumbnail, "Hands")</div>
+                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Belt)">@displayEquipment(selectedCharacter.Equipment.Belt.Item?.Thumbnail, "Belt")</div>
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Legs)">@displayEquipment(selectedCharacter.Equipment.Legs.Item?.Name, "Legs")</div>
-                <div class="inventory-spacer" />
-                <div class="inventory-spacer" />
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.HealthPack)">@displayEquipment(selectedCharacter.Equipment.HealthPack.Item?.Name, "Health Pack")</div>
+                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Stim)">@displayEquipment(selectedCharacter.Equipment.Stim.Item?.Thumbnail, "Stim")</div>
             </div>
             <div class="equipment-row">
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.LeftWeaponMod3)">@displayEquipment(selectedCharacter.Equipment.LeftWeaponMod3.Item?.Name, "Left Weapon Mod 3")</div>
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.RightWeaponMod3)">@displayEquipment(selectedCharacter.Equipment.RightWeaponMod3.Item?.Name, "Right Weapon Mod 3")</div>
+                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.LeftWeaponMod2)">@displayEquipment(selectedCharacter.Equipment.LeftWeaponMod2.Item?.Thumbnail, "Left Weapon Mod 2")</div>
+                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.RightWeaponMod2)">@displayEquipment(selectedCharacter.Equipment.RightWeaponMod2.Item?.Thumbnail, "Right Weapon Mod 2")</div>
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Feet)">@displayEquipment(selectedCharacter.Equipment.Feet.Item?.Name, "Feet")</div>
+                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Legs)">@displayEquipment(selectedCharacter.Equipment.Legs.Item?.Thumbnail, "Legs")</div>
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Explosive)">@displayEquipment(selectedCharacter.Equipment.Explosive.Item?.Name, "Explosive")</div>
+                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.HealthPack)">@displayEquipment(selectedCharacter.Equipment.HealthPack.Item?.Thumbnail, "Health Pack")</div>
+            </div>
+            <div class="equipment-row">
+                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.LeftWeaponMod3)">@displayEquipment(selectedCharacter.Equipment.LeftWeaponMod3.Item?.Thumbnail, "Left Weapon Mod 3")</div>
+                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.RightWeaponMod3)">@displayEquipment(selectedCharacter.Equipment.RightWeaponMod3.Item?.Thumbnail, "Right Weapon Mod 3")</div>
+                <div class="inventory-spacer" />
+                <div class="inventory-spacer" />
+                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Feet)">@displayEquipment(selectedCharacter.Equipment.Feet.Item?.Thumbnail, "Feet")</div>
+                <div class="inventory-spacer" />
+                <div class="inventory-spacer" />
+                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Explosive)">@displayEquipment(selectedCharacter.Equipment.Explosive.Item?.Thumbnail, "Explosive")</div>
             </div>
         </div>
         <div class="column" style="border-left: 5px solid black; width:200px; display:flex; justify-content: center; padding: 0;">
@@ -106,13 +106,14 @@
         selectedCharacter = characterState.MainCharacter;
     }
 
-    private string displayEquipment(string itemName, string slotName)
+    private RenderFragment displayEquipment(string itemThumbnail, string slotName)
     {
-        if (string.IsNullOrEmpty(itemName))
+        if (string.IsNullOrEmpty(itemThumbnail))
         {
-            return slotName;
+            return @<text>@slotName</text>;
         }
-        return itemName;
+        RenderFragment imageMarkup =@<img src=@itemThumbnail style="width:100%"/>;
+        return imageMarkup;
     }
 
     private void unEquip(EquipmentSlot equipmentSlot)

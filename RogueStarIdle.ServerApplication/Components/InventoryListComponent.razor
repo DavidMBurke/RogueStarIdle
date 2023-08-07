@@ -69,9 +69,12 @@
     <div style="width:30%; border: 3px solid black; height: 100%; background-color: cornflowerblue">
         @if (selectedItem != null)
         {
-            <h4>
+            <h4 style="display: flex; justify-content:center;">
                 @selectedItem.Name [@selectedItem.Quantity]
             </h4>
+            <div style="display: flex; justify-content:center;">
+                <img src=@selectedItem.Thumbnail style="width:80%; border: black solid 2px;"/>
+            </div>
             <h5>Buy Price: @selectedItem.BuyPrice   Sell Price: @selectedItem.SellPrice</h5>
             @if (selectedItem.QualityLevel > 0)
             {
