@@ -100,20 +100,75 @@
 
 @code {
     public Character selectedCharacter = new Character();
+    public RenderFragment? statTooltipFrag = null;
+    public double MouseX;
+    public double MouseY;
+    public Item hoveredItem = null;
+
+    public void renderTooltip(MouseEventArgs e, Item item)
+    {
+        statTooltipFrag =
+        @<div>
+            @item.Name <br>
+            @if (item.IsWeapon)
+                {
+                    @getTooltipTextRender("Attack speed: ",item.AttackSpeed)
+                    @getTooltipWeaponDamageRender("Slashing", item, item.PercentSlashingDamage);
+                    @getTooltipWeaponDamageRender("Crushing", item, item.PercentCrushingDamage);
+                    @getTooltipWeaponDamageRender("Piercing", item, item.PercentPiercingDamage);
+                    @getTooltipWeaponDamageRender("Fire", item, item.PercentFireDamage);
+                    @getTooltipWeaponDamageRender("Acid", item, item.PercentAcidDamage);
+                    @getTooltipWeaponDamageRender("Shock", item, item.PercentShockDamage);
+                    @getTooltipWeaponDamageRender("Poison", item, item.PercentPoisonDamage);
+                }
+                @if (item.IsArmor)
+                {
+                    @getDamageResistanceRender("Energy", item.EnergyDamageReduction);
+                    @getDamageResistanceRender("Fire", item.FireDamageReduction, item.EnergyDamageReduction);
+                    @getDamageResistanceRender("Acid", item.AcidDamageReduction, item.EnergyDamageReduction);
+                    @getDamageResistanceRender("Poison", item.PoisonDamageReduction, item.EnergyDamageReduction);
+                    @getDamageResistanceRender("Shock", item.ShockDamageReduction, item.EnergyDamageReduction);
+                    @getDamageResistanceRender("Kinetic", item.KineticDamageReduction);
+                    @getDamageResistanceRender("Slashing", item.SlashingDamageReduction, item.KineticDamageReduction);
+                    @getDamageResistanceRender("Crushing", item.CrushingDamageReduction, item.KineticDamageReduction);
+                    @getDamageResistanceRender("Piercing", item.PiercingDamageReduction, item.KineticDamageReduction);
+                    @getDamageResistanceRender("Psychic", item.PsychicDamageReduction, item.PsychicDamageReduction);
+                }
+            </div>
+    ;
+
+        hoveredItem = item;
+        MouseX = e.ClientX;
+        MouseY = e.ClientY;
+
+    }
+
+    public void clearTooltip()
+    {
+        statTooltipFrag = null;
+        hoveredItem = null;
+    }
 
     protected override void OnInitialized()
     {
         selectedCharacter = characterState.MainCharacter;
     }
 
-    private RenderFragment displayEquipment(string slotName, Item equipment)
+    private RenderFragment displayEquipment(string slotName, Item item)
     {
-        if (equipment == null)
+        if (item == null)
         {
             return @<text>@slotName</text>;
         }
-        RenderFragment imageMarkup =@<img src=@equipment.Thumbnail style="width:100%"/>;
-        return imageMarkup;
+        RenderFragment imageFragment  = 
+        @<div>
+            <img src=@item.Thumbnail style="width:100%" @onmouseover="(e) => renderTooltip(e, item)" @onmouseout=clearTooltip/>
+            @if (hoveredItem == item && statTooltipFrag != null)
+                {
+                    <StatPopupComponent stats=statTooltipFrag/>
+                }
+        </div>;
+        return imageFragment;
     }
 
     private void unEquip(EquipmentSlot equipmentSlot)
@@ -136,42 +191,42 @@
         RenderFragment frag =
         @<div>
             <li>Attack Speed: @s.AttackSpeed</li>
-            @weaponDamageMarkup("Slashing", s.SlashingDamageMin, s.SlashingDamageMax)
-            @weaponDamageMarkup("Piercing", s.PiercingDamageMin, s.PiercingDamageMax)
-            @weaponDamageMarkup("Crushing", s.CrushingDamageMin, s.CrushingDamageMax)
-            @weaponDamageMarkup("Fire", s.FireDamageMin, s.FireDamageMax)
-            @weaponDamageMarkup("Acid", s.AcidDamageMin, s.AcidDamageMax)
-            @weaponDamageMarkup("Poison", s.PoisonDamageMin, s.PoisonDamageMax)
-            @weaponDamageMarkup("Shock", s.ShockDamageMin, s.ShockDamageMax)
-            @defenseMarkup("Kinetic", s.KineticDefense)
-            @defenseMarkup("Energy", s.EnergyDefense)
-            @defenseMarkup("Psychic", s.PsychicDefense)
-            @defenseMarkup("Melee", s.MeleeDefense)
-            @defenseMarkup("Ranged", s.RangedDefense)
-            @defenseMarkup("Explosive", s.ExplosiveDefense)
-            @damageResistanceMarkup("Energy", s.EnergyDR)
-            @damageResistanceMarkup("Fire", s.FireDR, s.EnergyDR)
-            @damageResistanceMarkup("Acid", s.AcidDR, s.EnergyDR)
-            @damageResistanceMarkup("Poison", s.PoisonDR, s.EnergyDR)
-            @damageResistanceMarkup("Shock", s.ShockDR, s.EnergyDR)
-            @damageResistanceMarkup("Kinetic", s.KineticDR)
-            @damageResistanceMarkup("Piercing", s.PiercingDR, s.KineticDR)
-            @damageResistanceMarkup("Slashing", s.SlashingDR, s.KineticDR)
-            @damageResistanceMarkup("Crushing", s.CrushingDR, s.KineticDR)
+            @getWeaponDamageRender("Slashing", s.SlashingDamageMin, s.SlashingDamageMax)
+            @getWeaponDamageRender("Piercing", s.PiercingDamageMin, s.PiercingDamageMax)
+            @getWeaponDamageRender("Crushing", s.CrushingDamageMin, s.CrushingDamageMax)
+            @getWeaponDamageRender("Fire", s.FireDamageMin, s.FireDamageMax)
+            @getWeaponDamageRender("Acid", s.AcidDamageMin, s.AcidDamageMax)
+            @getWeaponDamageRender("Poison", s.PoisonDamageMin, s.PoisonDamageMax)
+            @getWeaponDamageRender("Shock", s.ShockDamageMin, s.ShockDamageMax)
+            @getDefenseRender("Kinetic", s.KineticDefense)
+            @getDefenseRender("Energy", s.EnergyDefense)
+            @getDefenseRender("Psychic", s.PsychicDefense)
+            @getDefenseRender("Melee", s.MeleeDefense)
+            @getDefenseRender("Ranged", s.RangedDefense)
+            @getDefenseRender("Explosive", s.ExplosiveDefense)
+            @getDamageResistanceRender("Energy", s.EnergyDR)
+            @getDamageResistanceRender("Fire", s.FireDR, s.EnergyDR)
+            @getDamageResistanceRender("Acid", s.AcidDR, s.EnergyDR)
+            @getDamageResistanceRender("Poison", s.PoisonDR, s.EnergyDR)
+            @getDamageResistanceRender("Shock", s.ShockDR, s.EnergyDR)
+            @getDamageResistanceRender("Kinetic", s.KineticDR)
+            @getDamageResistanceRender("Piercing", s.PiercingDR, s.KineticDR)
+            @getDamageResistanceRender("Slashing", s.SlashingDR, s.KineticDR)
+            @getDamageResistanceRender("Crushing", s.CrushingDR, s.KineticDR)
         </div>;
         return frag;
     }
 
-    RenderFragment? weaponDamageMarkup(string type, int minDamage, int maxDamage)
+    RenderFragment? getWeaponDamageRender(string type, int minDamage, int maxDamage)
     {
         if (minDamage <= 0 && maxDamage <= 0)
         {
             return null;
         }
-        return @<li>@minDamage - @maxDamage Slashing Damage</li>;
+        return @<li>@minDamage - @maxDamage @type Damage</li>;
     }
 
-    RenderFragment? defenseMarkup(string type, int defense)
+    RenderFragment? getDefenseRender(string type, int defense)
     {
         if (defense <= 0)
         {
@@ -180,20 +235,26 @@
         return@<li>@type Defense: @defense</li>;
     }
 
-    RenderFragment damageResistanceMarkup(string type, int resistance)
-    {
-        if (resistance <= 0)
-        {
-            return null;
-        }
-        return @<li>@type Damage Resistance: @resistance</li>;
-    }
-
-    RenderFragment damageResistanceMarkup(string type, int resistance, int parentResistance)
+    RenderFragment getDamageResistanceRender(string type, int resistance, int? parentResistance = 0)
     {
         if (resistance > 0 && resistance > parentResistance)
         {
             return @<li>@type Damage Resistance: @resistance</li>;
+        }
+        return null;
+    }
+
+    RenderFragment? getTooltipWeaponDamageRender(string type, Item item, int? percentDamage = null)
+    {
+        int percent = percentDamage ?? 0;
+        return @getWeaponDamageRender(type, percent * item.MinBaseDamage / 100, percent * item.MaxBaseDamage / 100);
+    }
+
+    RenderFragment? getTooltipTextRender(string statName, int stat)
+    {
+        if (stat <= 0)
+        {
+            return@<text>@statName: @stat<br></text>;
         }
         return null;
     }
