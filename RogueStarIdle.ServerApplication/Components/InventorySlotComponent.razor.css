@@ -1,0 +1,20 @@
+﻿.locked {
+    background-color: gray;
+    color: darkgray;
+    opacity: .5;
+}
+
+.inventory-slot:hover {
+    border-color: #999;
+    cursor: pointer;
+}
+
+.inventory-slot:hover .locked {
+    border-color: darkgray;
+    cursor: default;
+}
+
+.inventory-slot img {
+    max-width: 100%;
+    max-height: 100%;
+}

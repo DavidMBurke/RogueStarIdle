@@ -1,5 +1,137 @@
-﻿<div class="inventory-slot"></div>
+﻿@using RogueStarIdle.ServerApplication.Shared.State;
+@inject InventoryState inventoryState
+
+<div class=@(slot.Locked? "inventory-slot locked": "inventory-slot") @onclick="() => unEquip(slot)">@displayEquipment(slot.Name, slot.Item)</div>
 
 @code {
+    [Parameter]
+    public EquipmentSlot slot { get; set; }
+    bool showTooltip = false;
+    public double MouseX;
+    public double MouseY;
 
+    private RenderFragment displayEquipment(string slotName, Item item)
+    {
+        if (item == null)
+        {
+            return @<text>@slotName</text>;
+        }
+        RenderFragment imageFragment = 
+            @<div>
+                <img src=@item.Thumbnail style="width:100%" @onmouseover="(e) => renderTooltip(e, item)" @onmouseout=clearTooltip/>
+                @if (showTooltip) {
+                    <StatPopupComponent stats=@getTooltipStats(item)/>
+                }
+
+        </div>
+    ;
+        return imageFragment;
+    }
+
+    private void unEquip(EquipmentSlot equipmentSlot)
+    {
+        if (equipmentSlot.Item == null)
+        {
+            return;
+        }
+        Item unequippedItem = equipmentSlot.Item.CreateCopy();
+        inventoryState.RemoveFromInventory(inventoryState.Inventory, unequippedItem, unequippedItem.Quantity);
+        unequippedItem.Equipped = false;
+        inventoryState.AddToInventory(inventoryState.Inventory, unequippedItem, unequippedItem.Quantity);
+        equipmentSlot.Item = null;
+    }
+
+    private void renderTooltip(MouseEventArgs e, Item item)
+    {
+        MouseX = e.ClientX;
+        MouseY = e.ClientY;
+        showTooltip = true;
+    }
+
+    public void clearTooltip()
+    {
+        showTooltip = false;
+    }
+
+    private RenderFragment getTooltipStats(Item item)
+    {
+        return
+    @<div>
+        @item.Name <br>
+        @if (item.IsWeapon)
+            {
+                @getTooltipTextRender("Attack speed: ",item.AttackSpeed)
+                @getTooltipWeaponDamageRender("Slashing", item, item.PercentSlashingDamage)
+                @getTooltipWeaponDamageRender("Crushing", item, item.PercentCrushingDamage)
+                @getTooltipWeaponDamageRender("Piercing", item, item.PercentPiercingDamage)
+                @getTooltipWeaponDamageRender("Fire", item, item.PercentFireDamage)
+                @getTooltipWeaponDamageRender("Acid", item, item.PercentAcidDamage)
+                @getTooltipWeaponDamageRender("Shock", item, item.PercentShockDamage)
+                @getTooltipWeaponDamageRender("Poison", item, item.PercentPoisonDamage)
+            }
+            @if (item.IsArmor)
+            {
+                @getDamageResistanceRender("Energy", item.EnergyDamageReduction)
+                @getDamageResistanceRender("Fire", item.FireDamageReduction, item.EnergyDamageReduction)
+                @getDamageResistanceRender("Acid", item.AcidDamageReduction, item.EnergyDamageReduction)
+                @getDamageResistanceRender("Poison", item.PoisonDamageReduction, item.EnergyDamageReduction)
+                @getDamageResistanceRender("Shock", item.ShockDamageReduction, item.EnergyDamageReduction)
+                @getDamageResistanceRender("Kinetic", item.KineticDamageReduction)
+                @getDamageResistanceRender("Slashing", item.SlashingDamageReduction, item.KineticDamageReduction)
+                @getDamageResistanceRender("Crushing", item.CrushingDamageReduction, item.KineticDamageReduction)
+                @getDamageResistanceRender("Piercing", item.PiercingDamageReduction, item.KineticDamageReduction)
+                @getDamageResistanceRender("Psychic", item.PsychicDamageReduction, item.PsychicDamageReduction)
+                @getDefenseRender("Energy", item.EnergyDefense)
+                @getDefenseRender("Kinetic", item.KineticDefense)
+                @getDefenseRender("Psychic", item.PsychicDefense)
+                @getDefenseRender("Explosive", item.ExplosiveDefense)
+                @getDefenseRender("Ranged", item.RangedDefense)
+                @getDefenseRender("Melee", item.MeleeDefense)
+            }
+            </div>
+    ;
+    }
+
+    RenderFragment? getTooltipWeaponDamageRender(string type, Item item, int? percentDamage = null)
+    {
+        int percent = percentDamage ?? 0;
+        return @getWeaponDamageRender(type, percent * item.MinBaseDamage / 100, percent * item.MaxBaseDamage / 100);
+    }
+
+    RenderFragment? getTooltipTextRender(string statName, int stat)
+    {
+        if (stat <= 0)
+        {
+            return@<text>@statName: @stat<br></text>   ;
+        }
+        return null;
+    }
+
+    RenderFragment? getDefenseRender(string type, int defense)
+    {
+        if (defense > 0)
+        {
+            return@<li>@type Defense: @defense</li>;
+        }
+        return null;
+    }
+
+    RenderFragment getDamageResistanceRender(string type, int resistance, int? parentResistance = 0)
+    {
+        if (resistance > 0 && resistance > parentResistance)
+        {
+            return @<li>@type Damage Resistance: @resistance</li>;
+        }
+        return null;
+    }
+
+
+    RenderFragment? getWeaponDamageRender(string type, int minDamage, int maxDamage)
+    {
+        if (minDamage <= 0 && maxDamage <= 0)
+        {
+            return null;
+        }
+        return@<li>@minDamage - @maxDamage @type Damage</li> ;
+    }
 }

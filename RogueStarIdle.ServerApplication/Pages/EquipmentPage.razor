@@ -7,74 +7,74 @@
     <div class="row" style="width:auto; height: 75px;">
         <div class="inventory-grid-container">
             <div class="equipment-row">
-                @getEquipmentSlot(selectedCharacter.Equipment.BrainCybernetic1)
-                @getEquipmentSlot(selectedCharacter.Equipment.BrainCybernetic2)
-                @getEquipmentSlot(selectedCharacter.Equipment.BrainCybernetic3)
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.BrainCybernetic1/>
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.BrainCybernetic2/>
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.BrainCybernetic3 />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                @getEquipmentSlot(selectedCharacter.Equipment.Droid)
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.Droid />
             </div>
             <div class="equipment-row">
-                @getEquipmentSlot(selectedCharacter.Equipment.BodyCybernetic1)
-                @getEquipmentSlot(selectedCharacter.Equipment.BodyCybernetic2)
-                @getEquipmentSlot(selectedCharacter.Equipment.BodyCybernetic3)
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.BodyCybernetic1 />
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.BodyCybernetic2 />
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.BodyCybernetic3 />
                 <div class="inventory-spacer" />
-                @getEquipmentSlot(selectedCharacter.Equipment.Head);
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.Head />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                @getEquipmentSlot(selectedCharacter.Equipment.DroidMod)
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.DroidMod />
             </div>
             <div class="equipment-row">
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                @getEquipmentSlot(selectedCharacter.Equipment.Neck)
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.Neck />
                 <div class="inventory-spacer" />
-                <div class="inventory-spacer" />
-                <div class="inventory-spacer" />
-            </div>
-            <div class="equipment-row">
-                @getEquipmentSlot(selectedCharacter.Equipment.LeftWeapon)
-                @getEquipmentSlot(selectedCharacter.Equipment.RightWeapon)
-                <div class="inventory-spacer" />
-                @getEquipmentSlot(selectedCharacter.Equipment.Back)
-                @getEquipmentSlot(selectedCharacter.Equipment.Torso)
-                @getEquipmentSlot(selectedCharacter.Equipment.OmniLinkMod)
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
             </div>
             <div class="equipment-row">
-                @getEquipmentSlot(selectedCharacter.Equipment.LeftWeaponMod1)
-                @getEquipmentSlot(selectedCharacter.Equipment.RightWeaponMod1)
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.LeftWeapon />
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.RightWeapon />
                 <div class="inventory-spacer" />
-                @getEquipmentSlot(selectedCharacter.Equipment.Hands)
-                @getEquipmentSlot(selectedCharacter.Equipment.Belt)
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.Back />
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.Torso />
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.OmniLinkMod />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                @getEquipmentSlot(selectedCharacter.Equipment.Stim)
             </div>
             <div class="equipment-row">
-                @getEquipmentSlot(selectedCharacter.Equipment.LeftWeaponMod2)
-                @getEquipmentSlot(selectedCharacter.Equipment.RightWeaponMod2)
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.LeftWeaponMod1 />
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.RightWeaponMod1 />
+                <div class="inventory-spacer" />
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.Hands />
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.Belt />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                @getEquipmentSlot(selectedCharacter.Equipment.Legs)
-                <div class="inventory-spacer" />
-                <div class="inventory-spacer" />
-                @getEquipmentSlot(selectedCharacter.Equipment.HealthPack)
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.Stim />
             </div>
             <div class="equipment-row">
-                @getEquipmentSlot(selectedCharacter.Equipment.LeftWeaponMod3)
-                @getEquipmentSlot(selectedCharacter.Equipment.RightWeaponMod3)
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.LeftWeaponMod2 />
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.RightWeaponMod2 />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                @getEquipmentSlot(selectedCharacter.Equipment.Feet)
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.Legs />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                @getEquipmentSlot(selectedCharacter.Equipment.Explosive)
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.HealthPack />
+            </div>
+            <div class="equipment-row">
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.LeftWeaponMod3 />
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.RightWeaponMod3 />
+                <div class="inventory-spacer" />
+                <div class="inventory-spacer" />
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.Feet />
+                <div class="inventory-spacer" />
+                <div class="inventory-spacer" />
+                <InventorySlotComponent slot=@selectedCharacter.Equipment.Explosive />
             </div>
         </div>
         <div class="column" style="border-left: 5px solid black; width:200px; display:flex; justify-content: center; padding: 0;">
@@ -105,91 +105,11 @@
     public double MouseY;
     public Item hoveredItem = null;
 
-    public void renderTooltip(MouseEventArgs e, Item item)
-    {
-        statTooltipFrag =
-        @<div>
-            @item.Name <br>
-            @if (item.IsWeapon)
-                {
-                    @getTooltipTextRender("Attack speed: ",item.AttackSpeed)
-                    @getTooltipWeaponDamageRender("Slashing", item, item.PercentSlashingDamage)
-                    @getTooltipWeaponDamageRender("Crushing", item, item.PercentCrushingDamage)
-                    @getTooltipWeaponDamageRender("Piercing", item, item.PercentPiercingDamage)
-                    @getTooltipWeaponDamageRender("Fire", item, item.PercentFireDamage)
-                    @getTooltipWeaponDamageRender("Acid", item, item.PercentAcidDamage)
-                    @getTooltipWeaponDamageRender("Shock", item, item.PercentShockDamage)
-                    @getTooltipWeaponDamageRender("Poison", item, item.PercentPoisonDamage)
-                }
-                @if (item.IsArmor)
-                {
-                    @getDamageResistanceRender("Energy", item.EnergyDamageReduction)
-                    @getDamageResistanceRender("Fire", item.FireDamageReduction, item.EnergyDamageReduction)
-                    @getDamageResistanceRender("Acid", item.AcidDamageReduction, item.EnergyDamageReduction)
-                    @getDamageResistanceRender("Poison", item.PoisonDamageReduction, item.EnergyDamageReduction)
-                    @getDamageResistanceRender("Shock", item.ShockDamageReduction, item.EnergyDamageReduction)
-                    @getDamageResistanceRender("Kinetic", item.KineticDamageReduction)
-                    @getDamageResistanceRender("Slashing", item.SlashingDamageReduction, item.KineticDamageReduction)
-                    @getDamageResistanceRender("Crushing", item.CrushingDamageReduction, item.KineticDamageReduction)
-                    @getDamageResistanceRender("Piercing", item.PiercingDamageReduction, item.KineticDamageReduction)
-                    @getDamageResistanceRender("Psychic", item.PsychicDamageReduction, item.PsychicDamageReduction)
-                    @getDefenseRender("Energy", item.EnergyDefense)
-                    @getDefenseRender("Kinetic", item.KineticDefense)
-                    @getDefenseRender("Psychic", item.PsychicDefense)
-                    @getDefenseRender("Explosive", item.ExplosiveDefense)
-                    @getDefenseRender("Ranged", item.RangedDefense)
-                    @getDefenseRender("Melee", item.MeleeDefense)
-            ;
-        }
-            </div>
-    ;
-
-        hoveredItem = item;
-        MouseX = e.ClientX;
-        MouseY = e.ClientY;
-
-    }
-
-    public void clearTooltip()
-    {
-        statTooltipFrag = null;
-        hoveredItem = null;
-    }
-
     protected override void OnInitialized()
     {
         selectedCharacter = characterState.MainCharacter;
     }
 
-    private RenderFragment displayEquipment(string slotName, Item item)
-    {
-        if (item == null)
-        {
-            return @<text>@slotName</text>;
-        }
-        RenderFragment imageFragment  = 
-        @<div>
-            <img src=@item.Thumbnail style="width:100%" @onmouseover="(e) => renderTooltip(e, item)" @onmouseout=clearTooltip/>
-            @if (hoveredItem == item && statTooltipFrag != null)
-                {
-                    <StatPopupComponent stats=statTooltipFrag/>
-                }
-        </div>;
-        return imageFragment;
-    }
-
-    private void unEquip(EquipmentSlot equipmentSlot)
-    {
-        if (equipmentSlot.Item == null)
-        {
-            return;
-        }
-        Item unequippedItem = equipmentSlot.Item.CreateCopy();
-        inventoryState.RemoveFromInventory(inventoryState.Inventory, unequippedItem, unequippedItem.Quantity);
-        unequippedItem.Equipped = false;
-        inventoryState.AddToInventory(inventoryState.Inventory, unequippedItem, unequippedItem.Quantity);
-        equipmentSlot.Item = null;
-    }
 
     private RenderFragment getTotalEquipmentStatRender(EquipmentSet equipment)
     {
@@ -249,66 +169,5 @@
             return @<li>@type Damage Resistance: @resistance</li>;
         }
         return null;
-    }
-
-    RenderFragment? getTooltipWeaponDamageRender(string type, Item item, int? percentDamage = null)
-    {
-        int percent = percentDamage ?? 0;
-        return @getWeaponDamageRender(type, percent * item.MinBaseDamage / 100, percent * item.MaxBaseDamage / 100);
-    }
-
-    RenderFragment? getTooltipTextRender(string statName, int stat)
-    {
-        if (stat <= 0)
-        {
-            return@<text>@statName: @stat<br></text>;
-        }
-        return null;
-    }
-
-    RenderFragment getItemStatsPopup(Item item)
-    {
-        return
-        @<div>
-        @if (item.IsWeapon)
-        {
-            @getTooltipTextRender("Attack speed: ",item.AttackSpeed)
-            @getTooltipWeaponDamageRender("Slashing", item, item.PercentSlashingDamage)
-            @getTooltipWeaponDamageRender("Crushing", item, item.PercentCrushingDamage)
-            @getTooltipWeaponDamageRender("Piercing", item, item.PercentPiercingDamage)
-            @getTooltipWeaponDamageRender("Fire", item, item.PercentFireDamage)
-            @getTooltipWeaponDamageRender("Acid", item, item.PercentAcidDamage)
-            @getTooltipWeaponDamageRender("Shock", item, item.PercentShockDamage)
-            @getTooltipWeaponDamageRender("Poison", item, item.PercentPoisonDamage)
-        }
-        @if (item.IsArmor)
-        {
-            @getDamageResistanceRender("Energy", item.EnergyDamageReduction)
-            @getDamageResistanceRender("Fire", item.FireDamageReduction, item.EnergyDamageReduction)
-            @getDamageResistanceRender("Acid", item.AcidDamageReduction, item.EnergyDamageReduction)
-            @getDamageResistanceRender("Poison", item.PoisonDamageReduction, item.EnergyDamageReduction)
-            @getDamageResistanceRender("Shock", item.ShockDamageReduction, item.EnergyDamageReduction)
-            @getDamageResistanceRender("Kinetic", item.KineticDamageReduction)
-            @getDamageResistanceRender("Slashing", item.SlashingDamageReduction, item.KineticDamageReduction)
-            @getDamageResistanceRender("Crushing", item.CrushingDamageReduction, item.KineticDamageReduction)
-            @getDamageResistanceRender("Piercing", item.PiercingDamageReduction, item.KineticDamageReduction)
-            @getDamageResistanceRender("Psychic", item.PsychicDamageReduction, item.PsychicDamageReduction)
-            @getDefenseRender("Energy", item.EnergyDefense)
-            @getDefenseRender("Kinetic", item.KineticDefense)
-            @getDefenseRender("Psychic", item.PsychicDefense)
-            @getDefenseRender("Explosive", item.ExplosiveDefense)
-            @getDefenseRender("Ranged", item.RangedDefense)
-            @getDefenseRender("Melee", item.MeleeDefense)
-        }
-            </div>
-    ;
-    }
-
-    RenderFragment getEquipmentSlot(EquipmentSlot slot) {
-        string divClass = "inventory-slot";
-        if (slot.Locked) {
-            divClass += " locked";
-        }
-        return @<div class=@divClass @onclick="() => unEquip(slot)">@displayEquipment(slot.Name, slot.Item)</div>;
     }
 }
