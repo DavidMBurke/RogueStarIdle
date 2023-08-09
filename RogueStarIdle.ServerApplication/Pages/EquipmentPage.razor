@@ -133,7 +133,14 @@
                     @getDamageResistanceRender("Crushing", item.CrushingDamageReduction, item.KineticDamageReduction);
                     @getDamageResistanceRender("Piercing", item.PiercingDamageReduction, item.KineticDamageReduction);
                     @getDamageResistanceRender("Psychic", item.PsychicDamageReduction, item.PsychicDamageReduction);
-                }
+                    @getDefenseRender("Energy", item.EnergyDefense);
+                    @getDefenseRender("Kinetic", item.KineticDefense);
+                    @getDefenseRender("Psychic", item.PsychicDefense);
+                    @getDefenseRender("Explosive", item.ExplosiveDefense);
+                    @getDefenseRender("Ranged", item.RangedDefense);
+                    @getDefenseRender("Melee", item.MeleeDefense);
+            ;
+        }
             </div>
     ;
 
@@ -228,11 +235,11 @@
 
     RenderFragment? getDefenseRender(string type, int defense)
     {
-        if (defense <= 0)
+        if (defense > 0)
         {
-            return null;
+            return@<li>@type Defense: @defense</li>;
         }
-        return@<li>@type Defense: @defense</li>;
+        return null;
     }
 
     RenderFragment getDamageResistanceRender(string type, int resistance, int? parentResistance = 0)
