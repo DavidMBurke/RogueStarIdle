@@ -7,74 +7,74 @@
     <div class="row" style="width:auto; height: 75px;">
         <div class="inventory-grid-container">
             <div class="equipment-row">
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.BrainCybernetic1)">@displayEquipment("Brain Cybernetic 1", selectedCharacter.Equipment.BrainCybernetic1.Item)</div>
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.BrainCybernetic2)">@displayEquipment("Brain Cybernetic 2", selectedCharacter.Equipment.BrainCybernetic2.Item)</div>
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.BrainCybernetic3)">@displayEquipment("Brain Cybernetic 3", selectedCharacter.Equipment.BrainCybernetic3.Item)</div>
+                @getEquipmentSlot(selectedCharacter.Equipment.BrainCybernetic1)
+                @getEquipmentSlot(selectedCharacter.Equipment.BrainCybernetic2)
+                @getEquipmentSlot(selectedCharacter.Equipment.BrainCybernetic3)
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.Droid)">@displayEquipment("Droid", selectedCharacter.Equipment.Droid.Item)</div>
+                @getEquipmentSlot(selectedCharacter.Equipment.Droid)
             </div>
             <div class="equipment-row">
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.BodyCybernetic1)">@displayEquipment("Body Cybernetic 1", selectedCharacter.Equipment.BodyCybernetic1.Item)</div>
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.BodyCybernetic2)">@displayEquipment("Body Cybernetic 2", selectedCharacter.Equipment.BodyCybernetic2.Item)</div>
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.BodyCybernetic3)">@displayEquipment("Body Cybernetic 3", selectedCharacter.Equipment.BodyCybernetic3.Item)</div>
+                @getEquipmentSlot(selectedCharacter.Equipment.BodyCybernetic1)
+                @getEquipmentSlot(selectedCharacter.Equipment.BodyCybernetic2)
+                @getEquipmentSlot(selectedCharacter.Equipment.BodyCybernetic3)
                 <div class="inventory-spacer" />
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Head)"> @displayEquipment("Head", selectedCharacter.Equipment.Head.Item) </div>
+                @getEquipmentSlot(selectedCharacter.Equipment.Head);
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.DroidMod)">@displayEquipment("Droid Mod", selectedCharacter.Equipment.DroidMod.Item)</div>
+                @getEquipmentSlot(selectedCharacter.Equipment.DroidMod)
             </div>
             <div class="equipment-row">
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Neck)">@displayEquipment("Neck", selectedCharacter.Equipment.Neck.Item)</div>
+                @getEquipmentSlot(selectedCharacter.Equipment.Neck)
                 <div class="inventory-spacer" />
-                <div class="inventory-spacer" />
-                <div class="inventory-spacer" />
-            </div>
-            <div class="equipment-row">
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.LeftWeapon)">@displayEquipment("Left Weapon", selectedCharacter.Equipment.LeftWeapon.Item)</div>
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.RightWeapon)">@displayEquipment("Right Weapon", selectedCharacter.Equipment.RightWeapon.Item)</div>
-                <div class="inventory-spacer" />
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Back)">@displayEquipment("Back", selectedCharacter.Equipment.Back.Item)</div>
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Torso)">@displayEquipment("Torso", selectedCharacter.Equipment.Torso.Item)</div>
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.OmniLinkMod)">@displayEquipment("OmniLink Mod", selectedCharacter.Equipment.OmniLinkMod.Item)</div>
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
             </div>
             <div class="equipment-row">
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.LeftWeaponMod1)">@displayEquipment("Left Weapon Mod 1", selectedCharacter.Equipment.LeftWeaponMod1.Item)</div>
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.RightWeaponMod1)">@displayEquipment("Right Weapon Mod 1", selectedCharacter.Equipment.RightWeaponMod1.Item)</div>
+                @getEquipmentSlot(selectedCharacter.Equipment.LeftWeapon)
+                @getEquipmentSlot(selectedCharacter.Equipment.RightWeapon)
                 <div class="inventory-spacer" />
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Hands)">@displayEquipment("Hands", selectedCharacter.Equipment.Hands.Item)</div>
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Belt)">@displayEquipment("Belt", selectedCharacter.Equipment.Belt.Item)</div>
-                <div class="inventory-spacer" />
-                <div class="inventory-spacer" />
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Stim)">@displayEquipment("Stim", selectedCharacter.Equipment.Stim.Item)</div>
-            </div> 
-            <div class="equipment-row">
-                    <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.LeftWeaponMod2)">@displayEquipment("Left Weapon Mod 2", selectedCharacter.Equipment.LeftWeaponMod2.Item)</div>
-                    <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.RightWeaponMod2)">@displayEquipment("Right Weapon Mod 2", selectedCharacter.Equipment.RightWeaponMod2.Item)</div>
+                @getEquipmentSlot(selectedCharacter.Equipment.Back)
+                @getEquipmentSlot(selectedCharacter.Equipment.Torso)
+                @getEquipmentSlot(selectedCharacter.Equipment.OmniLinkMod)
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                    <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Legs)">@displayEquipment("Legs", selectedCharacter.Equipment.Legs.Item)</div>
-                <div class="inventory-spacer" />
-                <div class="inventory-spacer" />
-                    <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.HealthPack)">@displayEquipment("Health Pack", selectedCharacter.Equipment.HealthPack.Item)</div>
             </div>
             <div class="equipment-row">
-                    <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.LeftWeaponMod3)">@displayEquipment("Left Weapon Mod 3", selectedCharacter.Equipment.LeftWeaponMod3.Item)</div>
-                <div class="inventory-slot locked" @onclick="() => unEquip(selectedCharacter.Equipment.RightWeaponMod3)">@displayEquipment("Right Weapon Mod 3", selectedCharacter.Equipment.RightWeaponMod3.Item)</div>
+                @getEquipmentSlot(selectedCharacter.Equipment.LeftWeaponMod1)
+                @getEquipmentSlot(selectedCharacter.Equipment.RightWeaponMod1)
+                <div class="inventory-spacer" />
+                @getEquipmentSlot(selectedCharacter.Equipment.Hands)
+                @getEquipmentSlot(selectedCharacter.Equipment.Belt)
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                    <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Feet)">@displayEquipment("Feet", selectedCharacter.Equipment.Feet.Item)</div>
+                @getEquipmentSlot(selectedCharacter.Equipment.Stim)
+            </div>
+            <div class="equipment-row">
+                @getEquipmentSlot(selectedCharacter.Equipment.LeftWeaponMod2)
+                @getEquipmentSlot(selectedCharacter.Equipment.RightWeaponMod2)
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                <div class="inventory-slot" @onclick="() => unEquip(selectedCharacter.Equipment.Explosive)">@displayEquipment("Explosive", selectedCharacter.Equipment.Explosive.Item)</div>
+                @getEquipmentSlot(selectedCharacter.Equipment.Legs)
+                <div class="inventory-spacer" />
+                <div class="inventory-spacer" />
+                @getEquipmentSlot(selectedCharacter.Equipment.HealthPack)
+            </div>
+            <div class="equipment-row">
+                @getEquipmentSlot(selectedCharacter.Equipment.LeftWeaponMod3)
+                @getEquipmentSlot(selectedCharacter.Equipment.RightWeaponMod3)
+                <div class="inventory-spacer" />
+                <div class="inventory-spacer" />
+                @getEquipmentSlot(selectedCharacter.Equipment.Feet)
+                <div class="inventory-spacer" />
+                <div class="inventory-spacer" />
+                @getEquipmentSlot(selectedCharacter.Equipment.Explosive)
             </div>
         </div>
         <div class="column" style="border-left: 5px solid black; width:200px; display:flex; justify-content: center; padding: 0;">
@@ -113,32 +113,32 @@
             @if (item.IsWeapon)
                 {
                     @getTooltipTextRender("Attack speed: ",item.AttackSpeed)
-                    @getTooltipWeaponDamageRender("Slashing", item, item.PercentSlashingDamage);
-                    @getTooltipWeaponDamageRender("Crushing", item, item.PercentCrushingDamage);
-                    @getTooltipWeaponDamageRender("Piercing", item, item.PercentPiercingDamage);
-                    @getTooltipWeaponDamageRender("Fire", item, item.PercentFireDamage);
-                    @getTooltipWeaponDamageRender("Acid", item, item.PercentAcidDamage);
-                    @getTooltipWeaponDamageRender("Shock", item, item.PercentShockDamage);
-                    @getTooltipWeaponDamageRender("Poison", item, item.PercentPoisonDamage);
+                    @getTooltipWeaponDamageRender("Slashing", item, item.PercentSlashingDamage)
+                    @getTooltipWeaponDamageRender("Crushing", item, item.PercentCrushingDamage)
+                    @getTooltipWeaponDamageRender("Piercing", item, item.PercentPiercingDamage)
+                    @getTooltipWeaponDamageRender("Fire", item, item.PercentFireDamage)
+                    @getTooltipWeaponDamageRender("Acid", item, item.PercentAcidDamage)
+                    @getTooltipWeaponDamageRender("Shock", item, item.PercentShockDamage)
+                    @getTooltipWeaponDamageRender("Poison", item, item.PercentPoisonDamage)
                 }
                 @if (item.IsArmor)
                 {
-                    @getDamageResistanceRender("Energy", item.EnergyDamageReduction);
-                    @getDamageResistanceRender("Fire", item.FireDamageReduction, item.EnergyDamageReduction);
-                    @getDamageResistanceRender("Acid", item.AcidDamageReduction, item.EnergyDamageReduction);
-                    @getDamageResistanceRender("Poison", item.PoisonDamageReduction, item.EnergyDamageReduction);
-                    @getDamageResistanceRender("Shock", item.ShockDamageReduction, item.EnergyDamageReduction);
-                    @getDamageResistanceRender("Kinetic", item.KineticDamageReduction);
-                    @getDamageResistanceRender("Slashing", item.SlashingDamageReduction, item.KineticDamageReduction);
-                    @getDamageResistanceRender("Crushing", item.CrushingDamageReduction, item.KineticDamageReduction);
-                    @getDamageResistanceRender("Piercing", item.PiercingDamageReduction, item.KineticDamageReduction);
-                    @getDamageResistanceRender("Psychic", item.PsychicDamageReduction, item.PsychicDamageReduction);
-                    @getDefenseRender("Energy", item.EnergyDefense);
-                    @getDefenseRender("Kinetic", item.KineticDefense);
-                    @getDefenseRender("Psychic", item.PsychicDefense);
-                    @getDefenseRender("Explosive", item.ExplosiveDefense);
-                    @getDefenseRender("Ranged", item.RangedDefense);
-                    @getDefenseRender("Melee", item.MeleeDefense);
+                    @getDamageResistanceRender("Energy", item.EnergyDamageReduction)
+                    @getDamageResistanceRender("Fire", item.FireDamageReduction, item.EnergyDamageReduction)
+                    @getDamageResistanceRender("Acid", item.AcidDamageReduction, item.EnergyDamageReduction)
+                    @getDamageResistanceRender("Poison", item.PoisonDamageReduction, item.EnergyDamageReduction)
+                    @getDamageResistanceRender("Shock", item.ShockDamageReduction, item.EnergyDamageReduction)
+                    @getDamageResistanceRender("Kinetic", item.KineticDamageReduction)
+                    @getDamageResistanceRender("Slashing", item.SlashingDamageReduction, item.KineticDamageReduction)
+                    @getDamageResistanceRender("Crushing", item.CrushingDamageReduction, item.KineticDamageReduction)
+                    @getDamageResistanceRender("Piercing", item.PiercingDamageReduction, item.KineticDamageReduction)
+                    @getDamageResistanceRender("Psychic", item.PsychicDamageReduction, item.PsychicDamageReduction)
+                    @getDefenseRender("Energy", item.EnergyDefense)
+                    @getDefenseRender("Kinetic", item.KineticDefense)
+                    @getDefenseRender("Psychic", item.PsychicDefense)
+                    @getDefenseRender("Explosive", item.ExplosiveDefense)
+                    @getDefenseRender("Ranged", item.RangedDefense)
+                    @getDefenseRender("Melee", item.MeleeDefense)
             ;
         }
             </div>
@@ -264,5 +264,51 @@
             return@<text>@statName: @stat<br></text>;
         }
         return null;
+    }
+
+    RenderFragment getItemStatsPopup(Item item)
+    {
+        return
+        @<div>
+        @if (item.IsWeapon)
+        {
+            @getTooltipTextRender("Attack speed: ",item.AttackSpeed)
+            @getTooltipWeaponDamageRender("Slashing", item, item.PercentSlashingDamage)
+            @getTooltipWeaponDamageRender("Crushing", item, item.PercentCrushingDamage)
+            @getTooltipWeaponDamageRender("Piercing", item, item.PercentPiercingDamage)
+            @getTooltipWeaponDamageRender("Fire", item, item.PercentFireDamage)
+            @getTooltipWeaponDamageRender("Acid", item, item.PercentAcidDamage)
+            @getTooltipWeaponDamageRender("Shock", item, item.PercentShockDamage)
+            @getTooltipWeaponDamageRender("Poison", item, item.PercentPoisonDamage)
+        }
+        @if (item.IsArmor)
+        {
+            @getDamageResistanceRender("Energy", item.EnergyDamageReduction)
+            @getDamageResistanceRender("Fire", item.FireDamageReduction, item.EnergyDamageReduction)
+            @getDamageResistanceRender("Acid", item.AcidDamageReduction, item.EnergyDamageReduction)
+            @getDamageResistanceRender("Poison", item.PoisonDamageReduction, item.EnergyDamageReduction)
+            @getDamageResistanceRender("Shock", item.ShockDamageReduction, item.EnergyDamageReduction)
+            @getDamageResistanceRender("Kinetic", item.KineticDamageReduction)
+            @getDamageResistanceRender("Slashing", item.SlashingDamageReduction, item.KineticDamageReduction)
+            @getDamageResistanceRender("Crushing", item.CrushingDamageReduction, item.KineticDamageReduction)
+            @getDamageResistanceRender("Piercing", item.PiercingDamageReduction, item.KineticDamageReduction)
+            @getDamageResistanceRender("Psychic", item.PsychicDamageReduction, item.PsychicDamageReduction)
+            @getDefenseRender("Energy", item.EnergyDefense)
+            @getDefenseRender("Kinetic", item.KineticDefense)
+            @getDefenseRender("Psychic", item.PsychicDefense)
+            @getDefenseRender("Explosive", item.ExplosiveDefense)
+            @getDefenseRender("Ranged", item.RangedDefense)
+            @getDefenseRender("Melee", item.MeleeDefense)
+        }
+            </div>
+    ;
+    }
+
+    RenderFragment getEquipmentSlot(EquipmentSlot slot) {
+        string divClass = "inventory-slot";
+        if (slot.Locked) {
+            divClass += " locked";
+        }
+        return @<div class=@divClass @onclick="() => unEquip(slot)">@displayEquipment(slot.Name, slot.Item)</div>;
     }
 }
