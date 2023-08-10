@@ -6,7 +6,7 @@
 
 <div style="border:solid 2px black; height:270px; width:480px;">
     <div class="row" style="height:100%; padding: 0; padding-bottom: 5%;">
-        <div style="height:100%; width:45%; margin: 0; padding: 0; display: flex; align-items: flex-end; justify-content: flex-end;">
+        <div style="height:100%; width:45%; margin: 0; padding: 0; display: flex; align-items: flex-end; justify-content: flex-start;">
             <div class="column">
                 <div class="row">
                     <CombatCharacterComponent character=@(GetCharacterOrNull(characterState.Characters, 1)) size="50" />
@@ -27,17 +27,17 @@
         <div style="height:100%; width:45%; margin: 0; padding: 0; display: flex; align-items: flex-end; justify-content: flex-start;">
             <div class="column">
                 <div class="row">
-                    <CombatEnemyComponent mob=@(combatState.SpawnedMobs.ElementAtOrDefault(0)?.Mob ?? null) size="50" />
-                    <CombatEnemyComponent mob=@(combatState.SpawnedMobs.ElementAtOrDefault(0)?.Mob ?? null) size="50" />
+                    <CombatEnemyComponent mob=@(GetMobOrNull(combatState.SpawnedMobs, 2)) size="50" />
+                    <CombatEnemyComponent mob=@(GetMobOrNull(combatState.SpawnedMobs, 1)) size="50" />
                 </div>
                 <div class="row" style="margin-top: -25%">
                     <div style="height: 50%; width: 25%"/>
-                    <CombatEnemyComponent mob=@(combatState.SpawnedMobs.ElementAtOrDefault(0)?.Mob ?? null) size="50" />
+                    <CombatEnemyComponent mob=@(GetMobOrNull(combatState.SpawnedMobs, 0)) size="50" />
                     <div style="height: 50%; width: 25%" />
                 </div>
                 <div class="row" style="margin-top: -25%">
-                    <CombatEnemyComponent mob=@(combatState.SpawnedMobs.ElementAtOrDefault(0)?.Mob ?? null) size="50" />
-                    <CombatEnemyComponent mob=@(combatState.SpawnedMobs.ElementAtOrDefault(0)?.Mob ?? null) size="50" />
+                    <CombatEnemyComponent mob=@(GetMobOrNull(combatState.SpawnedMobs, 4)) size="50" />
+                    <CombatEnemyComponent mob=@(GetMobOrNull(combatState.SpawnedMobs, 3)) size="50" />
                 </div>
             </div>
         </div>
@@ -64,5 +64,14 @@
             return null;
         }
         return characters[i];
+    }
+
+    public Mob? GetMobOrNull(List<MobSpawn> mobs, int i)
+    {
+        if (i > mobs.Count() - 1)
+        {
+            return null;
+        }
+        return mobs[i].Mob;
     }
 }

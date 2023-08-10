@@ -230,7 +230,8 @@ namespace RogueStarIdle.PlugIns.InMemory
                     BuyPrice = 10,
                     SellPrice = 5,
                     Tags = new List<string>{"Tardihop", "Component"},
-                    Quantity = 1
+                    Quantity = 1,
+                    Thumbnail = "Images/Thumbnails/TardihopGuts.png"
                     },
                 new Item {
                     Id = 14,
@@ -238,7 +239,8 @@ namespace RogueStarIdle.PlugIns.InMemory
                     BuyPrice = 2,
                     SellPrice = 1,
                     Tags = new List<string>{"Plant", "Forageable"},
-                    Quantity = 1
+                    Quantity = 1,
+                    Thumbnail = "Images/Thumbnails/TardihopGuts.png"
                     }
             };
         }
