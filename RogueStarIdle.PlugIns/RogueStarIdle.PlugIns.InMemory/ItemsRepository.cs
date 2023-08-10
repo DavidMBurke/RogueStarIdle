@@ -22,7 +22,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Tags = new List<string>{"Component", "Scrap"},
                     Quantity = 1,
                     Thumbnail = "/Images/Thumbnails/AnimalParts.png"
-                    },
+                },
                 new Item {
                     Id = 1,
                     Name = "Animal Skins",
@@ -31,7 +31,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Tags = new List<string>{"Component", "Scrap"},
                     Quantity = 1,
                     Thumbnail = "/Images/Thumbnails/AnimalSkins.png"
-                    },
+                },
                 new Item {
                     Id = 2,
                     Name = "Small Bones",
@@ -40,7 +40,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Tags = new List<string>{"Tardihop", "Component"},
                     Quantity = 1,
                     Thumbnail = "/Images/Thumbnails/SmallBones.png"
-                    },
+                },
                 new Item {
                     Id = 3,
                     Name = "Azurali Grass",
@@ -49,7 +49,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Tags = new List<string>{"Plant", "Forageable"},
                     Quantity = 1,
                     Thumbnail = "/Images/Thumbnails/AzuraliGrass.png"
-                    },
+                },
                 new Item {
                     Id = 4,
                     Name = "Bone Knife",
@@ -74,7 +74,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                             Stationary = "/Images/Player/Sword.png",
                             Attacking2HandMelee = "/Images/Player/Attack_Sword.gif"
                         }
-                    },
+                },
                 new Item {
                     Id = 5,
                     Name = "Tardihop Fur Hat",
@@ -92,7 +92,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     QualityLevel = 1,
                     MaxQualityLevel = 15,
                     Thumbnail = "/Images/Thumbnails/TardihopFurHat.png"
-                    },
+                },
                 new Item {
                     Id = 6,
                     Name = "Tardihop Fur Gloves",
@@ -110,7 +110,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     QualityLevel = 1,
                     MaxQualityLevel = 15,
                     Thumbnail = "/Images/Thumbnails/TardihopFurGloves.png"
-                    },
+                },
                 new Item {
                     Id = 7,
                     Name = "Tardihop Fur Shirt",
@@ -133,7 +133,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                             Stationary = "/Images/Player/Shirt_Pink.png",
                             Attacking2HandMelee = "/Images/Player/Attack_Shirt_Pink.gif"
                         }
-                    },
+                },
                 new Item {
                     Id = 8,
                     Name = "Tardihop Fur Pants",
@@ -151,7 +151,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     QualityLevel = 1,
                     MaxQualityLevel = 15,
                     Thumbnail = "Images/Thumbnails/TardihopFurPants.png"
-                    },
+                },
                 new Item {
                     Id = 9,
                     Name = "Tardihop Fur Boots",
@@ -169,7 +169,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     QualityLevel = 1,
                     MaxQualityLevel = 15,
                     Thumbnail = "Images/Thumbnails/TardihopFurBoots.png"
-                    },
+                },
                 new Item {
                     Id = 10,
                     Name = "Carapig Chitin Mask",
@@ -187,7 +187,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     QualityLevel = 1,
                     MaxQualityLevel = 15,
                     Thumbnail = "Images/Thumbnails/CarapigChitinMask.png"
-                    },
+                },
                 new Item {
                     Id = 11,
                     Name = "Carapig Chitin Armor Top",
@@ -205,7 +205,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     QualityLevel = 1,
                     MaxQualityLevel = 15,
                     Thumbnail = "Images/Thumbnails/CarapigChitinArmorTop.png"
-                    },
+                },
                 new Item {
                     Id = 12,
                     Name = "Carapig Chitin Armor Legs",
@@ -223,7 +223,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     QualityLevel = 1,
                     MaxQualityLevel = 15,
                     Thumbnail = "Images/Thumbnails/CarapigChitinArmorLegs.png"
-                    },
+                },
                 new Item {
                     Id = 13,
                     Name = "Tardihop Guts",
@@ -232,16 +232,26 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Tags = new List<string>{"Tardihop", "Component"},
                     Quantity = 1,
                     Thumbnail = "Images/Thumbnails/TardihopGuts.png"
-                    },
+                },
                 new Item {
                     Id = 14,
                     Name = "Stick",
                     BuyPrice = 2,
-                    SellPrice = 1,
+                    SellPrice = 0,
                     Tags = new List<string>{"Plant", "Forageable"},
                     Quantity = 1,
                     Thumbnail = "Images/Thumbnails/TardihopGuts.png"
-                    }
+                },
+                new Item
+                {
+                    Id = 15,
+                    Name = "Tardihop Fur",
+                    BuyPrice = 10,
+                    SellPrice = 2,
+                    Tags = new List<string>{"Tardihop", "Component"},
+                    Quantity = 1,
+                    Thumbnail = "Images/Thumbnails/TardihopFur.png"
+                }
             };
         }
         public async Task<IEnumerable<Item>> GetItemsByNameAsync(string name)
@@ -265,6 +275,10 @@ namespace RogueStarIdle.PlugIns.InMemory
         public async Task<Item> GetItemByIdAsync(int id)
         {
             return items.First(i => i.Id == id);
+        }
+        public async Task<Item> GetItemByNameAsync(string name)
+        {
+            return items.First(i => i.Name == name);
         }
     }
 }

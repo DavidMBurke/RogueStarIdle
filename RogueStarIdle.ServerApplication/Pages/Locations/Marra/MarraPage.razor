@@ -86,10 +86,12 @@
                         {
                             <text>Items to collect:<br/></text>
                         }
-                        @foreach (Item item in inventoryState.AzuraliPlainsStorage)
-                        {
-                            <text>@item.Quantity x @item.Name<br/></text>
-                        }                    
+                        <div class="column" style="display: flex; flex-direction: row; flex-wrap: wrap;">
+                            @foreach (Item item in inventoryState.AzuraliPlainsStorage)
+                            {
+                                <InventoryItemComponent item=@item/>
+                            }                    
+                        </div>
                     </div>
                 </div>
             </div>

@@ -26,7 +26,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Image = "/Images/Tardihop.png",
                     Loot = new List<ItemDrop>() 
                     {
-                        new ItemDrop (itemsRepository.items[0], 1, 1, 1, 2),
+                        new ItemDrop (itemsRepository.items[15], 1, 1, 1, 2),
                         new ItemDrop (itemsRepository.items[2], 1, 1, 1, 1),
                         new ItemDrop (itemsRepository.items[13], 1, 1, 1, 1)
                     }

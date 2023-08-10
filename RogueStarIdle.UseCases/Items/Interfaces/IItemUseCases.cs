@@ -5,6 +5,7 @@ namespace RogueStarIdle.UseCases.Items.Interfaces
     public interface IItemUseCases
     {
         Task<Item> ExecuteAsync(int id);
+        Task<Item> ExecuteAsync(string name);
     }
     public interface IViewItemsByNameUseCase
     {

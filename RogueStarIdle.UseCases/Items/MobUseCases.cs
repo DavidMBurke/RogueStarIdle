@@ -17,6 +17,11 @@ namespace RogueStarIdle.UseCases.Items
         {
             return await itemsRepository.GetItemByIdAsync(id);
         }
+
+        public async Task<Item> ExecuteAsync(string name)
+        {
+            return await itemsRepository.GetItemByNameAsync(name);
+        }
     }
     public class ViewItemsByNameUseCase : IViewItemsByNameUseCase
     {

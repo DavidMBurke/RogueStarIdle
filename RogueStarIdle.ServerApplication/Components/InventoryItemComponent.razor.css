@@ -1,0 +1,29 @@
+﻿.inventory-item {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    width: 50px;
+    height: 50px;
+    border: solid black 1px;
+    margin: 1px;
+    background-size: cover
+}
+
+.inventory-item-qty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: auto;
+    height: 30%;
+    background-color: white;
+    border: solid black 1px;
+    font-size: 10px
+}
+
+.inventory-item-tooltip {
+    border: solid black 1px;
+    background-color: white;
+    position: absolute;
+    offset-y: 100%;
+}

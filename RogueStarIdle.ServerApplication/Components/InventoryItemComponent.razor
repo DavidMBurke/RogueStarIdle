@@ -1,0 +1,24 @@
+﻿<div class="inventory-item" style="background-image: url(@item.Thumbnail);" @onmouseover="() => mouseover()" @onmouseout="() => mouseout()">
+    <div class="inventory-item-qty">@item.Quantity</div>
+    @if (showTooltip)
+    {
+        <div class="inventory-item-tooltip">@item.Name</div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Item item { get; set; } = new Item();
+
+    private bool showTooltip = false;
+
+    public void mouseover()
+    {
+        showTooltip = true;
+    }
+
+    public void mouseout()
+    {
+        showTooltip = false;
+    }
+}
