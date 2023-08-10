@@ -13,11 +13,19 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         public List<Item>? SelectedStorage { get; set; } = null;
         public InventoryState? inventoryState;
         public CharacterState? characterState;
+        public string scavengeLocation = "";
         public int SurvivalXpAtLocation { get; set; } = 0;
         public ScavengingState(InventoryState inventoryState, CharacterState characterState)
         {
             this.inventoryState = inventoryState;
             this.characterState = characterState;
+        }
+
+        public void LeaveScavenging()
+        {
+            ScavengeableItems.Clear();
+            scavengeLocation = "";
+            IsScavenging = false;
         }
         public void ScavengeTicks (int ticksElapsed)
         {   

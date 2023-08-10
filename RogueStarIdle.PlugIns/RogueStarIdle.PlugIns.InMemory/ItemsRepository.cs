@@ -240,7 +240,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     SellPrice = 0,
                     Tags = new List<string>{"Plant", "Forageable"},
                     Quantity = 1,
-                    Thumbnail = "Images/Thumbnails/TardihopGuts.png"
+                    Thumbnail = "Images/Thumbnails/Stick.png"
                 },
                 new Item
                 {

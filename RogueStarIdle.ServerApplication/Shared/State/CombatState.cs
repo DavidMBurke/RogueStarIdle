@@ -10,6 +10,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         public List<Item>? SelectedStorage { get; set; } = null;
         public InventoryState? inventoryState;
         public CharacterState? characterState;
+        public string combatLocation = "";
         public List<MobSpawn> PossibleMobs = new List<MobSpawn>();
         public List<MobSpawn> SpawnedMobs = new List<MobSpawn>();
         public int respawnTime = 200; //4 sec
@@ -25,6 +26,14 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         {
             this.inventoryState = inventoryState;
             this.characterState = characterState;
+        }
+
+        public void LeaveCombat()
+        {
+            PossibleMobs.Clear();
+            SpawnedMobs.Clear();
+            combatLocation = "";
+            IsInCombat = false;
         }
         public async void CombatTicks(int ticksElapsed)
         {

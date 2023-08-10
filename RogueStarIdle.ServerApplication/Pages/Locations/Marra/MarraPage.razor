@@ -23,17 +23,16 @@
                 <button @onclick='() => SelectLocation("ancientFactory")'>Ancient Factory</button>
             </div>
             <div class="column" style="width: 85%;">
-                @switch (location)
+                @switch (selectedLocation)
                 {
                     case "azuraliPlains":
                         {
                             <h1> Azurali Plains </h1>
                             <div class="row">
-                                <button @onclick="() => SelectScavenge(azuraliPlainsScavengeables)" style=@("height: 30px; width: 33%;" + (scavengingState.IsScavenging? "background-color: green" : ""))> Scavenge </button>
-                                <button @onclick="() => SelectHunt(azuraliPlainsMobs)" style=@("height: 30px; width: 33%;" + (combatState.IsInCombat? "background-color: green" : ""))> Hunt </button>
+                                <button @onclick="() => SelectScavenge(azuraliPlainsScavengeables, selectedLocation)" style=@("height: 30px; width: 33%;" + (scavengingState.IsScavenging? "background-color: green" : ""))> Scavenge </button>
+                                <button @onclick="() => SelectHunt(azuraliPlainsMobs, selectedLocation)" style=@("height: 30px; width: 33%;" + (combatState.IsInCombat? "background-color: green" : ""))> Hunt </button>
                                 <button @onclick="() => CollectAll()" style="height: 30px; width:33%;"> Collect gathered Items </button>
                             </div>
-
                             break;
                         }
                     case "noxiousWetlands":
@@ -77,7 +76,7 @@
                         }
                 }
                 <div class="row">
-                    @if (combatState.IsInCombat)
+                    @if (combatState.IsInCombat && combatState.combatLocation == selectedLocation)
                     {
                         <CombatScreenComponent />
                     }
@@ -101,7 +100,7 @@
 
 
 @code {
-    private string location = "";
+    private string selectedLocation = "";
     private List<ItemDrop> azuraliPlainsScavengeables = new List<ItemDrop>();
     private List<MobSpawn> azuraliPlainsMobs = new List<MobSpawn>();
 
@@ -128,33 +127,35 @@
 
     void SelectLocation(string name)
     {
-        location = name;
+        selectedLocation = name;
     }
 
-    void SelectScavenge(List<ItemDrop> scavengables)
+    void SelectScavenge(List<ItemDrop> scavengables, string location)
     {
         if (scavengingState.IsScavenging)
         {
-            scavengingState.IsScavenging = false;
+            scavengingState.LeaveScavenging();
             return;
         }
+        scavengingState.scavengeLocation = location;
         scavengingState.IsScavenging = true;
-        combatState.IsInCombat = false;
+        combatState.LeaveCombat();
         scavengingState.ScavengeableItems = scavengables;
         scavengingState.SurvivalXpAtLocation = 1;
         scavengingState.SelectedStorage = inventoryState.AzuraliPlainsStorage;
     }
 
-    void SelectHunt(List<MobSpawn> mobs)
+    void SelectHunt(List<MobSpawn> mobs, string location)
     {
         characterState.MainCharacter.Equipment.CalculateStats(characterState.MainCharacter);
         if (combatState.IsInCombat)
         {
-            combatState.IsInCombat = false;
+            combatState.LeaveCombat();
             return;
         }
+        combatState.combatLocation = location;
         combatState.IsInCombat = true;
-        scavengingState.IsScavenging = false;
+        scavengingState.LeaveScavenging();
         combatState.PossibleMobs = mobs;
         combatState.SelectedStorage = inventoryState.AzuraliPlainsStorage;
     }
