@@ -62,7 +62,7 @@ namespace RogueStarIdle.CoreBusiness
                 RangedToHit = character.RangedSkill.Level,
                 PsychicToHit = character.PsychicSkill.Level,
                 ExplosiveToHit = character.ExplosivesSkill.Level,
-                MaxHealth = GetTotalLevel(character)
+                MaxHealth = 10 * character.VitalitySkill.Level + GetTotalLevel(character)
             };
             foreach (var property in typeof(EquipmentSet).GetProperties())
             {

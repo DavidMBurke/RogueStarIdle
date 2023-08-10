@@ -15,6 +15,7 @@
         public Skill ExplosivesSkill { get; set; } = new Skill("Explosives", 1, 0);
         public Skill PsychicSkill { get; set; } = new Skill("Psychic", 1, 0);
         public Skill BlockSkill { get; set; } = new Skill("Block", 1, 0);
+        public Skill VitalitySkill { get; set; } = new Skill("Vitality", 1, 0);
         public Skill ArmorCraftingSkill { get; set; } = new Skill("Armor Crafting", 1, 0);
         public Skill WeaponSmithingSkill { get; set; } = new Skill("Weapon Smithing", 1, 0);
         public Skill RoboticsSkill { get; set; } = new Skill("Robotics", 1, 0);
@@ -58,15 +59,33 @@
                 hitRoll += Equipment.Stats.PsychicToHit;
             }
 
+            int xp = 1;
             int blockRoll = defender.Mob.Stats.MeleeDefense + rand.Next(20);
             if (hitRoll > blockRoll)
             {
                 int damage = CalculateTotalDamage(Equipment.Stats, defender.Mob.Stats);
                 defender.Mob.CurrentHealth -= damage;
+                xp = 2;
                 Console.WriteLine($"Player hits for {damage} damage! {defender.Mob.Name} HP: ({defender.Mob.CurrentHealth}/{defender.Mob.Stats.MaxHealth})");
             } else
             {
                 Console.WriteLine("Player misses!");
+            }
+            if (Equipment.Stats.IsUsingMelee)
+            {
+                MeleeSkill.addXp(xp);
+            }
+            if (Equipment.Stats.IsUsingRanged)
+            {
+                RangedSkill.addXp(xp);
+            }
+            if (Equipment.Stats.IsUsingExplosive)
+            {
+                ExplosivesSkill.addXp(xp);
+            }
+            if (Equipment.Stats.IsUsingPsychic)
+            {
+                PsychicSkill.addXp(xp);
             }
         }
 
