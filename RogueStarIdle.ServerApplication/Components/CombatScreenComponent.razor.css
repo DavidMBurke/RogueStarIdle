@@ -1,0 +1,44 @@
+﻿.combat-screen-wrapper {
+    border: solid 2px black;
+    height: 270px;
+    width: 480px;
+    padding: 0;
+}
+
+.combat-screen {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    padding-bottom: 5%;
+    background-size: cover;
+}
+
+.combat-screen-half {
+    height: 100%;
+    width: 45%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+.combat-screen-divider {
+    height:100%; 
+    width: 10%;
+}
+
+.combat-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: -25%;
+}
+
+.combat-row-spacer {
+    height: 50%;
+    width: 25%;
+}
+
