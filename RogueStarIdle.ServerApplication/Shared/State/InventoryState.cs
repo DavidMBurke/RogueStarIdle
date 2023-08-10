@@ -10,7 +10,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         public List<Item> ShipStorage { get; set; } = new List<Item>();
         public List<Item> AzuraliPlainsStorage { get; set; } = new List<Item>();
         public List<Item> NoxiousWetlandsStorage { get; set; } = new List<Item>();
-        public List<Item> rockyOutcroppingStorage { get; set; } = new List<Item>();
+        public List<Item> RockyOutcroppingStorage { get; set; } = new List<Item>();
         public List<Item> AncientRuinsStorage { get; set; } = new List<Item>();
         public List<Item> PlateauStorage { get; set; } = new List<Item>();
         public List<Item> CobaltForestStorage { get; set; } = new List<Item>();

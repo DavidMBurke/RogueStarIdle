@@ -7,6 +7,7 @@
         public EquipmentSet Equipment { get; set; } = new EquipmentSet();
         public int AttackCounter { get; set; }
         public int CurrentHealth { get; set; } = 0;
+        public bool IsAlive { get; set; } = true;
         public float PassiveHealingTracker { get; set; } = 0;
         public bool TriggerAttackAnimation { get; set; } = false;
         public Skill MeleeSkill { get; set; } = new Skill("Melee", 1, 0);
@@ -60,7 +61,6 @@
             int blockRoll = defender.Mob.Stats.MeleeDefense + rand.Next(20);
             if (hitRoll > blockRoll)
             {
-                // TODO create method to total all damages and subtract all defenses
                 int damage = CalculateTotalDamage(Equipment.Stats, defender.Mob.Stats);
                 defender.Mob.CurrentHealth -= damage;
                 Console.WriteLine($"Player hits for {damage} damage! {defender.Mob.Name} HP: ({defender.Mob.CurrentHealth}/{defender.Mob.Stats.MaxHealth})");
@@ -94,7 +94,7 @@
 
         public void PassiveHeal(int timeToFullHealth)
         {
-            if (CurrentHealth >= Equipment.Stats.MaxHealth)
+            if (CurrentHealth >= Equipment.Stats.MaxHealth || IsAlive == false)
             {
                 return;
             }
@@ -108,6 +108,16 @@
             {
                 PassiveHealingTracker = 0;
             }
+        }
+
+        public void Die()
+        {
+            IsAlive = false;
+        }
+
+        public void Revive()
+        {
+            IsAlive = true;
         }
     }
 }

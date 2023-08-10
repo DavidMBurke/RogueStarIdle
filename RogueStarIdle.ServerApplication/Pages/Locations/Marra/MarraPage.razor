@@ -27,46 +27,54 @@
                 {
                     case "azuraliPlains":
                         {
+                            locationStorage = inventoryState.AzuraliPlainsStorage;
                             <h1> Azurali Plains </h1>
                             <div class="row">
-                                <button @onclick="() => SelectScavenge(azuraliPlainsScavengeables, selectedLocation)" style=@("height: 30px; width: 33%;" + (scavengingState.IsScavenging? "background-color: green" : ""))> Scavenge </button>
-                                <button @onclick="() => SelectHunt(azuraliPlainsMobs, selectedLocation)" style=@("height: 30px; width: 33%;" + (combatState.IsInCombat? "background-color: green" : ""))> Hunt </button>
+                                <button @onclick="() => SelectScavenge(azuraliPlainsScavengeables, selectedLocation, inventoryState.AzuraliPlainsStorage)" style=@("height: 30px; width: 33%;" + (scavengingState.IsScavenging? "background-color: green" : ""))> Scavenge </button>
+                                <button @onclick="() => SelectHunt(azuraliPlainsMobs, selectedLocation, inventoryState.AzuraliPlainsStorage)" style=@("height: 30px; width: 33%;" + (combatState.IsInCombat? "background-color: green" : ""))> Hunt </button>
                                 <button @onclick="() => CollectAll()" style="height: 30px; width:33%;"> Collect gathered Items </button>
                             </div>
                             break;
                         }
                     case "noxiousWetlands":
                         {
+                            locationStorage = inventoryState.NoxiousWetlandsStorage;
                             <h1>Noxious Wetlands</h1>
                             break;
                         }
                     case "rockyOutcropping":
                         {
+                            locationStorage = inventoryState.RockyOutcroppingStorage;
                             <h1>Rocky Outcropping</h1>
                             break;
                         }
                     case "ancientRuins":
-                                            {
+                        {
+                            locationStorage = inventoryState.AncientRuinsStorage;
                             <h1>Ancient Ruins</h1>
                             break;
                         }
                     case "plateau":
                         {
+                            locationStorage = inventoryState.PlateauStorage;
                             <h1>Plateau</h1>
                             break;
                         }
                     case "cobaltForest":
                         {
+                            locationStorage = inventoryState.CobaltForestStorage;
                             <h1>Cobalt Forest</h1>
                             break;
                         }
                     case "darkChasm":
                         {
+                            locationStorage = inventoryState.DarkChasmStorage;
                             <h1>Dark Chasm</h1>
                             break;
                         }
                     case "ancientFactory":
                         {
+                            locationStorage = inventoryState.AncientFactoryStorage;
                             <h1>Ancient Factory</h1>
                             break;
                         }
@@ -81,12 +89,12 @@
                         <CombatScreenComponent />
                     }
                     <div class="column">
-                        @if (inventoryState.AzuraliPlainsStorage.Any<Item>())
+                        @if (locationStorage.Any<Item>())
                         {
                             <text>Items to collect:<br/></text>
                         }
                         <div class="column" style="display: flex; flex-direction: row; flex-wrap: wrap;">
-                            @foreach (Item item in inventoryState.AzuraliPlainsStorage)
+                            @foreach (Item item in locationStorage)
                             {
                                 <InventoryItemComponent item=@item/>
                             }                    
@@ -103,6 +111,7 @@
     private string selectedLocation = "";
     private List<ItemDrop> azuraliPlainsScavengeables = new List<ItemDrop>();
     private List<MobSpawn> azuraliPlainsMobs = new List<MobSpawn>();
+    private List<Item> locationStorage = new List<Item>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -130,7 +139,7 @@
         selectedLocation = name;
     }
 
-    void SelectScavenge(List<ItemDrop> scavengables, string location)
+    void SelectScavenge(List<ItemDrop> scavengables, string location, List<Item> locationStorage)
     {
         if (scavengingState.IsScavenging)
         {
@@ -142,10 +151,10 @@
         combatState.LeaveCombat();
         scavengingState.ScavengeableItems = scavengables;
         scavengingState.SurvivalXpAtLocation = 1;
-        scavengingState.SelectedStorage = inventoryState.AzuraliPlainsStorage;
+        scavengingState.SelectedStorage = locationStorage;
     }
 
-    void SelectHunt(List<MobSpawn> mobs, string location)
+    void SelectHunt(List<MobSpawn> mobs, string location, List<Item> locationStorage)
     {
         characterState.MainCharacter.Equipment.CalculateStats(characterState.MainCharacter);
         if (combatState.IsInCombat)
@@ -157,7 +166,7 @@
         combatState.IsInCombat = true;
         scavengingState.LeaveScavenging();
         combatState.PossibleMobs = new List<MobSpawn>(mobs);
-        combatState.SelectedStorage = inventoryState.AzuraliPlainsStorage;
+        combatState.SelectedStorage = locationStorage;
     }
 
     async void CollectAll()

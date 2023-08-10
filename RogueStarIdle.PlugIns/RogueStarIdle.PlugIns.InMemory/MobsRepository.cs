@@ -17,9 +17,9 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Name = "Tardihop",
                     Stats = new Stats()
                     {
-                        MaxHealth = 100,
-                        SlashingDamageMin = 0,
-                        SlashingDamageMax = 10,
+                        MaxHealth = 50,
+                        SlashingDamageMin = 1,
+                        SlashingDamageMax = 5,
                         AttackSpeed = 75 // 1.5 sec
                     },
                     CurrentHealth = 100,

@@ -41,6 +41,10 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 characterState?.MainCharacter.PassiveHeal(500); //10 sec to full health
                 return;
             }
+            if (characterState.MainCharacter.IsAlive == false && !characterState.Characters.Any(c => c.IsAlive == true))
+            {
+                return;
+            }
             characterState.MainCharacter.PassiveHeal(3000); //1 min to full health
 
             for (int i = 0; i < ticksElapsed; i++)
@@ -57,12 +61,15 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     MobsAreSpawned = true;
                     SpawnMobs();
                 }
-                characterState.MainCharacter.AttackCounter -= 1;
-                if (characterState.MainCharacter.AttackCounter <= 0)
+                if (characterState.MainCharacter.IsAlive)
                 {
-                    characterState.MainCharacter.Equipment.CalculateStats(characterState.MainCharacter);
-                    characterState.MainCharacter.Attack(SpawnedMobs.FirstOrDefault());
-                    characterState.MainCharacter.AttackCounter = characterState.MainCharacter.Equipment.Stats.AttackSpeed;
+                    characterState.MainCharacter.AttackCounter -= 1;
+                    if (characterState.MainCharacter.AttackCounter <= 0)
+                    {
+                        characterState.MainCharacter.Equipment.CalculateStats(characterState.MainCharacter);
+                        characterState.MainCharacter.Attack(SpawnedMobs.FirstOrDefault());
+                        characterState.MainCharacter.AttackCounter = characterState.MainCharacter.Equipment.Stats.AttackSpeed;
+                    }
                 }
                 foreach (MobSpawn mobSpawn in SpawnedMobs.ToList())
                 {
@@ -78,10 +85,24 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                         Loot(mobSpawn);
                         SpawnedMobs.Remove(mobSpawn);
                     }
+                    if (characterState.MainCharacter.CurrentHealth <= 0)
+                    {
+                        characterState.MainCharacter.Die();
+                    }
                 }
                 if (SpawnedMobs.Count == 0)
                 {
                     MobsAreSpawned = false;
+                }
+
+                if (characterState.MainCharacter.IsAlive == false && (characterState.Characters?.All(c => c.IsAlive == false) ?? false))
+                {
+                    LeaveCombat();
+                    characterState.MainCharacter.Revive();
+                    foreach (Character character in characterState.Characters)
+                    {
+                        character.Revive();
+                    }
                 }
             }
             await NotifyStateChanged();
