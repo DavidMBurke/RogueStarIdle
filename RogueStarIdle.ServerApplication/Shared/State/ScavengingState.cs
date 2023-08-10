@@ -23,7 +23,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
 
         public void LeaveScavenging()
         {
-            ScavengeableItems.Clear();
+            ScavengeableItems?.Clear();
             scavengeLocation = "";
             IsScavenging = false;
         }

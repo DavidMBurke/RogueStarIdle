@@ -30,16 +30,18 @@ namespace RogueStarIdle.ServerApplication.Shared.State
 
         public void LeaveCombat()
         {
-            PossibleMobs.Clear();
-            SpawnedMobs.Clear();
+            PossibleMobs?.Clear();
+            SpawnedMobs?.Clear();
             combatLocation = "";
             IsInCombat = false;
         }
         public async void CombatTicks(int ticksElapsed)
         {
-            if (!IsInCombat) { 
-                return; 
+            if (!IsInCombat) {
+                characterState?.MainCharacter.PassiveHeal(500); //10 sec to full health
+                return;
             }
+            characterState.MainCharacter.PassiveHeal(3000); //1 min to full health
 
             for (int i = 0; i < ticksElapsed; i++)
             {

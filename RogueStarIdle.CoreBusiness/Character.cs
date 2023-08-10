@@ -7,6 +7,7 @@
         public EquipmentSet Equipment { get; set; } = new EquipmentSet();
         public int AttackCounter { get; set; }
         public int CurrentHealth { get; set; } = 0;
+        public float PassiveHealingTracker { get; set; } = 0;
         public bool TriggerAttackAnimation { get; set; } = false;
         public Skill MeleeSkill { get; set; } = new Skill("Melee", 1, 0);
         public Skill RangedSkill { get; set; } = new Skill("Ranged", 1, 0);
@@ -89,6 +90,24 @@
             int baseDamage = min + rand.Next(1 + max - min);
             int reducedDamage = (baseDamage * (100 - dr)) / 100;
             return reducedDamage;
+        }
+
+        public void PassiveHeal(int timeToFullHealth)
+        {
+            if (CurrentHealth >= Equipment.Stats.MaxHealth)
+            {
+                return;
+            }
+            PassiveHealingTracker += (float)Equipment.Stats.MaxHealth / timeToFullHealth;
+            while (PassiveHealingTracker > 1 && CurrentHealth < Equipment.Stats.MaxHealth)
+            {
+                CurrentHealth++;
+                PassiveHealingTracker--;
+            }
+            if (CurrentHealth >= Equipment.Stats.MaxHealth)
+            {
+                PassiveHealingTracker = 0;
+            }
         }
     }
 }

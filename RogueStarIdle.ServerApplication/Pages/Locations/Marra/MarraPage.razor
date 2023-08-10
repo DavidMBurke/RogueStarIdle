@@ -156,7 +156,7 @@
         combatState.combatLocation = location;
         combatState.IsInCombat = true;
         scavengingState.LeaveScavenging();
-        combatState.PossibleMobs = mobs;
+        combatState.PossibleMobs = new List<MobSpawn>(mobs);
         combatState.SelectedStorage = inventoryState.AzuraliPlainsStorage;
     }
 
