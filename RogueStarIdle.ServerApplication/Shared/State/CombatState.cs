@@ -86,7 +86,6 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     }
                     if (mobSpawn.Mob.CurrentHealth <= 0)
                     {
-                        Console.WriteLine($"{mobSpawn.Mob.Name} has been slain!");
                         mobSpawn.Mob.Die();
                     }
                     if (characterState.MainCharacter.CurrentHealth <= 0)
@@ -135,7 +134,6 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 mobSpawn.Mob.IsAlive = true;
             }
             MobsAreSpawned = true;
-            Console.WriteLine($"{PossibleMobs[0].Mob.Name} spawned!");
         }
 
         public void Loot(MobSpawn mobSpawn)
@@ -149,7 +147,6 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     int qty = itemDrop.QuantityRangeMin + rand.Next(itemDrop.QuantityRangeMax - itemDrop.QuantityRangeMin + 1);
                     itemDrop.Item.Quantity = qty;
                     inventoryState.AddToInventory(SelectedStorage, itemDrop.Item, itemDrop.Item.Quantity);
-                    Console.WriteLine($"{mobSpawn.Mob.Name} dropped {qty} X {itemDrop.Item.Name}");
                 }
             }
         }

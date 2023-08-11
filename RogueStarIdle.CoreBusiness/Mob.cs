@@ -15,7 +15,6 @@
             {
                 return;
             }
-            Console.WriteLine($"{Name} attacks player!");
             Random rand = new Random();
             int hitRoll = rand.Next(20);
             int blockRoll = defender.Equipment.Stats.MeleeDefense + defender.BlockSkill.Level + rand.Next(20);
@@ -24,12 +23,10 @@
             {
                 defender.CurrentHealth -= damage;
                 defender.VitalitySkill.addXp(1);
-                Console.WriteLine($"{Name} hits for {damage} damage! {defender.Name} HP: ({defender.CurrentHealth}/{defender.Equipment.Stats.MaxHealth})");
             }
             else
             {
                 defender.BlockSkill.addXp(1);
-                Console.WriteLine($"{Name} misses!");
             }
         }
 

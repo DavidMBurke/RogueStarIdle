@@ -39,7 +39,6 @@
             {
                 return;
             }
-            Console.WriteLine($"Player attacks {defender.Mob.Name}!");
             Random rand = new Random();
             int hitRoll = rand.Next(20);
             if (Equipment.Stats.IsUsingMelee)
@@ -66,10 +65,6 @@
                 int damage = CalculateTotalDamage(Equipment.Stats, defender.Mob.Stats);
                 defender.Mob.CurrentHealth -= damage;
                 xp = 2;
-                Console.WriteLine($"Player hits for {damage} damage! {defender.Mob.Name} HP: ({defender.Mob.CurrentHealth}/{defender.Mob.Stats.MaxHealth})");
-            } else
-            {
-                Console.WriteLine("Player misses!");
             }
             if (Equipment.Stats.IsUsingMelee)
             {
