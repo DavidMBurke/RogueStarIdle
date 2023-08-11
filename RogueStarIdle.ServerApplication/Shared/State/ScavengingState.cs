@@ -63,7 +63,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         public void Scavenge(int attempts = 1)
         {
             Random rand = new Random();
-            if (rand.Next(10) == 1)
+            if (rand.Next(10) < 5)
             {
                 combatState.EnterCombat(PossibleMobs, ScavengeLocation, SelectedStorage, isScavenging: true, LeaveScavenging);
             }

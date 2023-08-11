@@ -42,5 +42,52 @@
         public int CrushingDamageMax { get; set; } = 0;
         public int SlashingDamageMin { get; set; } = 0;
         public int SlashingDamageMax { get; set; } = 0;
+
+        public Stats Clone()
+        {
+            return new Stats()
+            {
+                IsUsingMelee = IsUsingMelee,
+                IsUsingRanged = IsUsingRanged,
+                IsUsingPsychic = IsUsingPsychic,
+                IsUsingExplosive = IsUsingExplosive,
+                MeleeToHit = MeleeToHit,
+                RangedToHit = RangedToHit,
+                PsychicToHit = PsychicToHit,
+                ExplosiveToHit = ExplosiveToHit,
+                AttackSpeed = AttackSpeed,
+                MaxHealth = MaxHealth,
+                EnergyDefense = EnergyDefense,
+                KineticDefense = KineticDefense,
+                PsychicDefense = PsychicDefense,
+                MeleeDefense = MeleeDefense,
+                RangedDefense = RangedDefense,
+                ExplosiveDefense = ExplosiveDefense,
+                EnergyDR = EnergyDR,
+                FireDR = FireDR,
+                AcidDR = AcidDR,
+                PoisonDR = PoisonDR,
+                ShockDR = ShockDR,
+                KineticDR = KineticDR,
+                PiercingDR = PiercingDR,
+                CrushingDR = CrushingDR,
+                SlashingDR = SlashingDR,
+                PsychicDR = PsychicDR,
+                FireDamageMin = FireDamageMin,
+                FireDamageMax = FireDamageMax,
+                AcidDamageMin = AcidDamageMin,
+                AcidDamageMax = AcidDamageMax,
+                PoisonDamageMin = PoisonDamageMin,
+                PoisonDamageMax = PoisonDamageMax,
+                ShockDamageMin = ShockDamageMin,
+                ShockDamageMax = ShockDamageMax,
+                PiercingDamageMin = PiercingDamageMin,
+                PiercingDamageMax = PiercingDamageMax,
+                CrushingDamageMin = CrushingDamageMin,
+                CrushingDamageMax = CrushingDamageMax,
+                SlashingDamageMin = SlashingDamageMin,
+                SlashingDamageMax = SlashingDamageMax
+            };
+        }
     }
 }

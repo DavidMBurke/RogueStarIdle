@@ -5,7 +5,7 @@
     <div class="column" style="display: flex; justify-content: center; width: 100%; height: 100%">
         @if (mob != null)
         {
-            <img style="width: 100%; transform: scaleX(-1)" src=@mob.Image />
+            <MobAnimationComponent mob=mob/>
             <div style="width: 100%; height: 8%;">
                 <HealthBarComponent currentHealth=mob.CurrentHealth maxHealth=mob.Stats.MaxHealth/>
             </div>
@@ -20,7 +20,7 @@
 
 @code {
     [Parameter]
-    public Mob mob { get; set; }
+    public Mob? mob { get; set; }
 
     [Parameter]
     public string size { get; set; }

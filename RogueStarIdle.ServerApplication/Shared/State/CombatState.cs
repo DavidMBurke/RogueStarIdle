@@ -72,7 +72,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     if (characterState.MainCharacter.AttackCounter <= 0)
                     {
                         characterState.MainCharacter.Equipment.CalculateStats(characterState.MainCharacter);
-                        characterState.MainCharacter.Attack(SpawnedMobs.FirstOrDefault());
+                        characterState.MainCharacter.Attack(SpawnedMobs.FirstOrDefault(s => s.Mob.IsAlive));
                         characterState.MainCharacter.AttackCounter = characterState.MainCharacter.Equipment.Stats.AttackSpeed;
                     }
                 }
@@ -109,7 +109,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     }
                 }
 
-                if (SpawnedMobs.Count(m => m.Mob.IsAlive) == 0)
+                if (SpawnedMobs.Count(m => m.Mob.IsAlive) == 0 && MobsAreSpawned)
                 {
                     foreach (MobSpawn mobSpawn in SpawnedMobs) {
                         Loot(mobSpawn);
@@ -126,10 +126,14 @@ namespace RogueStarIdle.ServerApplication.Shared.State
 
         public void SpawnMobs()
         {
+            Random rand = new Random();
             // TODO randomize selection
-            SpawnedMobs.Add(PossibleMobs[0]);
+            SpawnedMobs.Add(PossibleMobs[0].Clone());
+            SpawnedMobs.Add(PossibleMobs[0].Clone());
+            SpawnedMobs.Add(PossibleMobs[0].Clone());
             foreach (MobSpawn mobSpawn in SpawnedMobs)
             {
+                mobSpawn.AttackCounter = rand.Next(mobSpawn.Mob.Stats.AttackSpeed + 1);
                 mobSpawn.Mob.CurrentHealth = mobSpawn.Mob.Stats.MaxHealth;
                 mobSpawn.Mob.IsAlive = true;
             }

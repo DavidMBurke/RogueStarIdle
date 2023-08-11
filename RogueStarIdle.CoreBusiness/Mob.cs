@@ -8,13 +8,29 @@
         public List<ItemDrop> Loot { get; set; } = new List<ItemDrop>();
         public int CurrentHealth { get; set; } = 0;
         public bool IsAlive { get; set; } = true;
-        public string Image { get; set; } = "";
+        public MobImageUrls Images { get; set; } = new MobImageUrls();
+        public bool TriggerAttackAnimation { get; set; } = false;
+
+        public Mob Clone()
+        {
+            return new Mob()
+            {
+                Id = Id,
+                Name = Name,
+                Stats = Stats.Clone(),
+                Loot = new List<ItemDrop>(Loot),
+                CurrentHealth = CurrentHealth,
+                IsAlive = IsAlive,
+                Images = Images,
+            };
+        }
         public void Attack(Character defender)
         {
             if (defender == null)
             {
                 return;
             }
+            TriggerAttackAnimation = true;
             Random rand = new Random();
             int hitRoll = rand.Next(20);
             int blockRoll = defender.Equipment.Stats.MeleeDefense + defender.BlockSkill.Level + rand.Next(20);

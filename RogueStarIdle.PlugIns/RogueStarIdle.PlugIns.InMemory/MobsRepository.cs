@@ -23,7 +23,12 @@ namespace RogueStarIdle.PlugIns.InMemory
                         AttackSpeed = 75 // 1.5 sec
                     },
                     CurrentHealth = 100,
-                    Image = "/Images/Tardihop.png",
+                    Images = new MobImageUrls
+                    {
+                        Stationary = "/Images/Tardihop.png",
+                        Attacking = "/Images/Tardihop_Attack.gif",
+                        Dead = "/Images/Tardihop_Dead.png"
+                    },
                     Loot = new List<ItemDrop>() 
                     {
                         new ItemDrop (itemsRepository.items[15], 1, 1, 1, 2),

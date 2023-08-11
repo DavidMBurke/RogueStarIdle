@@ -17,7 +17,9 @@
     public Character character { get; set; } = new Character();
     public Timer attackAnimationTimer = new Timer(500);
     public string[] selectedAnimation = new string[] { };
-    private string[] stationaryImageUrls = new string[]{};
+    private string[] stationaryImageUrls = new string[]{ };
+    private string[] attackImageUrls = new string[] { };
+
 
     protected override void OnInitialized()
     {
@@ -59,18 +61,6 @@
             character.Equipment.RightWeapon.Item?.Images.Attacking2HandMelee ?? ""
         };
     }
-
-
-    private string[] attackImageUrls = new string[]
-    {
-        "/Images/Player/Attack_Legs.gif",
-        "/Images/Player/Attack_Head.gif",
-        "/Images/Player/Attack_Sword.gif",
-        "/Images/Player/Attack_Pants.gif",
-        "/Images/Player/Attack_Shirt.gif",
-        "/Images/Player/Attack_Arms.gif",
-        "/Images/Player/Attack_Shoes.gif"
-    };
 
     public string[] selectAnimation()
     {

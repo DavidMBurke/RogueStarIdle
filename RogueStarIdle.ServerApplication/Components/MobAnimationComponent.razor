@@ -1,0 +1,37 @@
+﻿@using System.Timers;
+
+<img style="width: 100%; transform: scaleX(-1)" src=@selectAnimation() />
+
+@code {
+    [Parameter]
+    public Mob mob { get; set; } = new Mob();
+    public Timer attackAnimationTimer = new Timer(300);
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        attackAnimationTimer.AutoReset = false;
+    }
+
+    public string selectAnimation()
+    {
+        if (!mob.IsAlive)
+        {
+            return mob.Images.Dead;
+        }
+        if (attackAnimationTimer.Enabled)
+        {
+            return mob.Images.Attacking;
+        }
+        if (mob.TriggerAttackAnimation)
+        {
+            mob.TriggerAttackAnimation = false;
+            attackAnimationTimer.Start();
+            return mob.Images.Attacking;
+        }
+        return mob.Images.Stationary;
+    }
+
+    
+}
+
