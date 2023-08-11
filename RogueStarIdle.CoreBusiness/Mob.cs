@@ -7,6 +7,7 @@
         public Stats Stats { get; set; } = new Stats();
         public List<ItemDrop> Loot { get; set; } = new List<ItemDrop>();
         public int CurrentHealth { get; set; } = 0;
+        public bool IsAlive { get; set; } = true;
         public string Image { get; set; } = "";
         public void Attack(Character defender)
         {
@@ -52,6 +53,16 @@
             int baseDamage = min + rand.Next(1 + max - min);
             int reducedDamage = (baseDamage * (100 - dr)) / 100;
             return reducedDamage;
+        }
+
+        public void Die()
+        {
+            IsAlive = false;
+        }
+
+        public void Revive()
+        { 
+            IsAlive = true; 
         }
     }
 }

@@ -10,12 +10,15 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         public List<Item>? SelectedStorage { get; set; } = null;
         public InventoryState? inventoryState;
         public CharacterState? characterState;
+        //cannot use scavenging state d/t circular dependency, so this IsScavenging needs to sync with scavengingState instead
+        public bool IsScavenging = false; 
         public string combatLocation = "";
         public List<MobSpawn> PossibleMobs = new List<MobSpawn>();
         public List<MobSpawn> SpawnedMobs = new List<MobSpawn>();
         public int respawnTime = 200; //4 sec
         public int respawnCounter = 200;
         public event Func<Task> OnChange;
+        public event Action LeaveScavenging;
         private async Task NotifyStateChanged()
         {
             if (OnChange == null)
@@ -30,9 +33,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
 
         public void LeaveCombat()
         {
-            PossibleMobs?.Clear();
             SpawnedMobs?.Clear();
-            combatLocation = "";
             IsInCombat = false;
         }
         public async void CombatTicks(int ticksElapsed)
@@ -45,7 +46,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             {
                 return;
             }
-            characterState.MainCharacter.PassiveHeal(3000); //1 min to full health
+            characterState.MainCharacter.PassiveHeal(6000); //2 min to full health
 
             for (int i = 0; i < ticksElapsed; i++)
             {
@@ -53,6 +54,10 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 if (MobsAreSpawned == false)
                 {
                     respawnCounter -= 1;
+                    if (IsScavenging)
+                    {
+                        respawnCounter = 0;
+                    }
                     if (respawnCounter > 0)
                     {
                         continue;
@@ -82,8 +87,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     if (mobSpawn.Mob.CurrentHealth <= 0)
                     {
                         Console.WriteLine($"{mobSpawn.Mob.Name} has been slain!");
-                        Loot(mobSpawn);
-                        SpawnedMobs.Remove(mobSpawn);
+                        mobSpawn.Mob.Die();
                     }
                     if (characterState.MainCharacter.CurrentHealth <= 0)
                     {
@@ -98,10 +102,23 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 if (characterState.MainCharacter.IsAlive == false && (characterState.Characters?.All(c => c.IsAlive == false) ?? false))
                 {
                     LeaveCombat();
+                    LeaveScavenging.Invoke();
                     characterState.MainCharacter.Revive();
                     foreach (Character character in characterState.Characters)
                     {
                         character.Revive();
+                    }
+                }
+
+                if (SpawnedMobs.Count(m => m.Mob.IsAlive) == 0)
+                {
+                    foreach (MobSpawn mobSpawn in SpawnedMobs) {
+                        Loot(mobSpawn);
+                    }
+                    SpawnedMobs.Clear();
+                    if (IsScavenging)
+                    {
+                        LeaveCombat();
                     }
                 }
             }
@@ -112,9 +129,10 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         {
             // TODO randomize selection
             SpawnedMobs.Add(PossibleMobs[0]);
-            foreach (MobSpawn mob in SpawnedMobs)
+            foreach (MobSpawn mobSpawn in SpawnedMobs)
             {
-                mob.Mob.CurrentHealth = mob.Mob.Stats.MaxHealth;
+                mobSpawn.Mob.CurrentHealth = mobSpawn.Mob.Stats.MaxHealth;
+                mobSpawn.Mob.IsAlive = true;
             }
             MobsAreSpawned = true;
             Console.WriteLine($"{PossibleMobs[0].Mob.Name} spawned!");
@@ -133,6 +151,20 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     inventoryState.AddToInventory(SelectedStorage, itemDrop.Item, itemDrop.Item.Quantity);
                     Console.WriteLine($"{mobSpawn.Mob.Name} dropped {qty} X {itemDrop.Item.Name}");
                 }
+            }
+        }
+
+        public void EnterCombat(List<MobSpawn> mobs, string location, List<Item> locationStorage, bool isScavenging = false, Action? leaveScavenging = null)
+        {
+            characterState.MainCharacter.Equipment.CalculateStats(characterState.MainCharacter);
+            combatLocation = location;
+            IsInCombat = true;
+            IsScavenging = isScavenging;
+            PossibleMobs = new List<MobSpawn>(mobs);
+            SelectedStorage = locationStorage;
+            if (leaveScavenging != null)
+            {
+                LeaveScavenging += leaveScavenging;
             }
         }
     }

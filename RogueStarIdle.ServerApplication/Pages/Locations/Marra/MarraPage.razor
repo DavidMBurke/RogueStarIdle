@@ -30,8 +30,8 @@
                             locationStorage = inventoryState.AzuraliPlainsStorage;
                             <h1> Azurali Plains </h1>
                             <div class="row">
-                                <button @onclick="() => SelectScavenge(azuraliPlainsScavengeables, selectedLocation, inventoryState.AzuraliPlainsStorage)" style=@("height: 30px; width: 33%;" + (scavengingState.IsScavenging? "background-color: green" : ""))> Scavenge </button>
-                                <button @onclick="() => SelectHunt(azuraliPlainsMobs, selectedLocation, inventoryState.AzuraliPlainsStorage)" style=@("height: 30px; width: 33%;" + (combatState.IsInCombat? "background-color: green" : ""))> Hunt </button>
+                                <button @onclick="() => scavengingState.SelectScavenge(azuraliPlainsScavengeables, azuraliPlainsMobs, selectedLocation, inventoryState.AzuraliPlainsStorage)" style=@("height: 30px; width: 33%;" + (scavengingState.IsScavenging? "background-color: green" : ""))> Scavenge </button>
+                                <button @onclick="() => combatState.EnterCombat(azuraliPlainsMobs, selectedLocation, inventoryState.AzuraliPlainsStorage)" style=@("height: 30px; width: 33%;" + (combatState.IsInCombat? "background-color: green" : ""))> Hunt </button>
                                 <button @onclick="() => CollectAll()" style="height: 30px; width:33%;"> Collect gathered Items </button>
                             </div>
                             break;
@@ -116,6 +116,8 @@
     protected override async Task OnInitializedAsync()
     {
         inventoryState.OnChange += UpdateState;
+        combatState.OnChange += UpdateState;
+        scavengingState.OnChange += UpdateState;
         await base.OnInitializedAsync();
         azuraliPlainsScavengeables = new List<ItemDrop>
         {
@@ -137,36 +139,6 @@
     void SelectLocation(string name)
     {
         selectedLocation = name;
-    }
-
-    void SelectScavenge(List<ItemDrop> scavengables, string location, List<Item> locationStorage)
-    {
-        if (scavengingState.IsScavenging)
-        {
-            scavengingState.LeaveScavenging();
-            return;
-        }
-        scavengingState.scavengeLocation = location;
-        scavengingState.IsScavenging = true;
-        combatState.LeaveCombat();
-        scavengingState.ScavengeableItems = scavengables;
-        scavengingState.SurvivalXpAtLocation = 1;
-        scavengingState.SelectedStorage = locationStorage;
-    }
-
-    void SelectHunt(List<MobSpawn> mobs, string location, List<Item> locationStorage)
-    {
-        characterState.MainCharacter.Equipment.CalculateStats(characterState.MainCharacter);
-        if (combatState.IsInCombat)
-        {
-            combatState.LeaveCombat();
-            return;
-        }
-        combatState.combatLocation = location;
-        combatState.IsInCombat = true;
-        scavengingState.LeaveScavenging();
-        combatState.PossibleMobs = new List<MobSpawn>(mobs);
-        combatState.SelectedStorage = locationStorage;
     }
 
     async void CollectAll()
