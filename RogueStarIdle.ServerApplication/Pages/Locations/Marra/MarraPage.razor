@@ -1,8 +1,7 @@
 ﻿@page "/marra"
 @using RogueStarIdle.PlugIns.InMemory;
 @using RogueStarIdle.ServerApplication.Shared.State;
-@inject ExploringState exploringState;
-@inject CombatState combatState;
+@inject ActionState actionState;
 @inject InventoryState inventoryState;
 @inject CharacterState characterState;
 @inject IItemUseCases GetItemByIdUseCase
@@ -30,8 +29,8 @@
                             locationStorage = inventoryState.AzuraliPlainsStorage;
                             <h1> Azurali Plains </h1>
                             <div class="row">
-                                <button @onclick="() => exploringState.SelectExplore(azuraliPlainsexploreables, azuraliPlainsMobs, selectedLocation, inventoryState.AzuraliPlainsStorage)" style=@("height: 30px; width: 33%;" + (exploringState.IsExploring? "background-color: green" : ""))> explore </button>
-                                <button @onclick="() => displayBuildPage = !displayBuildPage" style=@("height: 30px; width: 33%;" + (displayBuildPage? "background-color: green" : ""))> Build </button>
+                                <button @onclick="() => SelectExplore(azuraliPlainsexploreables, azuraliPlainsMobs, selectedLocation, inventoryState.AzuraliPlainsStorage)" style=@("height: 30px; width: 33%;" + (actionState.IsExploring? "background-color: green" : ""))> explore </button>
+                                <button @onclick="() => SelectBuild()" style=@("height: 30px; width: 33%;" + (displayBuildPage? "background-color: green" : ""))> Build </button>
                                 <button @onclick="() => CollectAll()" style="height: 30px; width:33%;"> Collect gathered Items </button>
                             </div>
                             break;
@@ -84,7 +83,7 @@
                         }
                 }
                 <div class="row">
-                    @if (combatState.IsInCombat && combatState.combatLocation == selectedLocation && displayExplorePage)
+                    @if (actionState.IsInCombat && actionState.location == selectedLocation && displayExplorePage)
                     {
                         <CombatScreenComponent />
                     }
@@ -122,8 +121,8 @@
     protected override async Task OnInitializedAsync()
     {
         inventoryState.OnChange += UpdateState;
-        combatState.OnChange += UpdateState;
-        exploringState.OnChange += UpdateState;
+        actionState.OnChange += UpdateState;
+        actionState.OnChange += UpdateState;
         await base.OnInitializedAsync();
         azuraliPlainsexploreables = new List<ItemDrop>
         {
@@ -144,6 +143,24 @@
     void SelectLocation(string name)
     {
         selectedLocation = name;
+    }
+
+    void SelectExplore(List<ItemDrop> scavengables, List<MobSpawn> mobs, string location, List<Item> locationStorage)
+    {
+        if (actionState.IsExploring && location == actionState.location)
+        {
+            actionState.LeaveExploring();
+            displayExplorePage = false;
+        }
+        actionState.EnterExplore(scavengables, mobs, location, locationStorage);
+        displayExplorePage = true;
+        displayBuildPage = false;
+    }
+
+    void SelectBuild()
+    {
+        displayBuildPage = true;
+        displayExplorePage = false;
     }
 
     async void CollectAll()

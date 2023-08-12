@@ -1,7 +1,7 @@
 ﻿@using RogueStarIdle.ServerApplication.Shared.State;
 @using System.Diagnostics;
 @inject InventoryState inventoryState;
-@inject CombatState combatState;
+@inject ActionState actionState;
 @inject CharacterState characterState;
 
 <div class="combat-screen-wrapper">
@@ -27,17 +27,17 @@
         <div class="combat-screen-half">
             <div class="column">
                 <div class="combat-row">
-                    <CombatEnemyComponent mob=@(GetMobOrNull(combatState.SpawnedMobs, 2)) size="50" />
-                    <CombatEnemyComponent mob=@(GetMobOrNull(combatState.SpawnedMobs, 1)) size="50" />
+                    <CombatEnemyComponent mob=@(GetMobOrNull(actionState.SpawnedMobs, 2)) size="50" />
+                    <CombatEnemyComponent mob=@(GetMobOrNull(actionState.SpawnedMobs, 1)) size="50" />
                 </div>
                 <div class="combat-row">
                     <div class="combat-row-spacer" />
-                    <CombatEnemyComponent mob=@(GetMobOrNull(combatState.SpawnedMobs, 0)) size="50" />
+                    <CombatEnemyComponent mob=@(GetMobOrNull(actionState.SpawnedMobs, 0)) size="50" />
                     <div class="combat-row-spacer"/>
                 </div>
                 <div class="combat-row">
-                    <CombatEnemyComponent mob=@(GetMobOrNull(combatState.SpawnedMobs, 4)) size="50" />
-                    <CombatEnemyComponent mob=@(GetMobOrNull(combatState.SpawnedMobs, 3)) size="50" />
+                    <CombatEnemyComponent mob=@(GetMobOrNull(actionState.SpawnedMobs, 4)) size="50" />
+                    <CombatEnemyComponent mob=@(GetMobOrNull(actionState.SpawnedMobs, 3)) size="50" />
                 </div>
             </div>
         </div>
@@ -50,7 +50,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        combatState.OnChange += UpdateState;
+        actionState.OnChange += UpdateState;
         await base.OnInitializedAsync();
     }
 

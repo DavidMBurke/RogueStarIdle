@@ -24,13 +24,11 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         //      and guarantee time consistency.
         public System.Timers.Timer GameTimer { get; set; } = new System.Timers.Timer(20);
         public event Func<Task> OnChange;
-        private readonly ExploringState _exploringState;
-        private readonly CombatState _combatState;
+        private readonly ActionState actionState;
 
-        public TimeState(ExploringState exploringState, CombatState combatState)
+        public TimeState(ActionState actionState)
         {
-            _exploringState = exploringState;
-            _combatState = combatState;
+            this.actionState = actionState;
             GameTimer.Elapsed += CalculateElapsedTicks;
             GameTimer.Enabled = true;
             GameTimer.Start();
@@ -63,8 +61,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         // Update every state affected by time.
         public void Tick(int ticksElapsed)
         {
-            _exploringState.ExploreTicks(ticksElapsed);
-            _combatState.CombatTicks(ticksElapsed);
+            actionState.ActionTicks(ticksElapsed);
         }
 
         public void AddTicks(int ticks)
