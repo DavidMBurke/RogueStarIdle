@@ -4,18 +4,18 @@ using RogueStarIdle.ServerApplication.Shared.State;
 
 namespace RogueStarIdle.ServerApplication.Shared.State
 {
-    public class ScavengingState {
-        public bool IsScavenging { get; set; } = false;
-        public int TicksBetweenScavengeAttempts { get; set; } = 100;
-        public int TicksUntilScavengeAttempt { get; set; } = 100;
-        public List<ItemDrop>? ScavengeableItems { get; set; } = null;
-        public List<Item>? ScavengedItems { get; set; } = null;
+    public class ExploringState {
+        public bool IsExploring { get; set; } = false;
+        public int TicksBetweenExploreAttempts { get; set; } = 100;
+        public int TicksUntilExploreAttempt { get; set; } = 100;
+        public List<ItemDrop>? ExploreableItems { get; set; } = null;
+        public List<Item>? ExploredItems { get; set; } = null;
         public List<Item>? SelectedStorage { get; set; } = null;
         public List<MobSpawn> PossibleMobs = new List<MobSpawn>();
         public InventoryState? inventoryState;
         public CharacterState? characterState;
         public CombatState? combatState;
-        public string ScavengeLocation = "";
+        public string exploreLocation = "";
         public int SurvivalXpAtLocation { get; set; } = 0;
         public event Func<Task> OnChange;
         private async Task NotifyStateChanged()
@@ -24,57 +24,57 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 return;
             await OnChange.Invoke();
         }
-        public ScavengingState(InventoryState inventoryState, CharacterState characterState, CombatState combatState)
+        public ExploringState(InventoryState inventoryState, CharacterState characterState, CombatState combatState)
         {
             this.inventoryState = inventoryState;
             this.characterState = characterState;
             this.combatState = combatState;
         }
 
-        public void LeaveScavenging()
+        public void LeaveExploring()
         {
-            IsScavenging = false;
+            IsExploring = false;
         }
-        public async void ScavengeTicks (int ticksElapsed)
+        public async void ExploreTicks (int ticksElapsed)
         {   
-            if (!IsScavenging || combatState.IsInCombat)
+            if (!IsExploring || combatState.IsInCombat)
             {
                 return;
             }
 
             // Bulk handling for time jumps
-            if (ticksElapsed > TicksBetweenScavengeAttempts)
+            if (ticksElapsed > TicksBetweenExploreAttempts)
             {
-                int scavengeAttemptsToResolve = ticksElapsed / TicksBetweenScavengeAttempts;
-                TicksUntilScavengeAttempt = ticksElapsed % TicksBetweenScavengeAttempts;
-                Scavenge(scavengeAttemptsToResolve);
+                int exploreAttemptsToResolve = ticksElapsed / TicksBetweenExploreAttempts;
+                TicksUntilExploreAttempt = ticksElapsed % TicksBetweenExploreAttempts;
+                Explore(exploreAttemptsToResolve);
             }
 
-            if (TicksUntilScavengeAttempt > 0)
+            if (TicksUntilExploreAttempt > 0)
             {
-                TicksUntilScavengeAttempt--;
+                TicksUntilExploreAttempt--;
                 return;
             }
-            Scavenge();
+            Explore();
             await NotifyStateChanged();
         }
 
         private static readonly object locker = new object();
-        public void Scavenge(int attempts = 1)
+        public void Explore(int attempts = 1)
         {
             Random rand = new Random();
             if (rand.Next(10) < 5)
             {
-                combatState.EnterCombat(PossibleMobs, ScavengeLocation, SelectedStorage, isScavenging: true, LeaveScavenging);
+                combatState.EnterCombat(PossibleMobs, exploreLocation, SelectedStorage, isExploring: true, LeaveExploring);
             }
-            if (ScavengeableItems == null)
+            if (ExploreableItems == null)
             {
                 return;
             }
             List<Item> foundItems = new List<Item>();
             for (int i = 0; i < attempts; i++)
             {
-                foreach (var item in ScavengeableItems)
+                foreach (var item in ExploreableItems)
                 {
                     int roll = rand.Next(item.DropChanceDenominator);
                     if (roll < item.DropChanceNumerator)
@@ -94,21 +94,21 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             }
             characterState.MainCharacter.SurvivalSkill.Xp += SurvivalXpAtLocation * attempts;
             characterState.MainCharacter.SurvivalSkill.UpdateLevel();
-            TicksUntilScavengeAttempt = TicksBetweenScavengeAttempts;
+            TicksUntilExploreAttempt = TicksBetweenExploreAttempts;
             return;
         }
 
-        public void SelectScavenge(List<ItemDrop> scavengables, List<MobSpawn> mobs, string location, List<Item> locationStorage)
+        public void SelectExplore(List<ItemDrop> scavengables, List<MobSpawn> mobs, string location, List<Item> locationStorage)
         {
-            if (IsScavenging)
+            if (IsExploring)
             {
-                LeaveScavenging();
+                LeaveExploring();
                 return;
             }
-            ScavengeLocation = location;
-            IsScavenging = true;
+            exploreLocation = location;
+            IsExploring = true;
             combatState.LeaveCombat();
-            ScavengeableItems = scavengables;
+            ExploreableItems = scavengables;
             PossibleMobs = new List<MobSpawn>(mobs);
             SurvivalXpAtLocation = 1;
             SelectedStorage = locationStorage;

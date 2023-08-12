@@ -251,7 +251,16 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Tags = new List<string>{"Tardihop", "Component"},
                     Quantity = 1,
                     Thumbnail = "Images/Thumbnails/TardihopFur.png"
-                }
+                },
+                new Item {
+                    Id = 16,
+                    Name = "Plant Fiber",
+                    BuyPrice = 1,
+                    SellPrice = 0,
+                    Tags = new List<string>{"Component", "Scrap"},
+                    Quantity = 1,
+                    Thumbnail = "/Images/Thumbnails/PlantFiber.png"
+                },
             };
         }
         public async Task<IEnumerable<Item>> GetItemsByNameAsync(string name)

@@ -1,7 +1,7 @@
 ﻿@page "/marra"
 @using RogueStarIdle.PlugIns.InMemory;
 @using RogueStarIdle.ServerApplication.Shared.State;
-@inject ScavengingState scavengingState;
+@inject ExploringState exploringState;
 @inject CombatState combatState;
 @inject InventoryState inventoryState;
 @inject CharacterState characterState;
@@ -30,8 +30,8 @@
                             locationStorage = inventoryState.AzuraliPlainsStorage;
                             <h1> Azurali Plains </h1>
                             <div class="row">
-                                <button @onclick="() => scavengingState.SelectScavenge(azuraliPlainsScavengeables, azuraliPlainsMobs, selectedLocation, inventoryState.AzuraliPlainsStorage)" style=@("height: 30px; width: 33%;" + (scavengingState.IsScavenging? "background-color: green" : ""))> Scavenge </button>
-                                <button @onclick="() => combatState.EnterCombat(azuraliPlainsMobs, selectedLocation, inventoryState.AzuraliPlainsStorage)" style=@("height: 30px; width: 33%;" + (combatState.IsInCombat? "background-color: green" : ""))> Hunt </button>
+                                <button @onclick="() => exploringState.SelectExplore(azuraliPlainsexploreables, azuraliPlainsMobs, selectedLocation, inventoryState.AzuraliPlainsStorage)" style=@("height: 30px; width: 33%;" + (exploringState.IsExploring? "background-color: green" : ""))> explore </button>
+                                <button @onclick="() => displayBuildPage = !displayBuildPage" style=@("height: 30px; width: 33%;" + (displayBuildPage? "background-color: green" : ""))> Build </button>
                                 <button @onclick="() => CollectAll()" style="height: 30px; width:33%;"> Collect gathered Items </button>
                             </div>
                             break;
@@ -84,9 +84,13 @@
                         }
                 }
                 <div class="row">
-                    @if (combatState.IsInCombat && combatState.combatLocation == selectedLocation)
+                    @if (combatState.IsInCombat && combatState.combatLocation == selectedLocation && displayExplorePage)
                     {
                         <CombatScreenComponent />
+                    }
+                    @if (displayBuildPage)
+                    {
+                        <p1> Build Page Placeholder</p1>
                     }
                     <div class="column">
                         @if (locationStorage.Any<Item>())
@@ -109,17 +113,19 @@
 
 @code {
     private string selectedLocation = "";
-    private List<ItemDrop> azuraliPlainsScavengeables = new List<ItemDrop>();
+    private List<ItemDrop> azuraliPlainsexploreables = new List<ItemDrop>();
     private List<MobSpawn> azuraliPlainsMobs = new List<MobSpawn>();
     private List<Item> locationStorage = new List<Item>();
+    private bool displayBuildPage = false;
+    private bool displayExplorePage = false;
 
     protected override async Task OnInitializedAsync()
     {
         inventoryState.OnChange += UpdateState;
         combatState.OnChange += UpdateState;
-        scavengingState.OnChange += UpdateState;
+        exploringState.OnChange += UpdateState;
         await base.OnInitializedAsync();
-        azuraliPlainsScavengeables = new List<ItemDrop>
+        azuraliPlainsexploreables = new List<ItemDrop>
         {
             new ItemDrop (await GetItemByIdUseCase.ExecuteAsync(3), 10, 100, 1, 2),
             new ItemDrop (await GetItemByIdUseCase.ExecuteAsync(14), 10, 100, 1, 2)
@@ -128,7 +134,6 @@
         {
             new MobSpawn (await GetMobByIdUseCase.ExecuteAsync(0), 10)
         };
-
     }
 
     async Task UpdateState()

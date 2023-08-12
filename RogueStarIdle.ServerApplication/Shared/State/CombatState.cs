@@ -10,15 +10,15 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         public List<Item>? SelectedStorage { get; set; } = null;
         public InventoryState? inventoryState;
         public CharacterState? characterState;
-        //cannot use scavenging state d/t circular dependency, so this IsScavenging needs to sync with scavengingState instead
-        public bool IsScavenging = false; 
+        //cannot use exploring state d/t circular dependency, so this IsExploring needs to sync with exploringState instead
+        public bool IsExploring = false; 
         public string combatLocation = "";
         public List<MobSpawn> PossibleMobs = new List<MobSpawn>();
         public List<MobSpawn> SpawnedMobs = new List<MobSpawn>();
         public int respawnTime = 200; //4 sec
         public int respawnCounter = 200;
         public event Func<Task> OnChange;
-        public event Action LeaveScavenging;
+        public event Action LeaveExploring;
         private async Task NotifyStateChanged()
         {
             if (OnChange == null)
@@ -54,7 +54,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 if (MobsAreSpawned == false)
                 {
                     respawnCounter -= 1;
-                    if (IsScavenging)
+                    if (IsExploring)
                     {
                         respawnCounter = 0;
                     }
@@ -101,7 +101,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 if (characterState.MainCharacter.IsAlive == false && (characterState.Characters?.All(c => c.IsAlive == false) ?? false))
                 {
                     LeaveCombat();
-                    LeaveScavenging.Invoke();
+                    LeaveExploring.Invoke();
                     characterState.MainCharacter.Revive();
                     foreach (Character character in characterState.Characters)
                     {
@@ -115,7 +115,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                         Loot(mobSpawn);
                     }
                     SpawnedMobs.Clear();
-                    if (IsScavenging)
+                    if (IsExploring)
                     {
                         LeaveCombat();
                     }
@@ -155,17 +155,17 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             }
         }
 
-        public void EnterCombat(List<MobSpawn> mobs, string location, List<Item> locationStorage, bool isScavenging = false, Action? leaveScavenging = null)
+        public void EnterCombat(List<MobSpawn> mobs, string location, List<Item> locationStorage, bool isExploring = false, Action? leaveExploring = null)
         {
             characterState.MainCharacter.Equipment.CalculateStats(characterState.MainCharacter);
             combatLocation = location;
             IsInCombat = true;
-            IsScavenging = isScavenging;
+            IsExploring = isExploring;
             PossibleMobs = new List<MobSpawn>(mobs);
             SelectedStorage = locationStorage;
-            if (leaveScavenging != null)
+            if (leaveExploring != null)
             {
-                LeaveScavenging += leaveScavenging;
+                LeaveExploring += leaveExploring;
             }
         }
     }

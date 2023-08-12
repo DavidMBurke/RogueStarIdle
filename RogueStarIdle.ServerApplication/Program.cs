@@ -21,7 +21,7 @@ builder.Services.AddTransient<IItemUseCases, ItemUseCases>();
 builder.Services.AddTransient<IMobUseCases, MobUseCases>();
 builder.Services.AddScoped<InventoryState>();
 builder.Services.AddScoped<CharacterState>();
-builder.Services.AddScoped<ScavengingState>();
+builder.Services.AddScoped<ExploringState>();
 builder.Services.AddScoped<CombatState>();
 builder.Services.AddScoped<TimeState>();
 

@@ -17,7 +17,7 @@
         public Skill BlockSkill { get; set; } = new Skill("Block", 1, 0);
         public Skill VitalitySkill { get; set; } = new Skill("Vitality", 1, 0);
         public Skill ArmorCraftingSkill { get; set; } = new Skill("Armor Crafting", 1, 0);
-        public Skill WeaponSmithingSkill { get; set; } = new Skill("Weapon Smithing", 1, 0);
+        public Skill WeaponCraftingSkill { get; set; } = new Skill("Weapon Crafting", 1, 0);
         public Skill RoboticsSkill { get; set; } = new Skill("Robotics", 1, 0);
         public Skill GeologySkill { get; set; } = new Skill("Geology", 1, 0);
         public Skill ConstructionSkill { get; set; } = new Skill("Construction", 1, 0);
