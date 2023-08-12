@@ -1,6 +1,7 @@
 ﻿@page "/crafting"
 @using RogueStarIdle.ServerApplication.Shared.State;
 @inject TimeState timeState;
+@inject InventoryState inventoryState;
 @inject IItemUseCases GetItemByIdUseCase
 
 <div class="page-content-container" style="display: flex; align-items: flex-start;">
@@ -30,7 +31,7 @@
                     @foreach((Item, int) ingredient in selectedRecipe.Ingredients) {
                         <p>@ingredient.Item1.Name (@ingredient.Item2.ToString())</p>
                     }
-                    <btn @onclick="() => Craft(selectedRecipe)">Craft</btn>
+                    <button @onclick="() => Craft(selectedRecipe)">Craft</button>
                 }
             </div>      
         </div>
@@ -55,7 +56,24 @@
 
     public void Craft(CraftingRecipe recipe)
     {
-        
+        bool sufficientMaterials = true;
+        foreach ((Item ingredient, int qty) in recipe.Ingredients)
+        {
+            Item item = inventoryState.Inventory.FirstOrDefault(i => i.Name == ingredient.Name);
+            if (item == null || item.Quantity < qty)
+            {
+                sufficientMaterials = false;
+            }
+        }
+        if (!sufficientMaterials)
+        {
+            return;
+        }
+        foreach ((Item ingredient, int qty) in recipe.Ingredients)
+        {
+            inventoryState.RemoveFromInventory(inventoryState.Inventory, ingredient, qty);
+        }
+        inventoryState.AddToInventory(inventoryState.Inventory, recipe.Item);
     }
 
     protected override async Task OnInitializedAsync()
