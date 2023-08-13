@@ -2,6 +2,7 @@
 @using RogueStarIdle.ServerApplication.Shared.State;
 @inject TimeState timeState;
 @inject InventoryState inventoryState;
+@inject ActionState actionState;
 @inject IItemUseCases GetItemByIdUseCase
 
 <div class="page-content-container" style="display: flex; align-items: flex-start;">
@@ -23,15 +24,17 @@
                 }
             </div>
             <div style="display: flex; flex-direction: column; align-items: center; width: 50%">
-                @if (selectedRecipe.Item.Name != "")
+                @if (actionState.selectedRecipe.Item.Name != "")
                 {
-                    <h2>@selectedRecipe.Item.Name</h2>
-                    <img src=@selectedRecipe.Item.Thumbnail style="width: 25%; border: solid black  2px"/>
+                    <h2>@actionState.selectedRecipe.Item.Name</h2>
+                    <img src=@actionState.selectedRecipe.Item.Thumbnail style="width: 25%; border: solid black  2px" />
                     <p>Requires:</p>
-                    @foreach((Item, int) ingredient in selectedRecipe.Ingredients) {
-                        <p>@ingredient.Item1.Name (@ingredient.Item2.ToString())</p>
+                    @foreach((Item item, int qty) in actionState.selectedRecipe.Ingredients) {
+                        Item inventoryItem = inventoryState.Inventory.FirstOrDefault(i => i.Id == item.Id) ?? new Item();
+                        int inventoryQuantity = inventoryItem.Quantity;
+                        <p>@qty.ToString() x @item.Name (@inventoryQuantity)</p>
                     }
-                    <button @onclick="() => Craft(selectedRecipe)">Craft</button>
+                    <button @onclick="() => actionState.EnterCrafting()">Craft</button>
                 }
             </div>      
         </div>
@@ -40,13 +43,17 @@
 
 @code {
     public List<CraftingRecipe> selectedRecipeList = new List<CraftingRecipe>();
-    public CraftingRecipe selectedRecipe = new CraftingRecipe();
     public List<CraftingRecipe> weaponRecipes = new List<CraftingRecipe>();
     public List<CraftingRecipe> armorRecipes = new List<CraftingRecipe>();
     public List<CraftingRecipe> buildingRecipes = new List<CraftingRecipe>();
     public List<CraftingRecipe> aidRecipes = new List<CraftingRecipe>();
     public List<CraftingRecipe> constructionRecipes = new List<CraftingRecipe>();
     public List<CraftingRecipe> scrapRecipes = new List<CraftingRecipe>();
+
+    async Task UpdateState()
+    {
+        await InvokeAsync(StateHasChanged);
+    }
 
     public void SelectRecipeList(List<CraftingRecipe> recipeList)
     {
@@ -55,38 +62,18 @@
 
     public void SelectRecipe(CraftingRecipe recipe)
     {
-        selectedRecipe = recipe;
-    }
-
-    public void Craft(CraftingRecipe recipe)
-    {
-        bool sufficientMaterials = true;
-        foreach ((Item ingredient, int qty) in recipe.Ingredients)
-        {
-            Item item = inventoryState.Inventory.FirstOrDefault(i => i.Name == ingredient.Name);
-            if (item == null || item.Quantity < qty)
-            {
-                sufficientMaterials = false;
-            }
-        }
-        if (!sufficientMaterials)
-        {
-            return;
-        }
-        foreach ((Item ingredient, int qty) in recipe.Ingredients)
-        {
-            inventoryState.RemoveFromInventory(inventoryState.Inventory, ingredient, qty);
-        }
-        inventoryState.AddToInventory(inventoryState.Inventory, recipe.Item);
+        actionState.selectedRecipe = recipe;
     }
 
     protected override async Task OnInitializedAsync()
     {
+        inventoryState.OnChange += UpdateState;
+        actionState.OnChange += UpdateState;
         constructionRecipes = new List<CraftingRecipe>();
         weaponRecipes = new List<CraftingRecipe>();
         buildingRecipes = new List<CraftingRecipe>();
         aidRecipes = new List<CraftingRecipe>();
-        weaponRecipes = new List<CraftingRecipe>();
+        weaponRecipes = new List<CraftingRecipe>()
         {
             new CraftingRecipe()
                 {
@@ -105,7 +92,7 @@
                     ("Weapon Crafting", 1)
                 },
                     Unlocked = true
-                };
+                }
         };
 
     }

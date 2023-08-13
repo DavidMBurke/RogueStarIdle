@@ -7,10 +7,10 @@ namespace RogueStarIdle.ServerApplication.Shared.State
     public class ActionState {
         public bool IsExploring { get; set; } = false;
         public bool IsInCombat { get; set; } = false;
+        public bool IsCrafting { get; set; } = false;
         public bool MobsAreSpawned { get; set; } = false;
-
-        public int TicksBetweenExploreAttempts { get; set; } = 100;
-        public int TicksUntilExploreAttempt { get; set; } = 100;
+        public int TicksBetweenAction { get; set; } = 100;
+        public int TicksUntilAction { get; set; } = 0;
         public List<ItemDrop>? ExploreableItems { get; set; } = null;
         public List<Item>? ExploredItems { get; set; } = null;
         public List<Item>? SelectedStorage { get; set; } = null;
@@ -23,6 +23,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         public int respawnTime = 200; //4 sec
         public int respawnCounter = 200;
         public int healTime = 500;
+        public CraftingRecipe selectedRecipe { get; set; } = new CraftingRecipe();
         public event Func<Task> OnChange;
         private async Task NotifyStateChanged()
         {
@@ -53,16 +54,16 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             }
 
             // Bulk handling for time jumps
-            if (ticksElapsed > TicksBetweenExploreAttempts)
+            if (ticksElapsed > TicksBetweenAction)
             {
-                int exploreAttemptsToResolve = ticksElapsed / TicksBetweenExploreAttempts;
-                TicksUntilExploreAttempt = ticksElapsed % TicksBetweenExploreAttempts;
+                int exploreAttemptsToResolve = ticksElapsed / TicksBetweenAction;
+                TicksUntilAction = ticksElapsed % TicksBetweenAction;
                 Explore(exploreAttemptsToResolve);
             }
 
-            if (TicksUntilExploreAttempt > 0)
+            if (TicksUntilAction > 0)
             {
-                TicksUntilExploreAttempt--;
+                TicksUntilAction--;
                 return;
             }
             Explore();
@@ -73,6 +74,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         {
             CombatTicks(ticksElapsed);
             ExploreTicks(ticksElapsed);
+            CraftTicks(ticksElapsed);
         }
         public async void CombatTicks(int ticksElapsed)
         {
@@ -209,14 +211,42 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             }
             characterState.MainCharacter.SurvivalSkill.Xp += SurvivalXpAtLocation * attempts;
             characterState.MainCharacter.SurvivalSkill.UpdateLevel();
-            TicksUntilExploreAttempt = TicksBetweenExploreAttempts;
+            TicksUntilAction = TicksBetweenAction;
             return;
+        }
+        public async void CraftTicks(int ticksElapsed)
+        {
+            if (!IsCrafting)
+            {
+                return;
+            }
+
+            // Bulk handling for time jumps
+            if (ticksElapsed > TicksBetweenAction)
+            {
+                int craftsToResolve = ticksElapsed / TicksBetweenAction;
+                TicksUntilAction = ticksElapsed % TicksBetweenAction;
+                for (int i = 0; i < craftsToResolve; i++)
+                {
+                    Craft();
+                }
+            }
+
+            if (TicksUntilAction > 0)
+            {
+                TicksUntilAction--;
+                return;
+            }
+            TicksUntilAction = TicksBetweenAction;
+            Craft();
+            await NotifyStateChanged();
         }
 
         public void EnterExplore(List<ItemDrop> scavengables, List<MobSpawn> mobs, string location, List<Item> locationStorage)
         {
             this.location = location;
             IsExploring = true;
+            IsCrafting = false;
             LeaveCombat();
             ExploreableItems = scavengables;
             PossibleMobs = new List<MobSpawn>(mobs);
@@ -260,8 +290,39 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             characterState.MainCharacter.Equipment.CalculateStats(characterState.MainCharacter);
             this.location = location;
             IsInCombat = true;
+            IsCrafting = false;
             PossibleMobs = new List<MobSpawn>(mobs);
             SelectedStorage = locationStorage;
+        }
+
+        public void EnterCrafting()
+        {
+            TicksUntilAction = TicksBetweenAction;
+            IsCrafting = true;
+            IsInCombat = false;
+            IsExploring = false;
+        }
+
+        public void Craft()
+        {
+            bool sufficientMaterials = true;
+            foreach ((Item ingredient, int qty) in selectedRecipe.Ingredients)
+            {
+                Item item = inventoryState.Inventory.FirstOrDefault(i => i.Name == ingredient.Name);
+                if (item == null || item.Quantity < qty)
+                {
+                    sufficientMaterials = false;
+                }
+            }
+            if (!sufficientMaterials)
+            {
+                return;
+            }
+            foreach ((Item ingredient, int qty) in selectedRecipe.Ingredients)
+            {
+                inventoryState.RemoveFromInventory(inventoryState.Inventory, ingredient, qty);
+            }
+            inventoryState.AddToInventory(inventoryState.Inventory, selectedRecipe.Item);
         }
     }
 }
