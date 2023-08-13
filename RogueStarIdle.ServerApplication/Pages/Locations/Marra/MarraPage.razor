@@ -150,6 +150,7 @@
         {
             actionState.LeaveExploring();
             displayExplorePage = false;
+            return;
         }
         actionState.EnterExplore(scavengables, mobs, location, locationStorage);
         displayExplorePage = true;
