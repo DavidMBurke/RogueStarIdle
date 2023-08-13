@@ -46,8 +46,8 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             SpawnedMobs?.Clear();
             IsInCombat = false;
         }
-        public async void ExploreTicks (int ticksElapsed)
-        {   
+        public async void ExploreTicks(int ticksElapsed)
+        {
             if (!IsExploring || IsInCombat)
             {
                 return;
@@ -196,7 +196,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     int roll = rand.Next(item.DropChanceDenominator);
                     if (roll < item.DropChanceNumerator)
                     {
-                        int qty = rand.Next(item.QuantityRangeMax-item.QuantityRangeMin + 1) + item.QuantityRangeMin;
+                        int qty = rand.Next(item.QuantityRangeMax - item.QuantityRangeMin + 1) + item.QuantityRangeMin;
                         item.Item.Quantity = qty;
                         foundItems.Add(item.Item);
                     }
@@ -235,6 +235,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             if (TicksUntilAction > 0)
             {
                 TicksUntilAction--;
+                await NotifyStateChanged();
                 return;
             }
             TicksUntilAction = TicksBetweenAction;
@@ -301,6 +302,11 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             IsCrafting = true;
             IsInCombat = false;
             IsExploring = false;
+        }
+
+        public void LeaveCrafting()
+        {
+            IsCrafting = false;
         }
 
         public void Craft()

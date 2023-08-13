@@ -34,7 +34,15 @@
                         int inventoryQuantity = inventoryItem.Quantity;
                         <p>@qty.ToString() x @item.Name (@inventoryQuantity)</p>
                     }
-                    <button @onclick="() => actionState.EnterCrafting()">Craft</button>
+                    @if (!actionState.IsCrafting)
+                    {
+                        <button @onclick="() => actionState.EnterCrafting()">Craft</button>
+                    }
+                    @if (actionState.IsCrafting)
+                    {
+                        <LoadBarComponent amountComplete=(actionState.TicksBetweenAction-actionState.TicksUntilAction) total=actionState.TicksBetweenAction color="blue" />
+                        <button @onclick="() => actionState.LeaveCrafting()">Stop</button>
+                    }
                 }
             </div>      
         </div>
