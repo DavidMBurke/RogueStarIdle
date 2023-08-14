@@ -40,6 +40,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         public void LeaveExploring()
         {
             IsExploring = false;
+            IsInCombat = false;
         }
         public void LeaveCombat()
         {
