@@ -10,12 +10,15 @@
         {
             <h6>
                 @item.Name 
-                <input style="width:20px;" @bind-value="item.Quantity"/>
+                Qty: <input style="width:20px;" @bind-value="item.Quantity"/>
                 @if (item.MaxQualityLevel > 0)
                 {
-                    <input style="width:20px;" @bind-value="item.QualityLevel"/>
+                    <div>
+                        Lvl: 
+                        <input style="width:20px;" @bind-value="item.QualityLevel"/>
+                    </div>
                 }
-                <button @onclick="() => inventoryState.AddToInventory(inventoryState.Inventory, item)">Add Item</button>
+                <button @onclick="() => inventoryState.AddToInventory(inventoryState.Inventory, item, item.Quantity)">Add Item</button>
             </h6>
         }
     </div>
