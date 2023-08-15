@@ -7,7 +7,7 @@ namespace RogueStarIdle.CoreBusiness
         public Item Item { get; set; } = new Item();
         public List<(Item, int)> Ingredients { get; set; } = new List<(Item, int)>();
         public List<(string, int)> RequiredSkillLevels { get; set; } = new List<(string, int)>();
-        public List<(string, int)> XpReward { get; set; } = new List<(string, int)>();
+        public (string, int) XpReward { get; set; } = ("", 0);
         public bool Unlocked { get; set; } = false;
     }
 }

@@ -5,7 +5,7 @@
 @code {
     [Parameter]
     public Mob mob { get; set; } = new Mob();
-    public Timer attackAnimationTimer = new Timer(300);
+    public Timer attackAnimationTimer = new Timer();
 
     protected override void OnInitialized()
     {

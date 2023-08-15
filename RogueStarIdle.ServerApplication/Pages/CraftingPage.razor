@@ -12,10 +12,10 @@
             <div style="display:flex; flex-direction:column; align-items: flex-start; width: 25%">
                 <button class="selection-button">Scrap</button>
                 <button @onclick='() => SelectRecipeList(weaponRecipes)' class ="selection-button">Weapons</button>
-                <button class="selection-button">Armor</button>
+                <button @onclick='() => SelectRecipeList(armorRecipes)' class="selection-button">Armor</button>
                 <button class="selection-button">Building Materials</button>
-                <button class="selection-button">Aid</button>
-                <button class="selection-button">Hunting</button>
+                <button @onclick='() => SelectRecipeList(aidRecipes)' class="selection-button">Aid</button>
+                <button @onclick='() => SelectRecipeList(huntingRecipes)' class="selection-button">Hunting</button>
             </div>
             <div style="display:flex; flex-direction:column; align-items: flex-start; width: 25%">
                 @foreach (CraftingRecipe recipe in selectedRecipeList)
@@ -51,12 +51,13 @@
 
 @code {
     public List<CraftingRecipe> selectedRecipeList = new List<CraftingRecipe>();
+    public List<CraftingRecipe> scrapRecipes = new List<CraftingRecipe>();
     public List<CraftingRecipe> weaponRecipes = new List<CraftingRecipe>();
     public List<CraftingRecipe> armorRecipes = new List<CraftingRecipe>();
     public List<CraftingRecipe> buildingRecipes = new List<CraftingRecipe>();
     public List<CraftingRecipe> aidRecipes = new List<CraftingRecipe>();
     public List<CraftingRecipe> constructionRecipes = new List<CraftingRecipe>();
-    public List<CraftingRecipe> scrapRecipes = new List<CraftingRecipe>();
+    public List<CraftingRecipe> huntingRecipes = new List<CraftingRecipe>();
 
     async Task UpdateState()
     {
@@ -70,6 +71,10 @@
 
     public void SelectRecipe(CraftingRecipe recipe)
     {
+        if (actionState.IsCrafting)
+        {
+            actionState.LeaveCrafting();
+        }
         actionState.selectedRecipe = recipe;
     }
 
@@ -77,31 +82,151 @@
     {
         inventoryState.OnChange += UpdateState;
         actionState.OnChange += UpdateState;
-        constructionRecipes = new List<CraftingRecipe>();
-        weaponRecipes = new List<CraftingRecipe>();
-        buildingRecipes = new List<CraftingRecipe>();
-        aidRecipes = new List<CraftingRecipe>();
+        scrapRecipes = new List<CraftingRecipe>()
+        {
+
+        };
+        constructionRecipes = new List<CraftingRecipe>()
+        {
+
+        };
+        weaponRecipes = new List<CraftingRecipe>()
+        {
+
+        };
+        buildingRecipes = new List<CraftingRecipe>()
+        {
+
+        };
+        aidRecipes = new List<CraftingRecipe>()
+        {
+            new CraftingRecipe()
+                {
+                    Item = await GetItemByIdUseCase.ExecuteAsync(18), // Cloth Bandage
+                    Ingredients = new List<(Item, int)>
+                {
+                    (await GetItemByIdUseCase.ExecuteAsync(16), 2), // Plant Fiber
+                },
+                    RequiredSkillLevels = new List<(string, int)>()
+                {
+                    ("Survival", 1)
+                },
+                    XpReward = ("Survival", 1),
+                    Unlocked = true
+                }        
+        };
+        armorRecipes = new List<CraftingRecipe>()
+        {
+            new CraftingRecipe()
+                {
+                    Item = await GetItemByIdUseCase.ExecuteAsync(5), // Tardihop Fur Hat
+                    Ingredients = new List<(Item, int)>
+                {
+                    (await GetItemByIdUseCase.ExecuteAsync(15), 2), // Tardihop Fur
+                    (await GetItemByIdUseCase.ExecuteAsync(16), 2) // Plant Fiber
+                },
+                    RequiredSkillLevels = new List<(string, int)>()
+                {
+                    ("Armor Crafting", 1)
+                },
+                    XpReward = ("Armor Crafting", 1),
+                    Unlocked = true
+                },
+            new CraftingRecipe()
+                {
+                    Item = await GetItemByIdUseCase.ExecuteAsync(6), // Tardihop Fur Gloves
+                    Ingredients = new List<(Item, int)>
+                {
+                    (await GetItemByIdUseCase.ExecuteAsync(15), 2), // Tardihop Fur
+                    (await GetItemByIdUseCase.ExecuteAsync(16), 2) // Plant Fiber
+                },
+                    RequiredSkillLevels = new List<(string, int)>()
+                {
+                    ("Armor Crafting", 1)
+                },
+                    XpReward = ("Armor Crafting", 1),
+                    Unlocked = true
+                },
+            new CraftingRecipe()
+                {
+                    Item = await GetItemByIdUseCase.ExecuteAsync(7), // Tardihop Fur Shirt
+                    Ingredients = new List<(Item, int)>
+                {
+                    (await GetItemByIdUseCase.ExecuteAsync(15), 5), // Tardihop Fur
+                    (await GetItemByIdUseCase.ExecuteAsync(16), 10) // Plant Fiber
+                },
+                    RequiredSkillLevels = new List<(string, int)>()
+                {
+                    ("Armor Crafting", 1)
+                },
+                    XpReward = ("Armor Crafting", 1),
+                    Unlocked = true
+                },
+            new CraftingRecipe()
+                {
+                    Item = await GetItemByIdUseCase.ExecuteAsync(8), // Tardihop Fur Pants
+                    Ingredients = new List<(Item, int)>
+                {
+                    (await GetItemByIdUseCase.ExecuteAsync(15), 5), // Tardihop Fur
+                    (await GetItemByIdUseCase.ExecuteAsync(16), 10) // Plant Fiber
+                },
+                    RequiredSkillLevels = new List<(string, int)>()
+                {
+                    ("Armor Crafting", 1)
+                },
+                    XpReward = ("Armor Crafting", 1),
+                    Unlocked = true
+                },
+            new CraftingRecipe()
+                {
+                    Item = await GetItemByIdUseCase.ExecuteAsync(9), // Tardihop Fur Hat
+                    Ingredients = new List<(Item, int)>
+                {
+                    (await GetItemByIdUseCase.ExecuteAsync(15), 2), // Tardihop Fur
+                    (await GetItemByIdUseCase.ExecuteAsync(16), 3) // Plant Fiber
+                },
+                    RequiredSkillLevels = new List<(string, int)>()
+                {
+                    ("Armor Crafting", 1)
+                },
+                    XpReward = ("Armor Crafting", 1),
+                    Unlocked = true
+                }
+        };
         weaponRecipes = new List<CraftingRecipe>()
         {
             new CraftingRecipe()
                 {
-                    Item = await GetItemByIdUseCase.ExecuteAsync(4),
+                    Item = await GetItemByIdUseCase.ExecuteAsync(4), // Bone Knife
                     Ingredients = new List<(Item, int)>
                 {
-                    (await GetItemByIdUseCase.ExecuteAsync(2), 1), // 1x Small bones
-                    (await GetItemByIdUseCase.ExecuteAsync(16), 2) // 2x Plant Fiber
+                    (await GetItemByIdUseCase.ExecuteAsync(2), 1), // Small bones
+                    (await GetItemByIdUseCase.ExecuteAsync(16), 2) // Plant Fiber
                 },
                     RequiredSkillLevels = new List<(string, int)>()
                 {
                     ("Weapon Crafting", 1)
                 },
-                    XpReward = new List<(string, int)>()
-                {
-                    ("Weapon Crafting", 1)
-                },
+                    XpReward = ("Weapon Crafting", 1),
                     Unlocked = true
                 }
         };
-
+        huntingRecipes = new List<CraftingRecipe>()
+        {
+            new CraftingRecipe()
+                {
+                    Item = await GetItemByIdUseCase.ExecuteAsync(17), // Tardihop Bait
+                    Ingredients = new List<(Item, int)>
+                {
+                    (await GetItemByIdUseCase.ExecuteAsync(10), 1), // Azurali Grass
+                },
+                    RequiredSkillLevels = new List<(string, int)>()
+                {
+                    ("Survival", 1)
+                },
+                    XpReward = ("Survival", 1),
+                    Unlocked = true
+                }
+        };
     }
 }

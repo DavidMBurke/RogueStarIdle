@@ -242,8 +242,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Quantity = 1,
                     Thumbnail = "Images/Thumbnails/Stick.png"
                 },
-                new Item
-                {
+                new Item {
                     Id = 15,
                     Name = "Tardihop Fur",
                     BuyPrice = 10,
@@ -260,7 +259,26 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Tags = new List<string>{"Component", "Scrap"},
                     Quantity = 1,
                     Thumbnail = "/Images/Thumbnails/PlantFiber.png"
+                },  
+                new Item {
+                    Id = 17,
+                    Name = "Tardihop Bait",
+                    BuyPrice = 1,
+                    SellPrice = 0,
+                    Tags = new List<string>{"Survival", "Bait"},
+                    Quantity = 1,
+                    Thumbnail = "/Images/Thumbnails/TardihopBait.png"
                 },
+                new Item
+                {
+                    Id = 18,
+                    Name = "Cloth Bandage",
+                    BuyPrice = 1,
+                    SellPrice = 1,
+                    Tags = new List<string>{"Aid"},
+                    Quantity = 1,
+                    Thumbnail = "/Images/Thumbnails/ClothBandage.png"
+                }
             };
         }
         public async Task<IEnumerable<Item>> GetItemsByNameAsync(string name)
