@@ -25,6 +25,7 @@
         }
         if (mob.TriggerAttackAnimation)
         {
+            attackAnimationTimer.Interval = Methods.GetGifDuration(mob.Images.Attacking);
             mob.TriggerAttackAnimation = false;
             attackAnimationTimer.Start();
             return mob.Images.Attacking;

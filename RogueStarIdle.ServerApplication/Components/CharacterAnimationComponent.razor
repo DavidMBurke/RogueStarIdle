@@ -69,6 +69,7 @@
         }
         if (character.TriggerAttackAnimation)
         {
+            attackAnimationTimer.Interval = Methods.GetGifDuration(character.Images.Torso.Attacking2HandMelee);
             character.TriggerAttackAnimation = false;
             attackAnimationTimer.Start();
             return attackImageUrls;
