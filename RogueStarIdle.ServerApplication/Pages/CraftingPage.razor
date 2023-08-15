@@ -10,10 +10,10 @@
         <h3>CRAFTING</h3>
         <div class="row" style="width: 100%; height: 100%;">
             <div style="display:flex; flex-direction:column; align-items: flex-start; width: 25%">
-                <button class="selection-button">Scrap</button>
+                <button @onclick='() => SelectRecipeList(scrapRecipes)' class="selection-button">Scrap</button>
                 <button @onclick='() => SelectRecipeList(weaponRecipes)' class ="selection-button">Weapons</button>
                 <button @onclick='() => SelectRecipeList(armorRecipes)' class="selection-button">Armor</button>
-                <button class="selection-button">Building Materials</button>
+                <button @onclick='() => SelectRecipeList(buildingRecipes)' class="selection-button">Building Materials</button>
                 <button @onclick='() => SelectRecipeList(aidRecipes)' class="selection-button">Aid</button>
                 <button @onclick='() => SelectRecipeList(huntingRecipes)' class="selection-button">Hunting</button>
             </div>
@@ -54,7 +54,6 @@
     public List<CraftingRecipe> scrapRecipes = new List<CraftingRecipe>();
     public List<CraftingRecipe> weaponRecipes = new List<CraftingRecipe>();
     public List<CraftingRecipe> armorRecipes = new List<CraftingRecipe>();
-    public List<CraftingRecipe> buildingRecipes = new List<CraftingRecipe>();
     public List<CraftingRecipe> aidRecipes = new List<CraftingRecipe>();
     public List<CraftingRecipe> constructionRecipes = new List<CraftingRecipe>();
     public List<CraftingRecipe> huntingRecipes = new List<CraftingRecipe>();
@@ -87,14 +86,6 @@
 
         };
         constructionRecipes = new List<CraftingRecipe>()
-        {
-
-        };
-        weaponRecipes = new List<CraftingRecipe>()
-        {
-
-        };
-        buildingRecipes = new List<CraftingRecipe>()
         {
 
         };
