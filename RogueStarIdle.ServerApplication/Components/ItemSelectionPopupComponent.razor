@@ -5,6 +5,7 @@
 
 <div class="column" style="height:75%; width:100%; overflow-y: scroll;">
     <SearchInventoryComponent OnSearchInventory="OnInventorySearch" />
+    <button @onclick="() => addEverything()">Add Every Item</button>
     <div style="height:75%; width:100%; overflow-y: scroll;">
         @foreach (Item item in listItems)
         {
@@ -42,6 +43,14 @@
         listItems = (await ViewItemsByNameUseCase.ExecuteAsync(this.searchTerm)).ToList();
         listItems = listItems.Union(await ViewItemsByTagUseCase.ExecuteAsync(this.searchTerm)).ToList();
         StateHasChanged();
+    }
+
+    public void addEverything()
+    {
+        foreach (Item item in listItems)
+        {
+            inventoryState.AddToInventory(inventoryState.Inventory, item, 1000);
+        }
     }
 
 }
