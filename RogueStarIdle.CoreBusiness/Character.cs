@@ -28,7 +28,7 @@
         public Skill LeadershipSkill { get; set; } = new Skill("Leadership", 1, 0);
         public Skill DiplomacySkill { get; set; } = new Skill("Diplomacy", 1, 0);
         public Skill StealthSkill { get; set; } = new Skill("Stealth", 1, 0);
-        public Skill HerbalismSkill { get; set; } = new Skill("Herbalism", 1, 0);
+        public Skill MedicineSkill { get; set; } = new Skill("Medicine", 1, 0);
         public Skill ScrappingSkill { get; set; } = new Skill("Scrapping", 1, 0);
         public CharacterImageUrls Images { get; set; } = new CharacterImageUrls();
 

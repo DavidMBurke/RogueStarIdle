@@ -2,6 +2,7 @@
 using RogueStarIdle.CoreBusiness;
 using RogueStarIdle.ServerApplication.Components;
 using RogueStarIdle.ServerApplication.Shared.State;
+using System.Reflection.Metadata.Ecma335;
 
 namespace RogueStarIdle.ServerApplication.Shared.State
 {
@@ -365,6 +366,30 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     inventoryState.RemoveFromInventory(inventoryState.Inventory, ingredient, qty);
                 }
                 inventoryState.AddToInventory(inventoryState.Inventory, SelectedCraftingRecipe.Item);
+                switch (SelectedCraftingRecipe.XpReward.Item1)
+                {
+                    case ("Survival"): characterState.MainCharacter.SurvivalSkill.addXp(SelectedCraftingRecipe.XpReward.Item2);
+                        break;
+                    default: break;
+                }
+                switch (SelectedCraftingRecipe.XpReward.Item1)
+                {
+                    case "Survival":
+                        characterState.MainCharacter.SurvivalSkill.addXp(SelectedCraftingRecipe.XpReward.Item2);
+                        break;
+                    case "Armor Crafting":
+                        characterState.MainCharacter.ArmorCraftingSkill.addXp(SelectedCraftingRecipe.XpReward.Item2);
+                        break;
+                    case "Weapon Crafting":
+                        characterState.MainCharacter.WeaponCraftingSkill.addXp(SelectedCraftingRecipe.XpReward.Item2);
+                        break;
+                    case "Construction":
+                        characterState.MainCharacter.ConstructionSkill.addXp(SelectedCraftingRecipe.XpReward.Item2);
+                        break;
+                    case "Medicine":
+                        characterState.MainCharacter.MedicineSkill.addXp(SelectedCraftingRecipe.XpReward.Item2);
+                        break;
+                }
             }
         }
 
@@ -384,6 +409,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 }
                 inventoryState.RemoveFromInventory(inventoryState.Inventory, item);
                 Random rand = new Random();
+                characterState.MainCharacter.ScrappingSkill.addXp(1);
                 foreach (Scrap scrap in SelectedScrapRecipe.ScrapList)
                 {
                     if (rand.Next(scrap.Denominator) < scrap.Numerator)
