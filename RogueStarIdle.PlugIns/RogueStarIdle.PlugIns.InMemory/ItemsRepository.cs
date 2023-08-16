@@ -278,6 +278,16 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Tags = new List<string>{"Aid"},
                     Quantity = 1,
                     Thumbnail = "/Images/Thumbnails/ClothBandage.png"
+                },
+                new Item
+                {
+                    Id = 19,
+                    Name = "Bonemeal",
+                    BuyPrice = 1,
+                    SellPrice = 1,
+                    Tags = new List<string>{"Farming"},
+                    Quantity = 1,
+                    Thumbnail = "/Images/Thumbnails/Bonemeal.png"
                 }
             };
         }

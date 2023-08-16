@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.Features;
 using RogueStarIdle.CoreBusiness;
+using RogueStarIdle.ServerApplication.Components;
 using RogueStarIdle.ServerApplication.Shared.State;
 
 namespace RogueStarIdle.ServerApplication.Shared.State
@@ -8,6 +9,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         public bool IsExploring { get; set; } = false;
         public bool IsInCombat { get; set; } = false;
         public bool IsCrafting { get; set; } = false;
+        public bool IsScrapping { get; set; } = false;
         public bool MobsAreSpawned { get; set; } = false;
         public int TicksBetweenAction { get; set; } = 100;
         public int TicksUntilAction { get; set; } = 0;
@@ -23,7 +25,8 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         public int respawnTime = 200; //4 sec
         public int respawnCounter = 200;
         public int healTime = 500;
-        public CraftingRecipe selectedRecipe { get; set; } = new CraftingRecipe();
+        public CraftingRecipe SelectedCraftingRecipe { get; set; } = new CraftingRecipe();
+        public ScrapRecipe SelectedScrapRecipe { get; set; } = new ScrapRecipe();
         public event Func<Task> OnChange;
         private async Task NotifyStateChanged()
         {
@@ -217,7 +220,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         }
         public async void CraftTicks(int ticksElapsed)
         {
-            if (!IsCrafting)
+            if (!IsCrafting && !IsScrapping)
             {
                 return;
             }
@@ -225,11 +228,18 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             // Bulk handling for time jumps
             if (ticksElapsed > TicksBetweenAction)
             {
-                int craftsToResolve = ticksElapsed / TicksBetweenAction;
+                int actionsToResolve = ticksElapsed / TicksBetweenAction;
                 TicksUntilAction = ticksElapsed % TicksBetweenAction;
-                for (int i = 0; i < craftsToResolve; i++)
+                for (int i = 0; i < actionsToResolve; i++)
                 {
-                    Craft();
+                    if (IsCrafting)
+                    {
+                        Craft();
+                    }
+                    if (IsScrapping)
+                    {
+                        Scrap();
+                    }
                 }
             }
 
@@ -240,7 +250,14 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 return;
             }
             TicksUntilAction = TicksBetweenAction;
-            Craft();
+            if (IsCrafting)
+            {
+                Craft();
+            }
+            if (IsScrapping)
+            {
+                Scrap();
+            }
             await NotifyStateChanged();
         }
 
@@ -293,6 +310,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             this.location = location;
             IsInCombat = true;
             IsCrafting = false;
+            IsScrapping = false;
             PossibleMobs = new List<MobSpawn>(mobs);
             SelectedStorage = locationStorage;
         }
@@ -301,6 +319,16 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         {
             TicksUntilAction = TicksBetweenAction;
             IsCrafting = true;
+            IsScrapping = false;
+            IsInCombat = false;
+            IsExploring = false;
+        }
+
+        public void EnterScrapping()
+        {
+            TicksUntilAction = TicksBetweenAction;
+            IsCrafting = false;
+            IsScrapping = true;
             IsInCombat = false;
             IsExploring = false;
         }
@@ -310,26 +338,62 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             IsCrafting = false;
         }
 
+        public void LeaveScrapping()
+        {
+            IsScrapping = false;
+        }
+
         public void Craft()
         {
             bool sufficientMaterials = true;
-            foreach ((Item ingredient, int qty) in selectedRecipe.Ingredients)
+            if (IsCrafting)
             {
-                Item item = inventoryState.Inventory.FirstOrDefault(i => i.Name == ingredient.Name);
-                if (item == null || item.Quantity < qty)
+                foreach ((Item ingredient, int qty) in SelectedCraftingRecipe.Ingredients)
+                {
+                    Item item = inventoryState.Inventory.FirstOrDefault(i => i.Name == ingredient.Name);
+                    if (item == null || item.Quantity < qty)
+                    {
+                        sufficientMaterials = false;
+                    }
+                }
+                if (!sufficientMaterials)
+                {
+                    return;
+                }
+                foreach ((Item ingredient, int qty) in SelectedCraftingRecipe.Ingredients)
+                {
+                    inventoryState.RemoveFromInventory(inventoryState.Inventory, ingredient, qty);
+                }
+                inventoryState.AddToInventory(inventoryState.Inventory, SelectedCraftingRecipe.Item);
+            }
+        }
+
+        public void Scrap()
+        {
+            bool sufficientMaterials = true;
+            if (IsScrapping)
+            {
+                Item item = inventoryState.Inventory.FirstOrDefault(i => i.Name == SelectedScrapRecipe.Item.Name);
+                if (item == null || item.Quantity == 0)
                 {
                     sufficientMaterials = false;
                 }
+                if (!sufficientMaterials)
+                {
+                    return;
+                }
+                inventoryState.RemoveFromInventory(inventoryState.Inventory, item);
+                Random rand = new Random();
+                foreach (Scrap scrap in SelectedScrapRecipe.ScrapList)
+                {
+                    if (rand.Next(scrap.Denominator) < scrap.Numerator)
+                    {
+                        int amount = scrap.QuantityMin + rand.Next(scrap.QuantityMax - scrap.QuantityMin);
+                        inventoryState.AddToInventory(inventoryState.Inventory, scrap.Item, amount);
+                    }
+                }
             }
-            if (!sufficientMaterials)
-            {
-                return;
-            }
-            foreach ((Item ingredient, int qty) in selectedRecipe.Ingredients)
-            {
-                inventoryState.RemoveFromInventory(inventoryState.Inventory, ingredient, qty);
-            }
-            inventoryState.AddToInventory(inventoryState.Inventory, selectedRecipe.Item);
+
         }
     }
 }

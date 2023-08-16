@@ -10,7 +10,7 @@
         <h3>CRAFTING</h3>
         <div class="row" style="width: 100%; height: 100%;">
             <div style="display:flex; flex-direction:column; align-items: flex-start; width: 25%">
-                <button @onclick='() => SelectRecipeList(scrapRecipes)' class="selection-button">Scrap</button>
+                <button @onclick='() => SelectScrapping()' class="selection-button">Scrap</button>
                 <button @onclick='() => SelectRecipeList(weaponRecipes)' class ="selection-button">Weapons</button>
                 <button @onclick='() => SelectRecipeList(armorRecipes)' class="selection-button">Armor</button>
                 <button @onclick='() => SelectRecipeList(constructionRecipes)' class="selection-button">Building Materials</button>
@@ -18,18 +18,32 @@
                 <button @onclick='() => SelectRecipeList(huntingRecipes)' class="selection-button">Hunting</button>
             </div>
             <div style="display:flex; flex-direction:column; align-items: flex-start; width: 25%">
-                @foreach (CraftingRecipe recipe in selectedRecipeList)
-                {
-                    <button @onclick='() => SelectRecipe(recipe)' class="selection-button">@recipe.Item.Name</button>
+                @if (!scrappingSelected) {
+                    @foreach (CraftingRecipe recipe in selectedRecipeList)
+                    { 
+                        <button @onclick='() => SelectCraftRecipe(recipe)' class="selection-button">@recipe.Item.Name</button>
+                    }
+                }
+                @if (scrappingSelected) {
+                    @foreach (ScrapRecipe recipe in scrapRecipes)
+                    {
+                        Item inventoryItem = inventoryState.Inventory.FirstOrDefault(i => i.Id == recipe.Item.Id) ?? new Item();
+                        if (inventoryItem.Quantity == 0)
+                        {
+                            continue;
+                        }
+                        <button @onclick='() => SelectScrapRecipe(recipe)' class="selection-button">@recipe.Item.Name</button>
+                    }
                 }
             </div>
             <div style="display: flex; flex-direction: column; align-items: center; width: 50%">
-                @if (actionState.selectedRecipe.Item.Name != "")
+                @if (actionState.SelectedCraftingRecipe.Item.Name != "" && !scrappingSelected)
                 {
-                    <h2>@actionState.selectedRecipe.Item.Name</h2>
-                    <img src=@actionState.selectedRecipe.Item.Thumbnail style="width: 25%; border: solid black  2px" />
+                    <h2>@actionState.SelectedCraftingRecipe.Item.Name</h2>
+                    <img src=@actionState.SelectedCraftingRecipe.Item.Thumbnail style="width: 25%; border: solid black  2px" />
                     <p>Requires:</p>
-                    @foreach((Item item, int qty) in actionState.selectedRecipe.Ingredients) {
+                    @foreach ((Item item, int qty) in actionState.SelectedCraftingRecipe.Ingredients)
+                    {
                         Item inventoryItem = inventoryState.Inventory.FirstOrDefault(i => i.Id == item.Id) ?? new Item();
                         int inventoryQuantity = inventoryItem.Quantity;
                         <p>@qty.ToString() x @item.Name (@inventoryQuantity)</p>
@@ -44,19 +58,41 @@
                         <button @onclick="() => actionState.LeaveCrafting()">Stop</button>
                     }
                 }
-            </div>      
+                @if (actionState.SelectedScrapRecipe.Item.Name != "" && scrappingSelected)
+                {
+                    Item inventoryItem = inventoryState.Inventory.FirstOrDefault(i => i.Id == actionState.SelectedScrapRecipe.Item.Id) ?? new Item();
+                    <h2>@actionState.SelectedScrapRecipe.Item.Name (@inventoryItem.Quantity)</h2>
+                    <img src=@actionState.SelectedScrapRecipe.Item.Thumbnail style="width: 25%; border: solid black  2px" />
+                    <p>Scrap:</p>
+                    @foreach (Scrap scrap in actionState.SelectedScrapRecipe.ScrapList)
+                    {
+                        <p>@scrap.Item.Name: @scrap.QuantityMin-@scrap.QuantityMax</p>
+                    };
+                    @if (!actionState.IsScrapping)
+                    {
+                        <button @onclick="() => actionState.EnterScrapping()">Scrap</button>
+                    }
+                    @if (actionState.IsScrapping)
+                    {
+                        <LoadBarComponent amountComplete=(actionState.TicksBetweenAction-actionState.TicksUntilAction) total=actionState.TicksBetweenAction color="blue" />
+                        <button @onclick="() => actionState.LeaveScrapping()">Stop</button>
+                    }
+
+                }
+            </div>
         </div>
     </div>
 </div>
 
 @code {
     public List<CraftingRecipe> selectedRecipeList = new List<CraftingRecipe>();
-    public List<CraftingRecipe> scrapRecipes = new List<CraftingRecipe>();
+    public List<ScrapRecipe> scrapRecipes = new List<ScrapRecipe>();
     public List<CraftingRecipe> weaponRecipes = new List<CraftingRecipe>();
     public List<CraftingRecipe> armorRecipes = new List<CraftingRecipe>();
     public List<CraftingRecipe> aidRecipes = new List<CraftingRecipe>();
     public List<CraftingRecipe> constructionRecipes = new List<CraftingRecipe>();
     public List<CraftingRecipe> huntingRecipes = new List<CraftingRecipe>();
+    public bool scrappingSelected = false;
 
     async Task UpdateState()
     {
@@ -65,25 +101,81 @@
 
     public void SelectRecipeList(List<CraftingRecipe> recipeList)
     {
+        scrappingSelected = false;
         selectedRecipeList = recipeList;
     }
 
-    public void SelectRecipe(CraftingRecipe recipe)
+    public void SelectScrapping()
+    {
+        scrappingSelected = true;
+    }
+
+    public void SelectCraftRecipe(CraftingRecipe recipe)
     {
         if (actionState.IsCrafting)
         {
             actionState.LeaveCrafting();
         }
-        actionState.selectedRecipe = recipe;
+        actionState.SelectedCraftingRecipe = recipe;
+        actionState.SelectedScrapRecipe = new ScrapRecipe(); 
+    }
+
+    public void SelectScrapRecipe(ScrapRecipe recipe)
+    {
+        if (actionState.IsScrapping)
+        {
+            actionState.LeaveScrapping();
+        }
+        actionState.SelectedScrapRecipe = recipe;
+        actionState.SelectedCraftingRecipe = new CraftingRecipe();
     }
 
     protected override async Task OnInitializedAsync()
     {
         inventoryState.OnChange += UpdateState;
         actionState.OnChange += UpdateState;
-        scrapRecipes = new List<CraftingRecipe>()
+        scrapRecipes = new List<ScrapRecipe>()
         {
-
+            new ScrapRecipe()
+            {
+                Item = await GetItemByIdUseCase.ExecuteAsync(15), // Tardihop Fur
+                ScrapList = new List<Scrap>()
+                {
+                    new Scrap(await GetItemByIdUseCase.ExecuteAsync(1), 1, 1, 1, 1) // Animal Skins
+                }
+            },
+            new ScrapRecipe()
+            {
+                Item = await GetItemByIdUseCase.ExecuteAsync(13), // Tardihop Guts
+                ScrapList = new List<Scrap>()
+                {
+                    new Scrap(await GetItemByIdUseCase.ExecuteAsync(0), 1, 1, 1, 1) // Animal Parts
+                }
+            },
+            new ScrapRecipe()
+            {
+                Item = await GetItemByIdUseCase.ExecuteAsync(2), // Small Bones
+                ScrapList = new List<Scrap>()
+                {
+                    new Scrap(await GetItemByIdUseCase.ExecuteAsync(19), 1, 1, 1, 1) // Bonemeal
+                }
+            },
+            new ScrapRecipe()
+            {
+                Item = await GetItemByIdUseCase.ExecuteAsync(3), // Azurali Grass
+                ScrapList = new List<Scrap>()
+                {
+                    new Scrap(await GetItemByIdUseCase.ExecuteAsync(16), 1, 1, 1, 1) // Plant Fiber
+                }
+            },
+            new ScrapRecipe()
+            {
+                Item = await GetItemByIdUseCase.ExecuteAsync(14), // Stick
+                ScrapList = new List<Scrap>()
+                {
+                    new Scrap(await GetItemByIdUseCase.ExecuteAsync(16), 1, 1, 1, 1) // Plant Fiber
+                }
+            }
         };
         constructionRecipes = new List<CraftingRecipe>()
         {
@@ -209,7 +301,7 @@
                     Item = await GetItemByIdUseCase.ExecuteAsync(17), // Tardihop Bait
                     Ingredients = new List<(Item, int)>
                 {
-                    (await GetItemByIdUseCase.ExecuteAsync(10), 1), // Azurali Grass
+                    (await GetItemByIdUseCase.ExecuteAsync(3), 1), // Azurali Grass
                 },
                     RequiredSkillLevels = new List<(string, int)>()
                 {
