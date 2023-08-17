@@ -13,12 +13,12 @@ namespace RogueStarIdle.ServerApplication.Shared.State
     public class TimeState
     {
         public int Ticks { get; set; } = 0;
-        public int TickDuration = 20; //milliseconds
-        public int TicksPerSecond = 50;
+        public int TickDuration { get; set; } = 20; //milliseconds
+        public int TicksPerSecond { get; set; } = 50;
         public int TicksSinceLastSignIn { get; set; } = 0;
         public double MillisecondsElapsed { get; set; } = 0;
         public DateTime LastUpdateTime { get; set; } = DateTime.Now;
-        public DateTime TimeSignedOn = DateTime.Now;
+        public DateTime TimeSignedOn { get; set; } = DateTime.Now;
         //TODO: Ticks break if timer isn't set to same length as TickDuration, though it shouldn't matter because elapsed ticks calculated
         //      based on time elapsed since last time function was run. Will need to look into why and fix so gametimer can be optimized for performance
         //      and guarantee time consistency.
@@ -33,6 +33,8 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             GameTimer.Enabled = true;
             GameTimer.Start();
         }
+
+        public TimeState() { }
 
         private async Task NotifyStateChanged()
         {

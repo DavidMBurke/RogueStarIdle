@@ -7,6 +7,7 @@ using RogueStarIdle.UseCases.Items;
 using RogueStarIdle.UseCases.Items.Interfaces;
 using RogueStarIdle.UseCases.Items.PluginInterfaces;
 using RogueStarIdle.UseCases.Mobs;
+using System.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,9 @@ builder.Services.AddScoped<InventoryState>();
 builder.Services.AddScoped<CharacterState>();
 builder.Services.AddScoped<ActionState>();
 builder.Services.AddScoped<TimeState>();
+builder.Services.AddSignalR(e => {
+    e.MaximumReceiveMessageSize = 102400000;
+});
 
 var app = builder.Build();
 

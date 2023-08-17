@@ -1,0 +1,91 @@
+﻿@page "/settings"
+@using RogueStarIdle.ServerApplication.Shared.State;
+@inject ActionState actionState;
+@inject CharacterState characterState;
+@inject InventoryState inventoryState;
+@inject TimeState timeState;
+@inject IJSRuntime JSRuntime
+@using System.Text.Json;
+@using System.Reflection;
+
+<div class="page-content-container">
+    <div class="column">
+        <button @onclick="() => Save(actionState, characterState, inventoryState, timeState)">Save</button>
+        <button @onclick="() => Load()">Load</button>
+        <button @onclick="() => ClearSave()">Clear Save</button>
+    </div>
+</div>
+
+@code {
+    private async void Save(ActionState actionState, CharacterState characterState, InventoryState inventoryState, TimeState timeState)
+    {
+        SaveState saveState = new SaveState(actionState, characterState, inventoryState, timeState);
+        string save = Serialize(saveState);
+        SaveToLocalstorage("saveState", save);
+    }
+
+    private async void Load()
+    {
+        string save = await LoadFromLocalstorage("saveState");
+        SaveState loadedState = Deserialize<SaveState>(save);
+        if (loadedState == default(SaveState))
+        {
+            return;
+        }
+        StateCopy(actionState, loadedState.ActionState);
+        StateCopy(characterState, loadedState.CharacterState);
+        StateCopy(inventoryState, loadedState.InventoryState);
+        StateCopy(timeState, loadedState.TimeState);
+    }
+
+    private async void ClearSave()
+    {
+        DeleteFromLocalstorage("saveState");
+    }
+
+    private async Task SaveToLocalstorage(string key, string value)
+    {
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", key, value);
+    }
+
+    private async Task<string> LoadFromLocalstorage(string key)
+    {
+        return await JSRuntime.InvokeAsync<string>("localStorage.getItem", key);
+    }
+
+    private async Task DeleteFromLocalstorage(string key)
+    {
+        await JSRuntime.InvokeVoidAsync("localStorage.removeItem", key);
+    }
+
+    public string Serialize<T>(T state)
+    {
+        JsonSerializerOptions options = new JsonSerializerOptions { IncludeFields = true };
+        string save = JsonSerializer.Serialize(state, options);
+        return save;
+    }
+
+    public static T Deserialize<T>(string? json)
+    {
+        if (json == null)
+        {
+            return default(T);
+        }
+        JsonSerializerOptions options = new JsonSerializerOptions { IncludeFields = true };
+        T? state = JsonSerializer.Deserialize<T>(json, options);
+        return state;
+    }
+
+    public void StateCopy<T>(T state, T loadedState)
+    {
+        foreach (PropertyInfo property in typeof(T).GetProperties())
+        {
+            if (!property.CanRead || !property.CanWrite)
+            {
+                continue;
+            }
+            object value = property.GetValue(loadedState);
+            property.SetValue(state, value);
+        }
+    }
+}

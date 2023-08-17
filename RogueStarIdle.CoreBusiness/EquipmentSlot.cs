@@ -15,5 +15,6 @@
             Locked = locked ?? false;
         }
 
+        public EquipmentSlot() { }
     }
 }
