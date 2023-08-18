@@ -9,17 +9,26 @@
 @using System.Reflection;
 @using System.Security.Cryptography;
 @using System.Text;
+@using System.IO.Compression;
 
 <div class="page-content-container">
     <div class="column">
-        <button @onclick="() => Save(actionState, characterState, inventoryState, timeState)">Save</button>
-        <button @onclick="() => Load()">Load</button>
-        <button @onclick="() => ClearSave()">Clear Save</button>
+        <div style="row">
+            <button @onclick="() => Save(actionState, characterState, inventoryState, timeState)">Save</button>
+            <button @onclick="() => Load()">Load</button>
+            <button @onclick="() => ClearSave()">Clear Save</button>
+        </div>
+        <input @bind-value="importExport"/>
+        <div style="row">
+            <button @onclick="() => Export(actionState, characterState, inventoryState, timeState)">Export</button>
+            <button @onclick="() => Import()">Import</button>
+        </div>
     </div>
 </div>
 
 @code {
     private string key = "Rogue Star Baybeeeee";
+    private string importExport = "";
 
     private async void Save(ActionState actionState, CharacterState characterState, InventoryState inventoryState, TimeState timeState)
     {
@@ -30,10 +39,33 @@
         SaveToLocalstorage("saveState", finalSave);
     }
 
+    private async void Export(ActionState actionState, CharacterState characterState, InventoryState inventoryState, TimeState timeState)
+    {
+        SaveState saveState = new SaveState(actionState, characterState, inventoryState, timeState);
+        string save = Serialize(saveState);
+        byte[] encryptedSave = await EncryptAsync(save, key);
+        importExport = Serialize(encryptedSave);
+    }
+
     private async void Load()
     {
         string encryptedLoadString = await LoadFromLocalstorage("saveState");
         byte[] encryptedLoadBytes = Deserialize<byte[]>(encryptedLoadString);
+        string decryptedLoad = await DecryptAsync(encryptedLoadBytes, key);
+        SaveState loadedState = Deserialize<SaveState>(decryptedLoad);
+        if (loadedState == default(SaveState))
+        {
+            return;
+        }
+        StateCopy(actionState, loadedState.ActionState);
+        StateCopy(characterState, loadedState.CharacterState);
+        StateCopy(inventoryState, loadedState.InventoryState);
+        StateCopy(timeState, loadedState.TimeState);
+    }
+
+    private async void Import()
+    {
+        byte[] encryptedLoadBytes = Deserialize<byte[]>(importExport);
         string decryptedLoad = await DecryptAsync(encryptedLoadBytes, key);
         SaveState loadedState = Deserialize<SaveState>(decryptedLoad);
         if (loadedState == default(SaveState))
@@ -75,7 +107,7 @@
 
     private static T Deserialize<T>(string? json)
     {
-        if (json == null)
+        if (json == null || json == "")
         {
             return default(T);
         }
@@ -114,8 +146,10 @@
         aes.IV = IV;
         using MemoryStream output = new();
         using CryptoStream cryptoStream = new(output, aes.CreateEncryptor(), CryptoStreamMode.Write);
-        await cryptoStream.WriteAsync(Encoding.Unicode.GetBytes(clearText));
-        await cryptoStream.FlushFinalBlockAsync();
+        using (DeflateStream compressionStream = new(cryptoStream, CompressionMode.Compress))
+        {
+            await compressionStream.WriteAsync(Encoding.UTF8.GetBytes(clearText));
+        }
         return output.ToArray();
     }
 
@@ -126,9 +160,12 @@
         aes.IV = IV;
         using MemoryStream input = new(encrypted);
         using CryptoStream cryptoStream = new(input, aes.CreateDecryptor(), CryptoStreamMode.Read);
-        using MemoryStream output = new();
-        await cryptoStream.CopyToAsync(output);
-        return Encoding.Unicode.GetString(output.ToArray());
+        using (DeflateStream decompressionStream = new(cryptoStream, CompressionMode.Decompress))
+        {
+            using MemoryStream output = new();
+            await decompressionStream.CopyToAsync(output);
+            return Encoding.UTF8.GetString(output.ToArray());
+        }
     }
 
     private byte[] DeriveKeyFromPassword(string password)
