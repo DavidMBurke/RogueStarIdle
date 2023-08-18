@@ -93,9 +93,13 @@
                 @getAllDefenseMarkups(selectedItem);
                 @getAllDamageResistanceMarkups(selectedItem);
             }
+            @if (selectedItem.StacksInEquipmentSlot)
+            {
+                <input @bind-value=qtyToAdd />
+            }
             @foreach (var slot in selectedItem.EquipmentSlots)
             {
-                <button @onclick="() => EquipItem(selectedItem, slot, characterState.MainCharacter.Equipment)">
+                <button @onclick="() => EquipItem(selectedItem, slot, characterState.MainCharacter.Equipment, qtyToAdd)">
                     Equip @characterState.MainCharacter.Equipment.getSlotNameById(slot)
                 </button>
             }
@@ -110,6 +114,7 @@
     private List<Item> listItems = new List<Item>(); // Items from inventory after search/sort
     public Item selectedItem = null; // Item stats are displayed for
     private Dictionary<string, bool> expandedViews = new Dictionary<string, bool>(); // Stores item groups expanded view status
+    private int qtyToAdd;
 
     protected override async Task OnInitializedAsync()
     {
@@ -167,11 +172,19 @@
         selectedItem = item;
     }
 
-    public async void EquipItem(Item item, int slotId, EquipmentSet equipmentSet)
+    public async void EquipItem(Item item, int slotId, EquipmentSet equipmentSet, int qty)
     {
         if (item.Equipped)
         {
             return;
+        }
+        if (qty < 0)
+        {
+            return;
+        }
+        if (qty > item.Quantity)
+        {
+            qty = item.Quantity;
         }
         foreach (var property in typeof(EquipmentSet).GetProperties())
         {
@@ -187,24 +200,25 @@
             // replace unequipped item with equipped item
             Item itemToEquip = item.CreateCopy();
             itemToEquip.Equipped = true;
-            int qty = 1;
-            if (item.StacksInEquipmentSlot)
+            itemToEquip.Quantity = qty;
+            if (!item.StacksInEquipmentSlot)
             {
-                qty = item.Quantity;
+                qty = 1;
             }
             inventoryState.RemoveFromInventory(inventoryState.Inventory, item, qty);
             inventoryState.AddToInventory(inventoryState.Inventory, itemToEquip, qty);
             if (slot.Item != null)
             {
+                if (slot.Item.Id == item.Id)
+                {
+                    slot.Item.Quantity += qty;
+                    break;
+                }
                 // replace previously equipped item with unequipped item
                 Item unequippedItem = slot.Item.CreateCopy();
                 inventoryState.RemoveFromInventory(inventoryState.Inventory, unequippedItem, unequippedItem.Quantity);
                 unequippedItem.Equipped = false;
                 inventoryState.AddToInventory(inventoryState.Inventory, unequippedItem, unequippedItem.Quantity);
-            }
-            if (!itemToEquip.StacksInEquipmentSlot)
-            {
-                itemToEquip.Quantity = 1;
             }
             slot.Item = itemToEquip; //equip item
             break;

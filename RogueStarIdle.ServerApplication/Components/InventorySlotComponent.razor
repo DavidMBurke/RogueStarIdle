@@ -57,7 +57,7 @@
     {
         return
     @<div>
-        @item.Name <br>
+        @item.Name @(item.Quantity > 1 ? $" x {item.Quantity}" : "") <br>
         @if (item.IsWeapon)
             {
                 @getTooltipTextRender("Attack speed: ",item.AttackSpeed)
