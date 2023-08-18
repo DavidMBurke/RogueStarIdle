@@ -273,8 +273,10 @@ namespace RogueStarIdle.PlugIns.InMemory
                 {
                     Id = 18,
                     Name = "Cloth Bandage",
+                    StacksInEquipmentSlot = true,
                     BuyPrice = 1,
                     SellPrice = 1,
+                    EquipmentSlots = new List<int>{18},
                     Tags = new List<string>{"Aid"},
                     Quantity = 1,
                     Thumbnail = "/Images/Thumbnails/ClothBandage.png"
