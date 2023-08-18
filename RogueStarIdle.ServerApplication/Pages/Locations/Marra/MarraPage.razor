@@ -1,6 +1,8 @@
 ﻿@page "/marra"
 @using RogueStarIdle.PlugIns.InMemory;
 @using RogueStarIdle.ServerApplication.Shared.State;
+@using static RogueStarIdle.PlugIns.InMemory.MobsRepository;
+@using static RogueStarIdle.PlugIns.InMemory.ItemsRepository;
 @inject ActionState actionState;
 @inject InventoryState inventoryState;
 @inject CharacterState characterState;
@@ -125,12 +127,12 @@
         await base.OnInitializedAsync();
         azuraliPlainsexploreables = new List<ItemDrop>
         {
-            new ItemDrop (await GetItemByIdUseCase.ExecuteAsync(3), 10, 100, 1, 2),
-            new ItemDrop (await GetItemByIdUseCase.ExecuteAsync(14), 10, 100, 1, 2)
+            new ItemDrop (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.AzuraliGrass), 10, 100, 1, 2),
+            new ItemDrop (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.Stick), 10, 100, 1, 2)
         };
         azuraliPlainsMobs = new List<MobSpawn>
         {
-            new MobSpawn (await GetMobByIdUseCase.ExecuteAsync(0), 10)
+            new MobSpawn (await GetMobByIdUseCase.ExecuteAsync((int)MobsEnum.Tardihop), 10)
         };
     }
 

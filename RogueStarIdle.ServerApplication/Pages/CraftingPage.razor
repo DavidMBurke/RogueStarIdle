@@ -1,5 +1,6 @@
 ﻿@page "/crafting"
 @using RogueStarIdle.ServerApplication.Shared.State;
+@using static RogueStarIdle.PlugIns.InMemory.ItemsRepository;
 @inject TimeState timeState;
 @inject InventoryState inventoryState;
 @inject ActionState actionState;
@@ -138,57 +139,70 @@
         {
             new ScrapRecipe()
             {
-                Item = await GetItemByIdUseCase.ExecuteAsync(15), // Tardihop Fur
+                Item = await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.TardihopFur),
                 ScrapList = new List<Scrap>()
                 {
-                    new Scrap(await GetItemByIdUseCase.ExecuteAsync(1), 1, 1, 1, 1) // Animal Skins
+                    new Scrap(await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.AnimalSkins), 1, 1, 1, 1)
                 }
             },
             new ScrapRecipe()
             {
-                Item = await GetItemByIdUseCase.ExecuteAsync(13), // Tardihop Guts
+                Item = await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.TardihopGuts),
                 ScrapList = new List<Scrap>()
                 {
-                    new Scrap(await GetItemByIdUseCase.ExecuteAsync(0), 1, 1, 1, 1) // Animal Parts
+                    new Scrap(await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.AnimalParts), 1, 1, 1, 1)
                 }
             },
             new ScrapRecipe()
             {
-                Item = await GetItemByIdUseCase.ExecuteAsync(2), // Small Bones
+                Item = await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.SmallBones),
                 ScrapList = new List<Scrap>()
                 {
-                    new Scrap(await GetItemByIdUseCase.ExecuteAsync(19), 1, 1, 1, 1) // Bonemeal
+                    new Scrap(await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.Bonemeal), 1, 1, 1, 1)
                 }
             },
             new ScrapRecipe()
             {
-                Item = await GetItemByIdUseCase.ExecuteAsync(3), // Azurali Grass
+                Item = await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.AzuraliGrass),
                 ScrapList = new List<Scrap>()
                 {
-                    new Scrap(await GetItemByIdUseCase.ExecuteAsync(16), 1, 1, 1, 1) // Plant Fiber
+                    new Scrap(await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.PlantFiber), 1, 1, 1, 1)
                 }
             },
             new ScrapRecipe()
             {
-                Item = await GetItemByIdUseCase.ExecuteAsync(14), // Stick
+                Item = await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.Stick),
                 ScrapList = new List<Scrap>()
                 {
-                    new Scrap(await GetItemByIdUseCase.ExecuteAsync(16), 1, 1, 1, 1) // Plant Fiber
+                    new Scrap(await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.PlantFiber), 1, 1, 1, 1)
                 }
             }
         };
         constructionRecipes = new List<CraftingRecipe>()
         {
-
+            new CraftingRecipe()
+                {
+                    Item = await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.Rope),
+                    Ingredients = new List<(Item, int)>
+                {
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.PlantFiber), 5),
+                },
+                    RequiredSkillLevels = new List<(string, int)>()
+                {
+                    ("Medicine", 1)
+                },
+                    XpReward = ("Medicine", 1),
+                    Unlocked = true
+                }
         };
         aidRecipes = new List<CraftingRecipe>()
         {
             new CraftingRecipe()
                 {
-                    Item = await GetItemByIdUseCase.ExecuteAsync(18), // Cloth Bandage
+                    Item = await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.ClothBandage),
                     Ingredients = new List<(Item, int)>
                 {
-                    (await GetItemByIdUseCase.ExecuteAsync(16), 2), // Plant Fiber
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.PlantFiber), 2),
                 },
                     RequiredSkillLevels = new List<(string, int)>()
                 {
@@ -202,11 +216,11 @@
         {
             new CraftingRecipe()
                 {
-                    Item = await GetItemByIdUseCase.ExecuteAsync(5), // Tardihop Fur Hat
+                    Item = await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.TardihopFurHat),
                     Ingredients = new List<(Item, int)>
                 {
-                    (await GetItemByIdUseCase.ExecuteAsync(15), 2), // Tardihop Fur
-                    (await GetItemByIdUseCase.ExecuteAsync(16), 2) // Plant Fiber
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.TardihopFur), 2),
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.PlantFiber), 2)
                 },
                     RequiredSkillLevels = new List<(string, int)>()
                 {
@@ -217,11 +231,11 @@
                 },
             new CraftingRecipe()
                 {
-                    Item = await GetItemByIdUseCase.ExecuteAsync(6), // Tardihop Fur Gloves
+                    Item = await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.TardihopFurGloves),
                     Ingredients = new List<(Item, int)>
                 {
-                    (await GetItemByIdUseCase.ExecuteAsync(15), 2), // Tardihop Fur
-                    (await GetItemByIdUseCase.ExecuteAsync(16), 2) // Plant Fiber
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.TardihopFur), 2),
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.PlantFiber), 2)
                 },
                     RequiredSkillLevels = new List<(string, int)>()
                 {
@@ -232,11 +246,11 @@
                 },
             new CraftingRecipe()
                 {
-                    Item = await GetItemByIdUseCase.ExecuteAsync(7), // Tardihop Fur Shirt
+                    Item = await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.TardihopFurShirt),
                     Ingredients = new List<(Item, int)>
                 {
-                    (await GetItemByIdUseCase.ExecuteAsync(15), 5), // Tardihop Fur
-                    (await GetItemByIdUseCase.ExecuteAsync(16), 10) // Plant Fiber
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.TardihopFur), 5),
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.PlantFiber), 10)
                 },
                     RequiredSkillLevels = new List<(string, int)>()
                 {
@@ -247,11 +261,11 @@
                 },
             new CraftingRecipe()
                 {
-                    Item = await GetItemByIdUseCase.ExecuteAsync(8), // Tardihop Fur Pants
+                    Item = await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.TardihopFurPants),
                     Ingredients = new List<(Item, int)>
                 {
-                    (await GetItemByIdUseCase.ExecuteAsync(15), 5), // Tardihop Fur
-                    (await GetItemByIdUseCase.ExecuteAsync(16), 10) // Plant Fiber
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.TardihopFur), 5),
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.PlantFiber), 10)
                 },
                     RequiredSkillLevels = new List<(string, int)>()
                 {
@@ -262,11 +276,11 @@
                 },
             new CraftingRecipe()
                 {
-                    Item = await GetItemByIdUseCase.ExecuteAsync(9), // Tardihop Fur Hat
+                    Item = await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.TardihopFurHat),
                     Ingredients = new List<(Item, int)>
                 {
-                    (await GetItemByIdUseCase.ExecuteAsync(15), 2), // Tardihop Fur
-                    (await GetItemByIdUseCase.ExecuteAsync(16), 3) // Plant Fiber
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.TardihopFur), 2),
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.PlantFiber), 3)
                 },
                     RequiredSkillLevels = new List<(string, int)>()
                 {
@@ -280,11 +294,11 @@
         {
             new CraftingRecipe()
                 {
-                    Item = await GetItemByIdUseCase.ExecuteAsync(4), // Bone Knife
+                    Item = await GetItemByIdUseCase.ExecuteAsync(4),
                     Ingredients = new List<(Item, int)>
                 {
-                    (await GetItemByIdUseCase.ExecuteAsync(2), 1), // Small bones
-                    (await GetItemByIdUseCase.ExecuteAsync(16), 2) // Plant Fiber
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.SmallBones), 1),
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.PlantFiber), 2)
                 },
                     RequiredSkillLevels = new List<(string, int)>()
                 {
@@ -298,10 +312,10 @@
         {
             new CraftingRecipe()
                 {
-                    Item = await GetItemByIdUseCase.ExecuteAsync(17), // Tardihop Bait
+                    Item = await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.TardihopBait),
                     Ingredients = new List<(Item, int)>
                 {
-                    (await GetItemByIdUseCase.ExecuteAsync(3), 1), // Azurali Grass
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.AzuraliGrass), 1),
                 },
                     RequiredSkillLevels = new List<(string, int)>()
                 {

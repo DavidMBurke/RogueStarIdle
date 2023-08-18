@@ -290,9 +290,45 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Tags = new List<string>{"Farming"},
                     Quantity = 1,
                     Thumbnail = "/Images/Thumbnails/Bonemeal.png"
+                },
+                new Item
+                {
+                    Id = 20,
+                    Name = "Rope",
+                    BuyPrice = 1,
+                    SellPrice = 1,
+                    Tags = new List<string>{"Construction"},
+                    Quantity = 1,
+                    Thumbnail = "/Images/Thumbnails/Rope.png"
                 }
             };
         }
+
+        public enum ItemsEnum
+        {
+            AnimalParts = 0,
+            AnimalSkins = 1,
+            SmallBones = 2,
+            AzuraliGrass = 3,
+            BoneKnife = 4,
+            TardihopFurHat = 5,
+            TardihopFurGloves = 6,
+            TardihopFurShirt = 7,
+            TardihopFurPants = 8,
+            TardihopFurBoots = 9,
+            CarapigChitinMask = 10,
+            CarapigChitinArmorTop = 11,
+            CarapigChitinArmorLegs = 12,
+            TardihopGuts = 13,
+            Stick = 14,
+            TardihopFur = 15,
+            PlantFiber = 16,
+            TardihopBait = 17,
+            ClothBandage = 18,
+            Bonemeal = 19,
+            Rope = 20
+        }
+
         public async Task<IEnumerable<Item>> GetItemsByNameAsync(string name)
         {
             if (string.IsNullOrWhiteSpace(name))

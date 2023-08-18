@@ -39,6 +39,11 @@ namespace RogueStarIdle.PlugIns.InMemory
             };
 
         }
+
+        public enum MobsEnum
+        {
+            Tardihop = 0
+        }
         public async Task<Mob> GetMobByIdAsync(int id)
         {
             return mobs.First(i => i.Id == id);
