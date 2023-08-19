@@ -270,8 +270,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Quantity = 1,
                     Thumbnail = "/Images/Thumbnails/TardihopBait.png"
                 },
-                new Item
-                {
+                new Item {
                     Id = 18,
                     Name = "Cloth Bandage",
                     StacksInEquipmentSlot = true,
@@ -282,8 +281,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Quantity = 1,
                     Thumbnail = "/Images/Thumbnails/ClothBandage.png"
                 },
-                new Item
-                {
+                new Item {
                     Id = 19,
                     Name = "Bonemeal",
                     BuyPrice = 1,
@@ -292,8 +290,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Quantity = 1,
                     Thumbnail = "/Images/Thumbnails/Bonemeal.png"
                 },
-                new Item
-                {
+                new Item {
                     Id = 20,
                     Name = "Rope",
                     BuyPrice = 1,
@@ -376,7 +373,69 @@ namespace RogueStarIdle.PlugIns.InMemory
                     QualityLevel = 1,
                     MaxQualityLevel = 10,
                     Thumbnail = "Images/Thumbnails/ClothGloves.png"
-                }        
+                },
+                new Item {
+                    Id = 26,
+                    Name = "Stone",
+                    BuyPrice = 1,
+                    SellPrice = 1,
+                    Tags = new List<string>{"Construction", "Component"},
+                    Quantity = 1,
+                    Thumbnail = "/Images/Thumbnails/Stone.png"
+                },        
+                new Item {
+                    Id = 27,
+                    Name = "Purple Berries",
+                    BuyPrice = 1,
+                    SellPrice = 1,
+                    Tags = new List<string>{"Aid"},
+                    Quantity = 1,
+                    Thumbnail = "/Images/Thumbnails/PurpleBerries.png"
+                },
+                new Item {
+                    Id = 28,
+                    Name = "Purple Berry Seeds",
+                    BuyPrice = 1,
+                    SellPrice = 1,
+                    Tags = new List<string>{"Aid"},
+                    Quantity = 1,
+                    Thumbnail = "/Images/Thumbnails/PurpleBerrySeeds.png"
+                },
+                new Item {
+                    Id = 29,
+                    Name = "Carapig Chitin",
+                    BuyPrice = 10,
+                    SellPrice = 2,
+                    Tags = new List<string>{"Carapig", "Component"},
+                    Quantity = 1,
+                    Thumbnail = "Images/Thumbnails/CarapigChitin.png"
+                },
+                new Item {
+                    Id = 30,
+                    Name = "Carapig Scent Gland",
+                    BuyPrice = 10,
+                    SellPrice = 2,
+                    Tags = new List<string>{"Carapig", "Component"},
+                    Quantity = 1,
+                    Thumbnail = "Images/Thumbnails/CarapigScentGland.png"
+                },
+                new Item {
+                    Id = 31,
+                    Name = "Carapig Bait",
+                    BuyPrice = 10,
+                    SellPrice = 2,
+                    Tags = new List<string>{"Carapig", "Bait"},
+                    Quantity = 1,
+                    Thumbnail = "Images/Thumbnails/CarapigBait.png"
+                },                new Item {
+                    Id = 32,
+                    Name = "Grizzix Bait",
+                    BuyPrice = 10,
+                    SellPrice = 2,
+                    Tags = new List<string>{"Grizzix", "Bait"},
+                    Quantity = 1,
+                    Thumbnail = "Images/Thumbnails/GrizzixBait.png"
+                },
             };
         }
 
@@ -406,7 +465,15 @@ namespace RogueStarIdle.PlugIns.InMemory
             ClothShoes = 21,
             ClothHat = 22,
             ClothShirt = 23,
-            ClothPants = 24
+            ClothPants = 24,
+            ClothGloves = 25,
+            Stone = 26,
+            PurpleBerries = 27,
+            PurpleBerrySeeds = 28,
+            CarapigChitin= 29,
+            CarapigScentGland = 30,
+            CarapigBait = 31,
+            GrizzixBait = 32
         }
 
 

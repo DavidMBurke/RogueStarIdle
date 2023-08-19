@@ -33,6 +33,8 @@ namespace RogueStarIdle.CoreBusiness
         public EquipmentSlot BodyCybernetic2 { get; set; } = new EquipmentSlot((int)EquipmentSlotEnum.BodyCybernetic2, null, "Body Cyberneteic 2", locked: true);
         public EquipmentSlot BodyCybernetic3 { get; set; } = new EquipmentSlot((int)EquipmentSlotEnum.BodyCybernetic3, null, "Body Cybernetic 3", locked: true);
         public EquipmentSlot OmniLinkMod { get; set; } = new EquipmentSlot((int)EquipmentSlotEnum.OmniLinkMod, null, "OmniLink Mod");
+        public EquipmentSlot Survival { get; set; } = new EquipmentSlot((int)EquipmentSlotEnum.Survival, null, "Survival");
+
         public Stats Stats { get; set; } = new Stats();
         public enum EquipmentSlotEnum
         {
@@ -63,7 +65,8 @@ namespace RogueStarIdle.CoreBusiness
             BodyCybernetic1 = 25,
             BodyCybernetic2 = 26,
             BodyCybernetic3 = 27,
-            OmniLinkMod = 28
+            OmniLinkMod = 28,
+            Survival = 29
         }
 
         //get name of slot from ID for display purposes

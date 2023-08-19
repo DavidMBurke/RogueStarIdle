@@ -288,6 +288,76 @@
                 },
                     XpReward = ("Armor Crafting", 1),
                     Unlocked = true
+                },
+            new CraftingRecipe()
+                {
+                    Item = await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.ClothShoes),
+                    Ingredients = new List<(Item, int)>
+                {
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.PlantFiber), 3)
+                },
+                    RequiredSkillLevels = new List<(string, int)>()
+                {
+                    ("Armor Crafting", 1)
+                },
+                    XpReward = ("Armor Crafting", 1),
+                    Unlocked = true
+                },
+            new CraftingRecipe()
+                {
+                    Item = await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.ClothHat),
+                    Ingredients = new List<(Item, int)>
+                {
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.PlantFiber), 3)
+                },
+                    RequiredSkillLevels = new List<(string, int)>()
+                {
+                    ("Armor Crafting", 1)
+                },
+                    XpReward = ("Armor Crafting", 1),
+                    Unlocked = true
+                },
+            new CraftingRecipe()
+                {
+                    Item = await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.ClothShirt),
+                    Ingredients = new List<(Item, int)>
+                {
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.PlantFiber), 3)
+                },
+                    RequiredSkillLevels = new List<(string, int)>()
+                {
+                    ("Armor Crafting", 1)
+                },
+                    XpReward = ("Armor Crafting", 1),
+                    Unlocked = true
+                },
+            new CraftingRecipe()
+                {
+                    Item = await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.ClothPants),
+                    Ingredients = new List<(Item, int)>
+                {
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.PlantFiber), 3)
+                },
+                    RequiredSkillLevels = new List<(string, int)>()
+                {
+                    ("Armor Crafting", 1)
+                },
+                    XpReward = ("Armor Crafting", 1),
+                    Unlocked = true
+                },
+            new CraftingRecipe()
+                {
+                    Item = await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.ClothGloves),
+                    Ingredients = new List<(Item, int)>
+                {
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.PlantFiber), 3)
+                },
+                    RequiredSkillLevels = new List<(string, int)>()
+                {
+                    ("Armor Crafting", 1)
+                },
+                    XpReward = ("Armor Crafting", 1),
+                    Unlocked = true
                 }
         };
         weaponRecipes = new List<CraftingRecipe>()
@@ -315,7 +385,38 @@
                     Item = await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.TardihopBait),
                     Ingredients = new List<(Item, int)>
                 {
-                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.AzuraliGrass), 1),
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.AzuraliGrass), 3),
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.PurpleBerries), 1)
+                },
+                    RequiredSkillLevels = new List<(string, int)>()
+                {
+                    ("Survival", 1)
+                },
+                    XpReward = ("Survival", 1),
+                    Unlocked = true
+                },
+            new CraftingRecipe()
+                {
+                    Item = await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.CarapigBait),
+                    Ingredients = new List<(Item, int)>
+                {
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.TardihopGuts), 3),
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.PurpleBerries), 1)
+                },
+                    RequiredSkillLevels = new List<(string, int)>()
+                {
+                    ("Survival", 1)
+                },
+                    XpReward = ("Survival", 1),
+                    Unlocked = true
+                },
+            new CraftingRecipe()
+                {
+                    Item = await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.GrizzixBait),
+                    Ingredients = new List<(Item, int)>
+                {
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.AzuraliGrass), 3),
+                    (await GetItemByIdUseCase.ExecuteAsync((int)ItemsEnum.PurpleBerries), 1)
                 },
                     RequiredSkillLevels = new List<(string, int)>()
                 {
