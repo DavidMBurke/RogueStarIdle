@@ -3,6 +3,7 @@ using RogueStarIdle.UseCases.Items.PluginInterfaces;
 using System.ComponentModel;
 using System.Net.Http.Headers;
 using System.Xml.Linq;
+using static RogueStarIdle.CoreBusiness.EquipmentSet;
 
 namespace RogueStarIdle.PlugIns.InMemory
 {
@@ -61,7 +62,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     IsEquippable = true,
                     IsMelee = true,
                     Quantity = 1,
-                    EquipmentSlots = new List<int>{9,13},
+                    EquipmentSlots = new List<int>{(int)EquipmentSlotEnum.LeftWeapon,(int)EquipmentSlotEnum.RightWeapon},
                     MeleeToHit = 5,
                     MinBaseDamage = 10,
                     MaxBaseDamage = 20,
@@ -83,7 +84,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Tags = new List<string> {"Armor", "Head"},
                     IsEquippable = true,
                     Quantity = 1,
-                    EquipmentSlots = new List<int>{1},
+                    EquipmentSlots = new List<int>{(int)EquipmentSlotEnum.Head},
                     IsArmor = true,
                     MeleeDefense = 10,
                     EnergyDefense = 2,
@@ -101,7 +102,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Tags = new List<string> {"Armor", "Hands"},
                     IsEquippable = true,
                     Quantity = 1,
-                    EquipmentSlots = new List<int>{8},
+                    EquipmentSlots = new List<int>{(int)EquipmentSlotEnum.Hands},
                     IsArmor = true,
                     MeleeDefense = 10,
                     EnergyDefense = 2,
@@ -119,7 +120,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Tags = new List<string> {"Armor", "Torso"},
                     IsEquippable = true,
                     Quantity = 1,
-                    EquipmentSlots = new List<int>{3},
+                    EquipmentSlots = new List<int>{(int)EquipmentSlotEnum.Torso},
                     IsArmor = true,
                     MeleeDefense = 10,
                     EnergyDefense = 2,
@@ -142,7 +143,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Tags = new List<string> {"Armor", "Legs"},
                     IsEquippable = true,
                     Quantity = 1,
-                    EquipmentSlots = new List<int>{5},
+                    EquipmentSlots = new List<int>{(int)EquipmentSlotEnum.Legs},
                     IsArmor = true,
                     MeleeDefense = 10,
                     EnergyDefense = 2,
@@ -160,7 +161,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Tags = new List<string> {"Armor", "Feet"},
                     IsEquippable = true,
                     Quantity = 1,
-                    EquipmentSlots = new List<int>{6},
+                    EquipmentSlots = new List<int>{(int)EquipmentSlotEnum.Feet},
                     IsArmor = true,
                     MeleeDefense = 10,
                     EnergyDefense = 2,
@@ -178,7 +179,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Tags = new List<string> {"Armor", "Face"},
                     IsEquippable = true,
                     Quantity = 1,
-                    EquipmentSlots = new List<int>{1},
+                    EquipmentSlots = new List<int>{(int)EquipmentSlotEnum.Head},
                     IsArmor = true,
                     MeleeDefense = 10,
                     EnergyDefense = 2,
@@ -196,7 +197,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Tags = new List<string> {"Armor", "Torso"},
                     IsEquippable = true,
                     Quantity = 1,
-                    EquipmentSlots = new List<int>{3},
+                    EquipmentSlots = new List<int>{(int)EquipmentSlotEnum.Torso},
                     IsArmor = true,
                     MeleeDefense = 10,
                     EnergyDefense = 2,
@@ -214,7 +215,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Tags = new List<string> {"Armor", "Legs"},
                     IsEquippable = true,
                     Quantity = 1,
-                    EquipmentSlots = new List<int>{5},
+                    EquipmentSlots = new List<int>{(int)EquipmentSlotEnum.Legs},
                     IsArmor = true,
                     MeleeDefense = 10,
                     EnergyDefense = 2,
@@ -276,7 +277,7 @@ namespace RogueStarIdle.PlugIns.InMemory
                     StacksInEquipmentSlot = true,
                     BuyPrice = 1,
                     SellPrice = 1,
-                    EquipmentSlots = new List<int>{18},
+                    EquipmentSlots = new List<int>{(int)EquipmentSlotEnum.Aid},
                     Tags = new List<string>{"Aid"},
                     Quantity = 1,
                     Thumbnail = "/Images/Thumbnails/ClothBandage.png"
@@ -300,7 +301,82 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Tags = new List<string>{"Construction"},
                     Quantity = 1,
                     Thumbnail = "/Images/Thumbnails/Rope.png"
-                }
+                },
+                new Item {
+                    Id = 21,
+                    Name = "Cloth Shoes",
+                    BuyPrice = 10,
+                    SellPrice = 10,
+                    Tags = new List<string> {"Armor", "Feet"},
+                    IsEquippable = true,
+                    Quantity = 1,
+                    EquipmentSlots = new List<int>{(int)EquipmentSlotEnum.Feet},
+                    IsArmor = true,
+                    MeleeDefense = 1,
+                    QualityLevel = 1,
+                    MaxQualityLevel = 10,
+                    Thumbnail = "Images/Thumbnails/ClothShoes.png"
+                },
+                new Item {
+                    Id = 22,
+                    Name = "Cloth Hat",
+                    BuyPrice = 10,
+                    SellPrice = 10,
+                    Tags = new List<string> {"Armor", "Head"},
+                    IsEquippable = true,
+                    Quantity = 1,
+                    EquipmentSlots = new List<int>{(int)EquipmentSlotEnum.Head},
+                    IsArmor = true,
+                    MeleeDefense = 1,
+                    QualityLevel = 1,
+                    MaxQualityLevel = 10,
+                    Thumbnail = "Images/Thumbnails/ClothHat.png"
+                },
+                new Item {
+                    Id = 23,
+                    Name = "Cloth Shirt",
+                    BuyPrice = 10,
+                    SellPrice = 10,
+                    Tags = new List<string> {"Armor", "Torso"},
+                    IsEquippable = true,
+                    Quantity = 1,
+                    EquipmentSlots = new List<int>{(int)EquipmentSlotEnum.Torso},
+                    IsArmor = true,
+                    MeleeDefense = 1,
+                    QualityLevel = 1,
+                    MaxQualityLevel = 10,
+                    Thumbnail = "Images/Thumbnails/ClothShirt.png"
+                },
+                new Item {
+                    Id = 24,
+                    Name = "Cloth Pants",
+                    BuyPrice = 10,
+                    SellPrice = 10,
+                    Tags = new List<string> {"Armor", "Legs"},
+                    IsEquippable = true,
+                    Quantity = 1,
+                    EquipmentSlots = new List<int>{(int)EquipmentSlotEnum.Legs},
+                    IsArmor = true,
+                    MeleeDefense = 1,
+                    QualityLevel = 1,
+                    MaxQualityLevel = 10,
+                    Thumbnail = "Images/Thumbnails/ClothPants.png"
+                },
+                new Item {
+                    Id = 25,
+                    Name = "Cloth Gloves",
+                    BuyPrice = 10,
+                    SellPrice = 10,
+                    Tags = new List<string> {"Armor", "Hands"},
+                    IsEquippable = true,
+                    Quantity = 1,
+                    EquipmentSlots = new List<int>{(int)EquipmentSlotEnum.Hands},
+                    IsArmor = true,
+                    MeleeDefense = 1,
+                    QualityLevel = 1,
+                    MaxQualityLevel = 10,
+                    Thumbnail = "Images/Thumbnails/ClothGloves.png"
+                }        
             };
         }
 
@@ -326,8 +402,13 @@ namespace RogueStarIdle.PlugIns.InMemory
             TardihopBait = 17,
             ClothBandage = 18,
             Bonemeal = 19,
-            Rope = 20
+            Rope = 20,
+            ClothShoes = 21,
+            ClothHat = 22,
+            ClothShirt = 23,
+            ClothPants = 24
         }
+
 
         public async Task<IEnumerable<Item>> GetItemsByNameAsync(string name)
         {
