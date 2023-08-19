@@ -14,7 +14,14 @@ namespace RogueStarIdle.CoreBusiness
             localPath.TrimStart('/');
             localPath = Regex.Replace(localPath, "/", "\\");
             string path = String.Concat(basePath, localPath);
-            Image gif = System.Drawing.Image.FromFile(path);
+            Image gif;
+            try
+            {
+            gif = System.Drawing.Image.FromFile(path);
+            }
+            catch {
+                return 100;
+            }
             int duration = 0;
             FrameDimension dimension = new FrameDimension(gif.FrameDimensionsList[0]);
             int frameCount = gif.GetFrameCount(dimension);

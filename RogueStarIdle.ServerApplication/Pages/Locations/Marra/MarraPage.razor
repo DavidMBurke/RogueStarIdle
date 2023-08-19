@@ -133,7 +133,8 @@
         };
         azuraliPlainsMobs = new List<MobSpawn>
         {
-            new MobSpawn (await GetMobByIdUseCase.ExecuteAsync((int)MobsEnum.Tardihop), 10)
+            new MobSpawn (await GetMobByIdUseCase.ExecuteAsync((int)MobsEnum.Tardihop), 10),
+            new MobSpawn (await GetMobByIdUseCase.ExecuteAsync((int)MobsEnum.Carapig), 10)
         };
     }
 

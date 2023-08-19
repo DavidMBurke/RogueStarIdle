@@ -3,6 +3,7 @@ using RogueStarIdle.CoreBusiness;
 using RogueStarIdle.ServerApplication.Components;
 using RogueStarIdle.ServerApplication.Shared.State;
 using System.Reflection.Metadata.Ecma335;
+using static RogueStarIdle.PlugIns.InMemory.MobsRepository;
 
 namespace RogueStarIdle.ServerApplication.Shared.State
 {
@@ -278,9 +279,11 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         {
             Random rand = new Random();
             // TODO randomize selection
-            SpawnedMobs.Add(PossibleMobs[0].Clone());
-            SpawnedMobs.Add(PossibleMobs[0].Clone());
-            SpawnedMobs.Add(PossibleMobs[0].Clone());
+            SpawnedMobs.Add(PossibleMobs[(int)MobsEnum.Carapig].Clone());
+            SpawnedMobs.Add(PossibleMobs[(int)MobsEnum.Tardihop].Clone());
+            SpawnedMobs.Add(PossibleMobs[(int)MobsEnum.Tardihop].Clone());
+            SpawnedMobs.Add(PossibleMobs[(int)MobsEnum.Tardihop].Clone());
+            SpawnedMobs.Add(PossibleMobs[(int)MobsEnum.Tardihop].Clone());
             foreach (MobSpawn mobSpawn in SpawnedMobs)
             {
                 mobSpawn.AttackCounter = rand.Next(mobSpawn.Mob.Stats.AttackSpeed + 1);

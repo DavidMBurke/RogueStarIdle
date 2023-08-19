@@ -52,8 +52,8 @@ namespace RogueStarIdle.PlugIns.InMemory
                     Images = new MobImageUrls
                     {
                         Stationary = "/Images/Carapig.png",
-                        Attacking = "/Images/Carapig_Attack.png",
-                        Dead = "/Images/Carapig_Dead.png"
+                        Attacking = "/Images/Carapig_Attack.gif",
+                        Dead = "/Images/Carapig.png"
                     },
                     Loot = new List<ItemDrop>()
                     {
@@ -67,7 +67,8 @@ namespace RogueStarIdle.PlugIns.InMemory
 
         public enum MobsEnum
         {
-            Tardihop = 0
+            Tardihop = 0,
+            Carapig = 1
         }
         public async Task<Mob> GetMobByIdAsync(int id)
         {
