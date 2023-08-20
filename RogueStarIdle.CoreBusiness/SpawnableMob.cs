@@ -14,6 +14,8 @@
             AttackCounter = mob.Stats.AttackSpeed;
         }
 
+        public MobSpawn() { }
+
         public MobSpawn Clone()
         {
             return new MobSpawn(Mob.Clone(), SpawnChance, new List<ItemDrop>(Loot));

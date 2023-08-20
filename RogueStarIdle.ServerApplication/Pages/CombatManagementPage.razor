@@ -1,0 +1,96 @@
+﻿@page "/combatManagement"
+@using RogueStarIdle.ServerApplication.Shared.State;
+@using static RogueStarIdle.CoreBusiness.CombatRule;
+@inject CharacterState characterState;
+
+<div class="page-content-container">
+    <div class="column" style="width: 100%; align-content: flex-start">
+        <EditForm Model=@newRule>
+            <InputSelect @bind-Value="newRule.Action">
+                @foreach (var action in Enum.GetValues(typeof(ActionEnum)))
+                {
+                    <option value="@((int)action)">@action.ToString()</option>
+                }
+            </InputSelect>
+            @if (newRule.Action != (int)ActionEnum.ThrowExplosive && newRule.Action != (int)ActionEnum.Run)
+            {
+                <InputSelect @bind-Value="newRule.Target">
+                    @foreach (var action in Enum.GetValues(typeof(TargetEnum)))
+                    {
+                        <option value="@((int)action)">@action.ToString()</option>
+                    }
+                </InputSelect>
+                <p> with </p>
+                <InputSelect @bind-Value="newRule.TargetQualifier">
+                    @foreach (var action in Enum.GetValues(typeof(TargetQualifierEnum)))
+                    {
+                        <option value="@((int)action)">@action.ToString()</option>
+                    }
+                </InputSelect>
+                @if (newRule.TargetQualifier != (int)TargetQualifierEnum.Any)
+                {
+                    <InputSelect @bind-Value="newRule.TargetQualifierStat">
+                        @foreach (var action in Enum.GetValues(typeof(StatDropdownEnum)))
+                        {
+                            <option value="@((int)action)">@action.ToString()</option>
+                        }
+                    </InputSelect>            
+                }
+            }
+            <button @onclick="()=>newRule.IsConditional = !newRule.IsConditional" style=@(newRule.IsConditional ? "" : "opacity: 0.5")>if</button>
+            @if (newRule.IsConditional)
+            {
+                <InputSelect @bind-Value="newRule.ConditionalTarget">
+                    @foreach (var action in Enum.GetValues(typeof(TargetEnum)))
+                    {
+                        <option value="@((int)action)">@action.ToString()</option>
+                    }
+                </InputSelect>                
+                <InputSelect @bind-Value="newRule.ConditionalTargetRule">
+                    @foreach (var action in Enum.GetValues(typeof(ConditionalTargetRuleEnum)))
+                    {
+                        <option value="@((int)action)">@action.ToString().TrimStart('_')</option>
+                    }
+                </InputSelect>
+                @if (newRule.ConditionalTargetRule != (int)ConditionalTargetRuleEnum._)
+                {
+                    <InputSelect @bind-Value="newRule.ConditionalTargetComparison">
+                        @foreach (var action in Enum.GetValues(typeof(ComparisonEnum)))
+                        {
+                            <option value="@((int)action)">@action.ToString()</option>
+                        }
+                    </InputSelect>
+                    @if (newRule.ConditionalTargetRule == (int)ConditionalTargetRuleEnum.Stat)
+                    {
+                        <InputSelect @bind-Value="newRule.ConditionalTargetStat">
+                            @foreach (var action in Enum.GetValues(typeof(StatDropdownEnum)))
+                            {
+                                <option value="@((int)action)">@action.ToString()</option>
+                            }
+                        </InputSelect>
+                    }
+                    @if (newRule.ConditionalTargetRule == (int)ConditionalTargetRuleEnum.AliveCount)
+                    {
+                        <InputSelect @bind-Value="newRule.ConditionalTargetStat">
+                            @foreach (var action in Enum.GetValues(typeof(ConditionalTargetCountEnum)))
+                            {
+                                <option value="@((int)action)">@action.ToString().TrimStart('_')</option>
+                            }
+                        </InputSelect>
+                    }
+                }
+                
+            }
+
+        </EditForm>
+        <button @onclick="() => characterState.MainCharacter.CombatRules[0] = newRule">Set Rule</button>
+    </div>
+</div>
+
+@code {
+    CombatRule newRule = new CombatRule();
+
+    int conditionalTargetRule = 0;
+
+
+}

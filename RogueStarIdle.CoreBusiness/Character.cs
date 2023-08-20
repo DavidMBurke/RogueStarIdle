@@ -1,13 +1,19 @@
-﻿namespace RogueStarIdle.CoreBusiness
+﻿using static RogueStarIdle.CoreBusiness.CombatRule;
+
+namespace RogueStarIdle.CoreBusiness
 {
     public class Character
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public EquipmentSet Equipment { get; set; } = new EquipmentSet();
-        public int AttackCounter { get; set; }
+        public int ActionCounter { get; set; }
         public int CurrentHealth { get; set; } = 0;
-        public bool IsAlive { get; set; } = true;
+        public List<CombatRule> CombatRules { get; set; } = new List<CombatRule>()
+        {
+            new CombatRule()
+        };
+        public bool IsAlive { get; set; } = true;   
         public float PassiveHealingTracker { get; set; } = 0;
         public bool TriggerAttackAnimation { get; set; } = false;
         public Skill MeleeSkill { get; set; } = new Skill("Melee", 1, 0);
@@ -32,14 +38,56 @@
         public Skill ScrappingSkill { get; set; } = new Skill("Scrapping", 1, 0);
         public CharacterImageUrls Images { get; set; } = new CharacterImageUrls();
 
-        public void Attack(MobSpawn defender)
+        public void TakeAction(Character main, List<Character> allies, List<MobSpawn> enemies)
         {
-            TriggerAttackAnimation = true;
-            if (defender == null)
+            bool actionTaken = false;
+            foreach (CombatRule rule in CombatRules)
             {
-                return;
+                switch(rule.Action)
+                {
+                    case (int)ActionEnum.Attack: actionTaken = Attack(enemies, rule); break;
+                }
+                if (actionTaken) { break; }
             }
+        }
+
+        public bool Attack(List<MobSpawn> defenders, CombatRule rule)
+        {
+            if (defenders == null)
+            {
+                return false;
+            }
+            List<MobSpawn> aliveDefenders = defenders.Where(d => d.Mob.IsAlive).ToList();
+            if (aliveDefenders.Count == 0)
+            {
+                return false;
+            }
+            TriggerAttackAnimation = true;
+
             Random rand = new Random();
+            MobSpawn defender = new MobSpawn();
+
+            switch (rule.TargetQualifier)
+            {
+                case (int)TargetQualifierEnum.Any:
+                    {
+                        defender = aliveDefenders.First();
+                        break;
+                    }
+                case (int)TargetQualifierEnum.Lowest:
+                    {
+                        defender = getDefenderByStat(aliveDefenders, rule.TargetQualifierStat, "Lowest");
+                        break;
+                    }
+                case (int)TargetQualifierEnum.Highest:
+                    {
+                        defender = getDefenderByStat(aliveDefenders, rule.TargetQualifierStat);
+                        break;
+                    }
+            }
+
+            // TODO: Add Conditionals
+
             int hitRoll = rand.Next(20);
             if (Equipment.Stats.IsUsingMelee)
             {
@@ -82,8 +130,62 @@
             {
                 PsychicSkill.addXp(xp);
             }
+            return true;
         }
 
+        private MobSpawn getDefenderByStat(List<MobSpawn> defenders, int targetQualifierStat, string sortBy = "")
+        {
+            if (sortBy == "Lowest")
+            {
+                switch(targetQualifierStat)
+                {
+                    case (int)StatDropdownEnum.CurrentHealth: 
+                        return defenders.OrderBy(d => d.Mob.CurrentHealth).First();
+                    case (int)StatDropdownEnum.MaxHealth: 
+                        return defenders.OrderBy(d => d.Mob.Stats.MaxHealth).First();
+                    case (int)StatDropdownEnum.MeleeToHit: 
+                        return defenders.OrderBy(d => d.Mob.Stats.MeleeToHit).First();
+                    case (int)StatDropdownEnum.MeleeDamageMax: 
+                        return defenders.OrderBy(d => new[] { d.Mob.Stats.CrushingDamageMax, d.Mob.Stats.SlashingDamageMax, d.Mob.Stats.PiercingDamageMax }.Max()).First();
+                    case (int)StatDropdownEnum.RangedToHit: 
+                        return defenders.OrderBy(d => d.Mob.Stats.RangedToHit).First();
+                    case (int)StatDropdownEnum.RangedDamageMax:
+                        return defenders.OrderBy(d => new[] { d.Mob.Stats.CrushingDamageMax, d.Mob.Stats.SlashingDamageMax, d.Mob.Stats.PiercingDamageMax }.Max()).First();
+                    case (int)StatDropdownEnum.PsychicToHit: 
+                        return defenders.OrderBy(d => d.Mob.Stats.PsychicToHit).First();
+                    case (int)StatDropdownEnum.ExplosiveToHit: 
+                        return defenders.OrderBy(d => d.Mob.Stats.ExplosiveToHit).First();
+                    default:
+                        return defenders.OrderBy(d => d.Mob.CurrentHealth).First();
+                }
+            }
+            switch (targetQualifierStat)
+            {
+                case (int)StatDropdownEnum.CurrentHealth:
+                    return defenders.OrderByDescending(d => d.Mob.CurrentHealth).First();
+                case (int)StatDropdownEnum.MaxHealth:
+                    return defenders.OrderByDescending(d => d.Mob.Stats.MaxHealth).First();
+                case (int)StatDropdownEnum.MeleeToHit:
+                    return defenders.OrderByDescending(d => d.Mob.Stats.MeleeToHit).First();
+                case (int)StatDropdownEnum.MeleeDamageMax:
+                    return defenders.OrderByDescending(d => new[] { d.Mob.Stats.CrushingDamageMax, d.Mob.Stats.SlashingDamageMax, d.Mob.Stats.PiercingDamageMax }.Max()).First();
+                case (int)StatDropdownEnum.RangedToHit:
+                    return defenders.OrderByDescending(d => d.Mob.Stats.RangedToHit).First();
+                case (int)StatDropdownEnum.RangedDamageMax:
+                    return defenders.OrderByDescending(d => new[] { d.Mob.Stats.CrushingDamageMax, d.Mob.Stats.SlashingDamageMax, d.Mob.Stats.PiercingDamageMax }.Max()).First();
+                case (int)StatDropdownEnum.PsychicToHit:
+                    return defenders.OrderByDescending(d => d.Mob.Stats.PsychicToHit).First();
+                case (int)StatDropdownEnum.ExplosiveToHit:
+                    return defenders.OrderByDescending(d => d.Mob.Stats.ExplosiveToHit).First();
+                default:
+                    return defenders.OrderByDescending(d => d.Mob.CurrentHealth).First();
+            }
+        }
+
+        int GetMax (List<int> ints)
+        {
+            return ints.OrderBy(i => i).Max();
+        }
         public int CalculateTotalDamage(Stats attacker, Stats defender)
         {
             Random rand = new Random();

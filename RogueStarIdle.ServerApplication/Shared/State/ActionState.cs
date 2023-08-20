@@ -121,12 +121,12 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 }
                 if (characterState.MainCharacter.IsAlive)
                 {
-                    characterState.MainCharacter.AttackCounter -= 1;
-                    if (characterState.MainCharacter.AttackCounter <= 0)
+                    characterState.MainCharacter.ActionCounter -= 1;
+                    if (characterState.MainCharacter.ActionCounter <= 0)
                     {
                         characterState.MainCharacter.Equipment.CalculateStats(characterState.MainCharacter);
-                        characterState.MainCharacter.Attack(SpawnedMobs.FirstOrDefault(s => s.Mob.IsAlive));
-                        characterState.MainCharacter.AttackCounter = characterState.MainCharacter.Equipment.Stats.AttackSpeed;
+                        characterState.MainCharacter.TakeAction(characterState.MainCharacter, characterState.Characters, SpawnedMobs);
+                        characterState.MainCharacter.ActionCounter = characterState.MainCharacter.Equipment.Stats.AttackSpeed;
                     }
                 }
                 foreach (MobSpawn mobSpawn in SpawnedMobs.ToList())
@@ -284,6 +284,10 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             SpawnedMobs.Add(PossibleMobs[(int)MobsEnum.Tardihop].Clone());
             SpawnedMobs.Add(PossibleMobs[(int)MobsEnum.Tardihop].Clone());
             SpawnedMobs.Add(PossibleMobs[(int)MobsEnum.Tardihop].Clone());
+            SpawnedMobs[3].Mob.CurrentHealth = 20;
+            SpawnedMobs[4].Mob.CurrentHealth = 400; 
+            SpawnedMobs[3].Mob.Stats.MaxHealth = 20;
+            SpawnedMobs[4].Mob.Stats.MaxHealth = 400;
             foreach (MobSpawn mobSpawn in SpawnedMobs)
             {
                 mobSpawn.AttackCounter = rand.Next(mobSpawn.Mob.Stats.AttackSpeed + 1);
