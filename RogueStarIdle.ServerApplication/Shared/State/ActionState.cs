@@ -36,6 +36,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 return;
             await OnChange.Invoke();
         }
+
         public ActionState(InventoryState inventoryState, CharacterState characterState)
         {
             this.inventoryState = inventoryState;
@@ -47,11 +48,13 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             IsExploring = false;
             IsInCombat = false;
         }
+
         public void LeaveCombat()
         {
             SpawnedMobs?.Clear();
             IsInCombat = false;
         }
+
         public async void ExploreTicks(int ticksElapsed)
         {
             if (!IsExploring || IsInCombat)
@@ -82,6 +85,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             ExploreTicks(ticksElapsed);
             CraftTicks(ticksElapsed);
         }
+
         public async void CombatTicks(int ticksElapsed)
         {
             healTime = 500; // 10 sec to full health;
@@ -296,6 +300,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             }
             MobsAreSpawned = true;
         }
+
         public void Loot(MobSpawn mobSpawn)
         {
 
