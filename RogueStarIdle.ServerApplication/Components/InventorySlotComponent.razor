@@ -1,7 +1,7 @@
 ﻿@using RogueStarIdle.ServerApplication.Shared.State;
 @inject InventoryState inventoryState
 
-<div class=@(slot.Locked? "inventory-slot locked": "inventory-slot") @onclick="() => unEquip(slot)">@displayEquipment(slot.Name, slot.Item)</div>
+<div class=@(slot.Locked? "inventory-slot locked": "inventory-slot") @onclick="() => unEquip(slot)">@displayEquipment(slot)</div>
 
 @code {
     [Parameter]
@@ -10,17 +10,23 @@
     public double MouseX;
     public double MouseY;
 
-    private RenderFragment displayEquipment(string slotName, Item item)
+    private RenderFragment displayEquipment(EquipmentSlot slot)
     {
-        if (item == null)
+
+        if (slot.Item == null)
         {
-            return @<text>@slotName</text>;
+            return @<text>@slot.Name</text>;
+        }
+        if (slot.Item.Quantity == 0)
+        {
+            unEquip(slot);
+            return @<text>@slot.Name</text>;
         }
         RenderFragment imageFragment = 
             @<div>
-                <img src=@item.Thumbnail style="width:100%" @onmouseover="(e) => renderTooltip(e, item)" @onmouseout=clearTooltip/>
+                <img src=@slot.Item.Thumbnail style="width:100%" @onmouseover="(e) => renderTooltip(e, slot.Item)" @onmouseout=clearTooltip/>
                 @if (showTooltip) {
-                    <StatPopupComponent stats=@getTooltipStats(item)/>
+                    <StatPopupComponent stats=@getTooltipStats(slot.Item)/>
                 }
 
         </div>

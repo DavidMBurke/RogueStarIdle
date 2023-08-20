@@ -1,6 +1,7 @@
 ﻿@page "/devTools"
 @using RogueStarIdle.ServerApplication.Shared.State;
 @inject TimeState timeState;
+@inject CharacterState characterState;
 
 <div class="page-content-container">
     <div class="column" style="width: 95%; align-content: center; ">
@@ -14,6 +15,7 @@
             <button @onclick="() => {timeState.AddTicks(timeState.TicksPerSecond * 86400);}">Advance 1 day</button>
 
         </text>
+        <button @onclick="()=>characterState.MainCharacter.CurrentHealth = characterState.MainCharacter.Equipment.Stats.MaxHealth">Fill Health</button>
         <ItemSelectionPopupComponent />
         <SkillPopupComponent/>
     </div>

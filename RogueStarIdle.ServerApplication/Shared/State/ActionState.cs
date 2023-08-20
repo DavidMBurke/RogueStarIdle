@@ -94,7 +94,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             {
                 healTime = 6000; // 2 min to full health
             }
-            //characterState?.MainCharacter.PassiveHeal(healTime);
+            characterState?.MainCharacter.PassiveHeal(healTime);
 
             if (!IsInCombat)
             {
@@ -556,12 +556,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             {
                 characterToHeal.CurrentHealth = characterToHeal.Equipment.Stats.MaxHealth;
             }
-            actionCharacter.Equipment.Aid.Item.Quantity--;
-            inventoryState.RemoveFromInventory(inventoryState.Inventory, actionCharacter.Equipment.Aid.Item, 1);
-            if (actionCharacter.Equipment.Aid.Item.Quantity <= 0)
-            {
-                actionCharacter.Equipment.Aid.Item = null;
-            }
+            inventoryState.ConsumeEquipped(inventoryState.Inventory, actionCharacter.Equipment.Aid.Item, 1);
             return true;
         }
 

@@ -15,5 +15,6 @@
             QuantityRangeMin = qtyRangeMin;
             QuantityRangeMax = qtyRangeMax;
         }
+        public ItemDrop() { }
     }
 }

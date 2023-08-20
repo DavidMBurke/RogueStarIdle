@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.Features;
 using RogueStarIdle.CoreBusiness;
-
+using RogueStarIdle.ServerApplication.Components;
 
 namespace RogueStarIdle.ServerApplication.Shared.State
 {
@@ -76,6 +76,20 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 inventory.Remove(itemInInventory);
             }
             await NotifyStateChanged();
+        }
+
+        public async void ConsumeEquipped(List<Item> inventory, Item item, int qtyConsumed)
+        {
+            if (qtyConsumed > item.Quantity)
+            {
+                qtyConsumed = item.Quantity;
+            }
+            item.Quantity -= qtyConsumed;
+            RemoveFromInventory(Inventory, item, qtyConsumed);
+            if (item.Quantity <= 0)
+            {
+                item = null;
+            }
         }
 
         public async Task Transfer(List<Item> storageFrom, List<Item> storageTo)
