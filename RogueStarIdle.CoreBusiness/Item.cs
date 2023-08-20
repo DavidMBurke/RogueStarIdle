@@ -73,6 +73,8 @@
         public ImageUrls AuxImages1 { get; set; } = new ImageUrls();
         public ImageUrls AuxImages2 { get; set; } = new ImageUrls();
         // ************CONSUMABLES**************
+        public bool Consumable { get; set; } = false;
+        public int HealthRestored { get; set; } = 0;
 
         public Item CreateCopy()
         {

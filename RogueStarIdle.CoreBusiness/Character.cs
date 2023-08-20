@@ -46,19 +46,21 @@ namespace RogueStarIdle.CoreBusiness
                 switch(rule.Action)
                 {
                     case (int)ActionEnum.Attack: actionTaken = Attack(enemies, rule); break;
+                    case (int)ActionEnum.Heal: actionTaken = Heal(main, allies, rule); break;
                 }
-                if (actionTaken) { break; }
+                if (actionTaken) 
+                    { break; }
             }
         }
 
         public bool Attack(List<MobSpawn> defenders, CombatRule rule)
         {
-            if (defenders == null)
+            if (defenders == null && rule.Target == (int)TargetEnum.Enemy)
             {
                 return false;
             }
             List<MobSpawn> aliveDefenders = defenders.Where(d => d.Mob.IsAlive).ToList();
-            if (aliveDefenders.Count == 0)
+            if (aliveDefenders.Count == 0 && rule.Target == (int)TargetEnum.Enemy)
             {
                 return false;
             }
@@ -76,12 +78,12 @@ namespace RogueStarIdle.CoreBusiness
                     }
                 case (int)TargetQualifierEnum.Lowest:
                     {
-                        defender = getDefenderByStat(aliveDefenders, rule.TargetQualifierStat, "Lowest");
+                        defender = getDefenderByStat(aliveDefenders, rule.TargetQualifierStat, rule.TargetQualifier);
                         break;
                     }
                 case (int)TargetQualifierEnum.Highest:
                     {
-                        defender = getDefenderByStat(aliveDefenders, rule.TargetQualifierStat);
+                        defender = getDefenderByStat(aliveDefenders, rule.TargetQualifierStat, rule.TargetQualifier);
                         break;
                     }
             }
@@ -133,9 +135,37 @@ namespace RogueStarIdle.CoreBusiness
             return true;
         }
 
-        private MobSpawn getDefenderByStat(List<MobSpawn> defenders, int targetQualifierStat, string sortBy = "")
+        public bool Heal(Character main, List<Character> allies, CombatRule rule)
         {
-            if (sortBy == "Lowest")
+            Character characterToHeal = main;
+            if (rule.Target == (int)TargetEnum.Ally) {
+                if (rule.TargetQualifier == (int)TargetQualifierEnum.Any)
+                {
+                    characterToHeal = allies.FirstOrDefault(c => c.CurrentHealth < c.Equipment.Stats.MaxHealth);
+                    if (characterToHeal == null) { return false; }
+                }
+                characterToHeal = getAllyByStat(allies, rule.TargetQualifierStat, rule.TargetQualifier);
+            }
+            if (Equipment.Aid.Item == null)
+            { return false; }
+            if (!Equipment.Aid.Item.Consumable || 
+                Equipment.Aid.Item.HealthRestored <= 0 || 
+                Equipment.Aid.Item.Quantity <= 0)
+            {
+                return false;
+            }
+            characterToHeal.CurrentHealth += Equipment.Aid.Item.HealthRestored;
+            if (characterToHeal.CurrentHealth > characterToHeal.Equipment.Stats.MaxHealth)
+            {
+                characterToHeal.CurrentHealth = characterToHeal.Equipment.Stats.MaxHealth;
+            }
+            Equipment.Aid.Item.Quantity--;
+            return true;
+        }
+
+        private MobSpawn getDefenderByStat(List<MobSpawn> defenders, int targetQualifierStat, int targetQualifier)
+        {
+            if (targetQualifier == (int)TargetQualifierEnum.Lowest)
             {
                 switch(targetQualifierStat)
                 {
@@ -182,10 +212,56 @@ namespace RogueStarIdle.CoreBusiness
             }
         }
 
-        int GetMax (List<int> ints)
+        private Character getAllyByStat(List<Character> allies, int targetQualifierStat, int targetQualifier)
         {
-            return ints.OrderBy(i => i).Max();
+            if (targetQualifier == (int)TargetQualifierEnum.Lowest)
+            {
+                switch (targetQualifierStat)
+                {
+                    case (int)StatDropdownEnum.CurrentHealth:
+                        return allies.OrderBy(d => d.CurrentHealth).First();
+                    case (int)StatDropdownEnum.MaxHealth:
+                        return allies.OrderBy(d => d.Equipment.Stats.MaxHealth).First();
+                    case (int)StatDropdownEnum.MeleeToHit:
+                        return allies.OrderBy(d => d.Equipment.Stats.MeleeToHit).First();
+                    case (int)StatDropdownEnum.MeleeDamageMax:
+                        return allies.OrderBy(d => new[] { d.Equipment.Stats.CrushingDamageMax, d.Equipment.Stats.SlashingDamageMax, d.Equipment.Stats.PiercingDamageMax }.Max()).First();
+                    case (int)StatDropdownEnum.RangedToHit:
+                        return allies.OrderBy(d => d.Equipment.Stats.RangedToHit).First();
+                    case (int)StatDropdownEnum.RangedDamageMax:
+                        return allies.OrderBy(d => new[] { d.Equipment.Stats.CrushingDamageMax, d.Equipment.Stats.SlashingDamageMax, d.Equipment.Stats.PiercingDamageMax }.Max()).First();
+                    case (int)StatDropdownEnum.PsychicToHit:
+                        return allies.OrderBy(d => d.Equipment.Stats.PsychicToHit).First();
+                    case (int)StatDropdownEnum.ExplosiveToHit:
+                        return allies.OrderBy(d => d.Equipment.Stats.ExplosiveToHit).First();
+                    default:
+                        return allies.OrderBy(d => d.CurrentHealth).First();
+                }
+            }
+            switch (targetQualifierStat)
+            {
+                case (int)StatDropdownEnum.CurrentHealth:
+                    return allies.OrderByDescending(d => d.CurrentHealth).First();
+                case (int)StatDropdownEnum.MaxHealth:
+                    return allies.OrderByDescending(d => d.Equipment.Stats.MaxHealth).First();
+                case (int)StatDropdownEnum.MeleeToHit:
+                    return allies.OrderByDescending(d => d.Equipment.Stats.MeleeToHit).First();
+                case (int)StatDropdownEnum.MeleeDamageMax:
+                    return allies.OrderByDescending(d => new[] { d.Equipment.Stats.CrushingDamageMax, d.Equipment.Stats.SlashingDamageMax, d.Equipment.Stats.PiercingDamageMax }.Max()).First();
+                case (int)StatDropdownEnum.RangedToHit:
+                    return allies.OrderByDescending(d => d.Equipment.Stats.RangedToHit).First();
+                case (int)StatDropdownEnum.RangedDamageMax:
+                    return allies.OrderByDescending(d => new[] { d.Equipment.Stats.CrushingDamageMax, d.Equipment.Stats.SlashingDamageMax, d.Equipment.Stats.PiercingDamageMax }.Max()).First();
+                case (int)StatDropdownEnum.PsychicToHit:
+                    return allies.OrderByDescending(d => d.Equipment.Stats.PsychicToHit).First();
+                case (int)StatDropdownEnum.ExplosiveToHit:
+                    return allies.OrderByDescending(d => d.Equipment.Stats.ExplosiveToHit).First();
+                default:
+                    return allies.OrderByDescending(d => d.CurrentHealth).First();
+            }
         }
+
+
         public int CalculateTotalDamage(Stats attacker, Stats defender)
         {
             Random rand = new Random();

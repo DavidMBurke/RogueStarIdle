@@ -93,7 +93,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             {
                 healTime = 6000; // 2 min to full health
             }
-            characterState?.MainCharacter.PassiveHeal(healTime);
+            //characterState?.MainCharacter.PassiveHeal(healTime);
 
             if (!IsInCombat)
             {

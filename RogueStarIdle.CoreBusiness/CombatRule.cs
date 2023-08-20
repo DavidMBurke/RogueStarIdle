@@ -13,8 +13,8 @@ namespace RogueStarIdle.CoreBusiness
         public int ConditionalTargetRule { get; set; } = (int)ConditionalTargetRuleEnum._;
         public int ConditionalTargetComparison { get; set; } = (int)ComparisonEnum.LessThan;
         public int ConditionalTargetStat { get; set; } = (int)TargetQualifierEnum.Any;
-        public int PercentEnum { get; set; } = 0;
-        public int ConditionalTargetCount = 0;
+        public int Percentage { get; set; } = (int)PercentageEnum._0;
+        public int ConditionalTargetCount { get; set; } = (int)ConditionalTargetCountEnum._1;
 
         public enum ActionEnum
         {
@@ -69,6 +69,21 @@ namespace RogueStarIdle.CoreBusiness
             _3 = 3,
             _4 = 4,
             _5 = 5
+        }
+
+        public enum PercentageEnum
+        {
+            _0 = 0,
+            _10 = 10,
+            _20 = 20,
+            _30 = 30,
+            _40 = 40,
+            _50 = 50,
+            _60 = 60,
+            _70 = 70,
+            _80 = 80,
+            _90 = 90,
+            _100 = 100
         }
     }
 }

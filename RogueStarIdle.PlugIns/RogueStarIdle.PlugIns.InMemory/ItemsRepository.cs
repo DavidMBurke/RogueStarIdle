@@ -273,9 +273,12 @@ namespace RogueStarIdle.PlugIns.InMemory
                 new Item {
                     Id = 18,
                     Name = "Cloth Bandage",
+                    Consumable = true,
+                    HealthRestored = 5,
                     StacksInEquipmentSlot = true,
                     BuyPrice = 1,
                     SellPrice = 1,
+                    IsEquippable = true,
                     EquipmentSlots = new List<int>{(int)EquipmentSlotEnum.Aid},
                     Tags = new List<string>{"Aid"},
                     Quantity = 1,

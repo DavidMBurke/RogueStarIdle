@@ -22,7 +22,7 @@ namespace RogueStarIdle.CoreBusiness
         public EquipmentSlot RightWeaponMod2 { get; set; } = new EquipmentSlot((int)EquipmentSlotEnum.RightWeaponMod2, null, "Right Weapon Mod 2", locked: true);
         public EquipmentSlot RightWeaponMod3 { get; set; } = new EquipmentSlot((int)EquipmentSlotEnum.RightWeaponMod3, null, "Right Weapon Mod 3", locked: true);
         public EquipmentSlot Stim { get; set; } = new EquipmentSlot((int)EquipmentSlotEnum.Stim, null, "Stim");
-        public EquipmentSlot HealthPack { get; set; } = new EquipmentSlot((int)EquipmentSlotEnum.Aid, null, "Aid");
+        public EquipmentSlot Aid { get; set; } = new EquipmentSlot((int)EquipmentSlotEnum.Aid, null, "Aid");
         public EquipmentSlot Explosive { get; set; } = new EquipmentSlot((int)EquipmentSlotEnum.Explosive, null, "Explosive");
         public EquipmentSlot Droid { get; set; } = new EquipmentSlot((int)EquipmentSlotEnum.Droid, null, "Droid", locked: true);
         public EquipmentSlot DroidMod { get; set; } = new EquipmentSlot((int)EquipmentSlotEnum.DroidMod, null, "Droid Mod", locked: true);
