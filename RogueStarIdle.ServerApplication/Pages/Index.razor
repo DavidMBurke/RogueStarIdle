@@ -1,4 +1,6 @@
-﻿@page "/"
+﻿@using RogueStarIdle.ServerApplication.Shared.State;
+@inject CharacterState characterState
+@page "/"
 @using RogueStarIdle.CoreBusiness;
 
 <PageTitle>Index Page</PageTitle>
@@ -6,5 +8,13 @@
 
 
 @code {
+    protected override void OnInitialized()
+    {
+        characterState.MainCharacter.Equipment.CalculateStats(characterState.MainCharacter);
+        characterState.Characters.ForEach(c => c.Equipment.CalculateStats(c));
+        characterState.MainCharacter.CurrentHealth = characterState.MainCharacter.Equipment.Stats.MaxHealth;
+        characterState.Characters.ForEach(c => c.CurrentHealth = c.Equipment.Stats.MaxHealth);
 
+        base.OnInitialized();
+    }
 }

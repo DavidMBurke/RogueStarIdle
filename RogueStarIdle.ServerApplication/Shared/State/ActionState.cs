@@ -95,13 +95,14 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 healTime = 6000; // 2 min to full health
             }
             characterState?.MainCharacter.PassiveHeal(healTime);
+            characterState?.Characters.ForEach((c) => c.PassiveHeal(healTime));
 
             if (!IsInCombat)
             {
                 return;
             }
 
-            if (characterState.MainCharacter.IsAlive == false && !characterState.Characters.Any(c => c.IsAlive == true))
+            if (characterState.MainCharacter.IsAlive == false && characterState.Characters.All(c => c.IsAlive == false))
             {
                 return;
             }
@@ -134,12 +135,31 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                         characterState.MainCharacter.ActionCounter = characterState.MainCharacter.Equipment.Stats.AttackSpeed;
                     }
                 }
+                foreach (Character character in characterState.Characters)
+                {
+                    if (character.IsAlive)
+                    {
+                        character.ActionCounter -= 1;
+                        if (character.ActionCounter <= 0)
+                        {
+                            character.Equipment.CalculateStats(character);
+                            TakeAction(character, characterState.Characters, SpawnedMobs);
+                            character.ActionCounter = character.Equipment.Stats.AttackSpeed;
+                        }
+                    }
+                }
+
                 foreach (MobSpawn mobSpawn in SpawnedMobs.ToList())
                 {
                     mobSpawn.AttackCounter -= 1;
                     if (mobSpawn.AttackCounter <= 0)
                     {
-                        mobSpawn.Mob.Attack(characterState.MainCharacter);
+                        if (characterState.MainCharacter.IsAlive)
+                        {
+                            mobSpawn.Mob.Attack(characterState.MainCharacter);
+                        } else if (characterState.Characters.Any(c => c.IsAlive)) {
+                            mobSpawn.Mob.Attack(characterState.Characters.First(c => c.IsAlive));
+                        }
                         mobSpawn.AttackCounter = mobSpawn.Mob.Stats.AttackSpeed;
                     }
                     if (mobSpawn.Mob.CurrentHealth <= 0)
@@ -150,13 +170,20 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     {
                         characterState.MainCharacter.Die();
                     }
+                    foreach (Character character in characterState.Characters)
+                    {
+                        if (character.CurrentHealth <= 0)
+                        {
+                            character.Die();
+                        }
+                    }
                 }
                 if (SpawnedMobs.Count == 0)
                 {
                     MobsAreSpawned = false;
                 }
 
-                if (characterState.MainCharacter.IsAlive == false && (characterState.Characters?.All(c => c.IsAlive == false) ?? false))
+                if (characterState.MainCharacter.IsAlive == false && characterState.Characters.All(c => c.IsAlive == false))
                 {
                     LeaveCombat();
                     LeaveExploring();
@@ -321,6 +348,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         public void EnterCombat(List<MobSpawn> mobs, string location, List<Item> locationStorage)
         {
             characterState.MainCharacter.Equipment.CalculateStats(characterState.MainCharacter);
+            characterState.Characters.ForEach(c => c.Equipment.CalculateStats(c));
             this.location = location;
             IsInCombat = true;
             IsCrafting = false;
@@ -510,6 +538,9 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             {
                 int damage = CalculateTotalDamage(s, defender.Mob.Stats);
                 defender.Mob.CurrentHealth -= damage;
+                if (defender.Mob.CurrentHealth < 0) { 
+                    defender.Mob.CurrentHealth = 0; 
+                }
                 xp = 2;
             }
             if (s.IsUsingMelee)

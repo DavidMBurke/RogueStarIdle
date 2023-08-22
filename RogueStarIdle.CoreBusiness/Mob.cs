@@ -38,6 +38,9 @@
             if (hitRoll > blockRoll)
             {
                 defender.CurrentHealth -= damage;
+                if (defender.CurrentHealth < 0) { 
+                    defender.CurrentHealth = 0;
+                }
                 defender.VitalitySkill.addXp(1);
             }
             else
