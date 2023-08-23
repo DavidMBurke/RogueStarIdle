@@ -9,17 +9,17 @@
         <div class="combat-screen-half">
             <div class="column">
                 <div class="combat-row">
-                    <CombatCharacterComponent character=@(GetCharacterOrNull(characterState.Characters, 1)) size="50" />
-                    <CombatCharacterComponent character=@(GetCharacterOrNull(characterState.Characters, 0)) size="50" />
+                    <CombatCharacterComponent character=@(GetCharacterOrNull(characterState.Party, 2)) size="50" />
+                    <CombatCharacterComponent character=@(GetCharacterOrNull(characterState.Party, 1)) size="50" />
                 </div>
                 <div class="combat-row">
                     <div class="combat-row-spacer" />
-                    <CombatCharacterComponent character=@(characterState.MainCharacter ?? null) size="50" />
+                    <CombatCharacterComponent character=@(GetCharacterOrNull(characterState.Party, 0)) size="50" />
                     <div class="combat-row-spacer" />
                 </div>
                 <div class="combat-row">
-                    <CombatCharacterComponent character=@(GetCharacterOrNull(characterState.Characters, 3)) size="50" />
-                    <CombatCharacterComponent character=@(GetCharacterOrNull(characterState.Characters, 2)) size="50" />
+                    <CombatCharacterComponent character=@(GetCharacterOrNull(characterState.Party, 4)) size="50" />
+                    <CombatCharacterComponent character=@(GetCharacterOrNull(characterState.Party, 3)) size="50" />
                 </div>
             </div>
         </div>

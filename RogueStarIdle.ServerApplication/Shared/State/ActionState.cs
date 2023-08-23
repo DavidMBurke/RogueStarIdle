@@ -94,15 +94,14 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             {
                 healTime = 6000; // 2 min to full health
             }
-            characterState?.MainCharacter.PassiveHeal(healTime);
-            characterState?.Characters.ForEach((c) => c.PassiveHeal(healTime));
+            characterState?.Party.ForEach((c) => c.PassiveHeal(healTime));
 
             if (!IsInCombat)
             {
                 return;
             }
 
-            if (characterState.MainCharacter.IsAlive == false && characterState.Characters.All(c => c.IsAlive == false))
+            if (characterState.Party.All(c => c.IsAlive == false))
             {
                 return;
             }
@@ -125,17 +124,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     MobsAreSpawned = true;
                     SpawnMobs();
                 }
-                if (characterState.MainCharacter.IsAlive)
-                {
-                    characterState.MainCharacter.ActionCounter -= 1;
-                    if (characterState.MainCharacter.ActionCounter <= 0)
-                    {
-                        characterState.MainCharacter.Equipment.CalculateStats(characterState.MainCharacter);
-                        TakeAction(characterState.MainCharacter, characterState.Characters, SpawnedMobs);
-                        characterState.MainCharacter.ActionCounter = characterState.MainCharacter.Equipment.Stats.AttackSpeed;
-                    }
-                }
-                foreach (Character character in characterState.Characters)
+                foreach (Character character in characterState.Party)
                 {
                     if (character.IsAlive)
                     {
@@ -143,7 +132,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                         if (character.ActionCounter <= 0)
                         {
                             character.Equipment.CalculateStats(character);
-                            TakeAction(character, characterState.Characters, SpawnedMobs);
+                            TakeAction(character, characterState.Party, SpawnedMobs);
                             character.ActionCounter = character.Equipment.Stats.AttackSpeed;
                         }
                     }
@@ -154,11 +143,10 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     mobSpawn.AttackCounter -= 1;
                     if (mobSpawn.AttackCounter <= 0)
                     {
-                        if (characterState.MainCharacter.IsAlive)
-                        {
-                            mobSpawn.Mob.Attack(characterState.MainCharacter);
-                        } else if (characterState.Characters.Any(c => c.IsAlive)) {
-                            mobSpawn.Mob.Attack(characterState.Characters.First(c => c.IsAlive));
+                        var aliveCharacters = characterState.Party.Where(c => c.IsAlive).ToList();
+                        Random rand = new Random();
+                        if (aliveCharacters.Any()) {
+                            mobSpawn.Mob.Attack(aliveCharacters[rand.Next(aliveCharacters.Count())]);
                         }
                         mobSpawn.AttackCounter = mobSpawn.Mob.Stats.AttackSpeed;
                     }
@@ -166,11 +154,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     {
                         mobSpawn.Mob.Die();
                     }
-                    if (characterState.MainCharacter.CurrentHealth <= 0)
-                    {
-                        characterState.MainCharacter.Die();
-                    }
-                    foreach (Character character in characterState.Characters)
+                    foreach (Character character in characterState.Party)
                     {
                         if (character.CurrentHealth <= 0)
                         {
@@ -183,12 +167,11 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                     MobsAreSpawned = false;
                 }
 
-                if (characterState.MainCharacter.IsAlive == false && characterState.Characters.All(c => c.IsAlive == false))
+                if (characterState.Party.All(c => c.IsAlive == false))
                 {
                     LeaveCombat();
                     LeaveExploring();
-                    characterState.MainCharacter.Revive();
-                    foreach (Character character in characterState.Characters)
+                    foreach (Character character in characterState.Party)
                     {
                         character.Revive();
                     }
@@ -326,6 +309,10 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 mobSpawn.Mob.CurrentHealth = mobSpawn.Mob.Stats.MaxHealth;
                 mobSpawn.Mob.IsAlive = true;
             }
+            foreach (Character character in characterState.Party)
+            {
+                character.ActionCounter = rand.Next(character.Equipment.Stats.AttackSpeed + 1);
+            }
             MobsAreSpawned = true;
         }
 
@@ -347,8 +334,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
 
         public void EnterCombat(List<MobSpawn> mobs, string location, List<Item> locationStorage)
         {
-            characterState.MainCharacter.Equipment.CalculateStats(characterState.MainCharacter);
-            characterState.Characters.ForEach(c => c.Equipment.CalculateStats(c));
+            characterState.Party.ForEach(c => c.Equipment.CalculateStats(c));
             this.location = location;
             IsInCombat = true;
             IsCrafting = false;

@@ -16,3 +16,22 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+
+@code {
+    protected override void OnInitialized()
+    {
+        if (characterState.Party.Count == 0)
+        {
+            characterState.Party.Add(characterState.MainCharacter);
+            characterState.Party.Add(characterState.SideCharacters[0]);
+            characterState.Party.Add(characterState.SideCharacters[1]);
+            characterState.Party.Add(characterState.SideCharacters[2]);
+            characterState.Party.Add(characterState.SideCharacters[3]);
+        }
+        characterState.Party.ForEach(c => c.Equipment.CalculateStats(c));
+        characterState.Party.ForEach(c => c.CurrentHealth = c.Equipment.Stats.MaxHealth);
+
+        base.OnInitialized();
+    }
+}

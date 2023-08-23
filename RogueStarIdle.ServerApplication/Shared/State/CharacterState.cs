@@ -33,12 +33,99 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 }
             }
         };
-        public List<Character> Characters { get; set; } = new List<Character>()
+
+        public List<Character> Party { get; set; } = new List<Character>();
+
+        public List<Character> SideCharacters { get; set; } = new List<Character>()
         {
             new Character()
             {
                 Id = 1,
                 Name = "Side Character 1",
+                Images = new CharacterImageUrls()
+                {
+                    Head = new ImageUrls()
+                    {
+                        Stationary = "/Images/Player/Head.png",
+                        Attacking2HandMelee = "/Images/Player/Attack_head.gif"
+                    },
+                    Torso = new ImageUrls()
+                    {
+                        Stationary = "/Images/Player/Shirt.png",
+                        Attacking2HandMelee = "/Images/Player/Attack_Shirt.gif"
+                    },
+                    Legs = new ImageUrls()
+                    {
+                        Stationary = "/Images/Player/Pants.png",
+                        Attacking2HandMelee = "/Images/Player/Attack_Pants.gif"
+                    },
+                    Feet = new ImageUrls()
+                    {
+                        Stationary = "/Images/Player/Shoes.png",
+                        Attacking2HandMelee = "/Images/Player/Attack_Shoes.gif"
+                    }
+                }
+            },
+            new Character()
+            {
+                Id = 2,
+                Name = "Side Character 2",
+                Images = new CharacterImageUrls()
+                {
+                    Head = new ImageUrls()
+                    {
+                        Stationary = "/Images/Player/Head.png",
+                        Attacking2HandMelee = "/Images/Player/Attack_head.gif"
+                    },
+                    Torso = new ImageUrls()
+                    {
+                        Stationary = "/Images/Player/Shirt.png",
+                        Attacking2HandMelee = "/Images/Player/Attack_Shirt.gif"
+                    },
+                    Legs = new ImageUrls()
+                    {
+                        Stationary = "/Images/Player/Pants.png",
+                        Attacking2HandMelee = "/Images/Player/Attack_Pants.gif"
+                    },
+                    Feet = new ImageUrls()
+                    {
+                        Stationary = "/Images/Player/Shoes.png",
+                        Attacking2HandMelee = "/Images/Player/Attack_Shoes.gif"
+                    }
+                }
+            },
+            new Character()
+            {
+                Id = 3,
+                Name = "Side Character 3",
+                Images = new CharacterImageUrls()
+                {
+                    Head = new ImageUrls()
+                    {
+                        Stationary = "/Images/Player/Head.png",
+                        Attacking2HandMelee = "/Images/Player/Attack_head.gif"
+                    },
+                    Torso = new ImageUrls()
+                    {
+                        Stationary = "/Images/Player/Shirt.png",
+                        Attacking2HandMelee = "/Images/Player/Attack_Shirt.gif"
+                    },
+                    Legs = new ImageUrls()
+                    {
+                        Stationary = "/Images/Player/Pants.png",
+                        Attacking2HandMelee = "/Images/Player/Attack_Pants.gif"
+                    },
+                    Feet = new ImageUrls()
+                    {
+                        Stationary = "/Images/Player/Shoes.png",
+                        Attacking2HandMelee = "/Images/Player/Attack_Shoes.gif"
+                    }
+                }
+            },
+            new Character()
+            {
+                Id = 4,
+                Name = "Side Character 4",
                 Images = new CharacterImageUrls()
                 {
                     Head = new ImageUrls()

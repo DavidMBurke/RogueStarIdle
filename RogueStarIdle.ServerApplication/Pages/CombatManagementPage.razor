@@ -40,11 +40,10 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        characterListDropdown.AddRange(characterState.Party);
         selectedCharacterId = characterState.MainCharacter.Id;
         selectedCharacter = characterState.MainCharacter;
         characterState.OnChange += UpdateState;
-        characterListDropdown.Add(characterState.MainCharacter);
-        characterListDropdown.AddRange(characterState.Characters);
     }
 
     private void AddRule(Character character)
