@@ -1,6 +1,7 @@
 ﻿@using RogueStarIdle.ServerApplication.Shared.State;
 @using System.Diagnostics;
 @inject InventoryState inventoryState;
+@inject CharacterState characterState;
 
 <div class="row" style="height:100%;">
     <div style="height: 100%; overflow-y: scroll; width:70%;">
@@ -99,7 +100,7 @@
             }
             @foreach (var slot in selectedItem.EquipmentSlots)
             {
-                <button @onclick="() => EquipItem(selectedItem, slot, characterState.MainCharacter.Equipment, qtyToAdd)">
+                <button @onclick="() => EquipItem(selectedItem, slot, selectedCharacter.Equipment, qtyToAdd)">
                     Equip @characterState.MainCharacter.Equipment.getSlotNameById(slot)
                 </button>
             }
@@ -110,7 +111,7 @@
 
 @code {
     [Parameter] public string searchTerm { get; set; } = string.Empty;
-    [Parameter] public CharacterState characterState { get; set; } = new CharacterState();
+    [Parameter] public Character selectedCharacter { get; set; } = new Character();
     private List<Item> listItems = new List<Item>(); // Items from inventory after search/sort
     public Item selectedItem = null; // Item stats are displayed for
     private Dictionary<string, bool> expandedViews = new Dictionary<string, bool>(); // Stores item groups expanded view status
@@ -118,6 +119,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        selectedCharacter = characterState.MainCharacter;
         inventoryState.OnChange += UpdateState;
         await base.OnInitializedAsync();
     }
@@ -178,13 +180,17 @@
         {
             return;
         }
-        if (qty < 0)
+        if (!item.StacksInEquipmentSlot)
         {
-            return;
+            qty = 1;
         }
         if (qty > item.Quantity)
         {
             qty = item.Quantity;
+        }
+        if (qty <= 0)
+        {
+            return;
         }
         foreach (var property in typeof(EquipmentSet).GetProperties())
         {
@@ -199,12 +205,12 @@
             }
             // replace unequipped item with equipped item
             Item itemToEquip = item.CreateCopy();
+            if (!item.StacksInEquipmentSlot && itemToEquip.Id == slot.Item?.Id && itemToEquip.QualityLevel == slot.Item?.QualityLevel)
+            {
+                return;
+            }
             itemToEquip.Equipped = true;
             itemToEquip.Quantity = qty;
-            if (!item.StacksInEquipmentSlot)
-            {
-                qty = 1;
-            }
             inventoryState.RemoveFromInventory(inventoryState.Inventory, item, qty);
             inventoryState.AddToInventory(inventoryState.Inventory, itemToEquip, qty);
             if (slot.Item != null)
