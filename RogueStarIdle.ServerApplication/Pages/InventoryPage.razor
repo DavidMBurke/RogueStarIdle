@@ -1,6 +1,5 @@
 ﻿@page "/inventory"
 @using RogueStarIdle.ServerApplication.Shared.State;
-@inject CharacterState characterState
 
 <div class="page-content-container">
     <div class="column" style="width: 95%; align-content: center; ">
@@ -11,13 +10,14 @@
                 OnSearchInventory="OnInventorySearch"/>
         </div>
         <div style="height:80%">
-            <InventoryListComponent searchTerm=@searchTerm characterState=@characterState/>
+            <InventoryListComponent searchTerm=@searchTerm/>
         </div>
     </div>
 </div>
 
 @code {
     private string searchTerm;
+    
     
     private void OnInventorySearch(string searchTerm)
     {

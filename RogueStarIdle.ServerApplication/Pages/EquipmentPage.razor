@@ -7,104 +7,114 @@
     <div class="row" style="width:auto; height: 75px;">
         <div class="inventory-grid-container">
             <div class="equipment-row">
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.BrainCybernetic1/>
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.BrainCybernetic2/>
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.BrainCybernetic3 />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.BrainCybernetic1/>
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.BrainCybernetic2 />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.BrainCybernetic3 />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.Droid />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.Droid />
             </div>
             <div class="equipment-row">
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.BodyCybernetic1 />
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.BodyCybernetic2 />
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.BodyCybernetic3 />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.BodyCybernetic1 />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.BodyCybernetic2 />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.BodyCybernetic3 />
                 <div class="inventory-spacer" />
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.Head />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.Head />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.DroidMod />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.DroidMod />
             </div>
             <div class="equipment-row">
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.Neck />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.Neck />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
             </div>
             <div class="equipment-row">
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.LeftWeapon />
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.RightWeapon />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.LeftWeapon />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.RightWeapon />
                 <div class="inventory-spacer" />
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.Back />
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.Torso />
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.OmniLinkMod />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.Back />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.Torso />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.OmniLinkMod />
                 <div class="inventory-spacer" />
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.Survival />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.Survival />
             </div>
             <div class="equipment-row">
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.LeftWeaponMod1 />
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.RightWeaponMod1 />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.LeftWeaponMod1 />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.RightWeaponMod1 />
                 <div class="inventory-spacer" />
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.Hands />
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.Belt />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.Hands />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.Belt />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.Stim />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.Stim />
             </div>
             <div class="equipment-row">
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.LeftWeaponMod2 />
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.RightWeaponMod2 />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.LeftWeaponMod2 />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.RightWeaponMod2 />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.Legs />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.Legs />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.Aid />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.Aid />
             </div>
             <div class="equipment-row">
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.LeftWeaponMod3 />
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.RightWeaponMod3 />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.LeftWeaponMod3 />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.RightWeaponMod3 />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.Feet />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.Feet />
                 <div class="inventory-spacer" />
                 <div class="inventory-spacer" />
-                <InventorySlotComponent slot=@selectedCharacter.Equipment.Explosive />
+                <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.Explosive />
             </div>
         </div>
         <div class="column" style="border-left: 5px solid black; width:200px; display:flex; justify-content: center; padding: 0;">
             <div style="overflow-y:scroll; height: 260px; border-bottom: 5px solid black;">
                 @foreach (Character character in characterList)
                 {
-                    <div @onclick="() => selectedCharacter = character" class="equipped-items-character">@character.Name</div>                    
+                    <div @onclick="() => SelectCharacter(character)" class="equipped-items-character">@character.Name</div>                    
                 }
             </div>
             <div style="border: 2px solid black; background-color: cornflowerblue; height: 263px; margin-bottom: 3px; overflow-y: scroll;">
-                @getTotalEquipmentStatRender(selectedCharacter.Equipment)
+                @getTotalEquipmentStatRender(characterState.SelectedCharacter.Equipment)
             </div>
         </div>
     </div>
 </div>
 
 
-    @code {
-    public Character selectedCharacter = new Character();
+@code {
     public RenderFragment? statTooltipFrag = null;
     public double MouseX;
     public double MouseY;
     public Item hoveredItem = null;
     public List<Character> characterList = new List<Character>();
 
-    protected override void OnInitialized()
+    async Task UpdateState()
     {
-        selectedCharacter = characterState.MainCharacter;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        characterState.OnChange += UpdateState;
         characterList.Add(characterState.MainCharacter);
         characterList.AddRange(characterState.SideCharacters);
+    }
+
+    private async void SelectCharacter(Character character)
+    {
+        characterState.SelectCharacter(character);
+        await InvokeAsync(StateHasChanged);
     }
 
 

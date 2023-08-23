@@ -5,6 +5,7 @@ using RogueStarIdle.ServerApplication.Shared.State;
 namespace RogueStarIdle.ServerApplication.Shared.State
 {
     public class CharacterState {
+        public Character SelectedCharacter { get; set; } = new Character();
         public Character MainCharacter { get; set; } = new Character()
         {
             Id = 0,
@@ -158,19 +159,25 @@ namespace RogueStarIdle.ServerApplication.Shared.State
                 return;
             await OnChange.Invoke();
         }
-        public void AddCombatRule(Character character)
+        public async void AddCombatRule(Character character)
         {
             character.CombatRules.Add(new CombatRule());
-            NotifyStateChanged();
+            await NotifyStateChanged();
         }
-        public void RemoveCombatRule(Character character)
+        public async void RemoveCombatRule(Character character)
         {
             if (character.CombatRules.Count <= 1)
             {
                 return;
             }
             character.CombatRules.RemoveAt(character.CombatRules.Count - 1);
-            NotifyStateChanged();
+            await NotifyStateChanged();
+        }
+
+        public async void SelectCharacter(Character character)
+        {
+            SelectedCharacter = character;
+            await NotifyStateChanged();
         }
     }
 }

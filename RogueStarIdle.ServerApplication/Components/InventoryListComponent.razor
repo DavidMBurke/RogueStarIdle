@@ -101,7 +101,7 @@
             @foreach (var slot in selectedItem.EquipmentSlots)
             {
                 <button @onclick="() => EquipItem(selectedItem, slot, selectedCharacter.Equipment, qtyToAdd)">
-                    Equip @characterState.MainCharacter.Equipment.getSlotNameById(slot)
+                    Equip @selectedCharacter.Equipment.getSlotNameById(slot)
                 </button>
             }
         }
@@ -111,7 +111,7 @@
 
 @code {
     [Parameter] public string searchTerm { get; set; } = string.Empty;
-    [Parameter] public Character selectedCharacter { get; set; } = new Character();
+    public Character selectedCharacter { get; set; } = new Character();
     private List<Item> listItems = new List<Item>(); // Items from inventory after search/sort
     public Item selectedItem = null; // Item stats are displayed for
     private Dictionary<string, bool> expandedViews = new Dictionary<string, bool>(); // Stores item groups expanded view status
@@ -119,7 +119,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        selectedCharacter = characterState.MainCharacter;
+        selectedCharacter = characterState.SelectedCharacter;
         inventoryState.OnChange += UpdateState;
         await base.OnInitializedAsync();
     }

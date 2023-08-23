@@ -31,6 +31,7 @@
         }
         characterState.Party.ForEach(c => c.Equipment.CalculateStats(c));
         characterState.Party.ForEach(c => c.CurrentHealth = c.Equipment.Stats.MaxHealth);
+        characterState.SelectedCharacter = characterState.MainCharacter;
 
         base.OnInitialized();
     }
