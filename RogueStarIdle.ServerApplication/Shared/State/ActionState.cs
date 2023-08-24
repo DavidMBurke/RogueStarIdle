@@ -80,7 +80,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             await NotifyStateChanged();
         }
 
-        public async void ActionTicks(int ticksElapsed)
+        public void ActionTicks(int ticksElapsed)
         {
             CombatTicks(ticksElapsed);
             ExploreTicks(ticksElapsed);

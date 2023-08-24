@@ -167,8 +167,8 @@
         displayExplorePage = false;
     }
 
-    async void CollectAll()
+    void CollectAll()
     {
-        await inventoryState.Transfer(inventoryState.AzuraliPlainsStorage, inventoryState.Inventory);
+        inventoryState.Transfer(inventoryState.AzuraliPlainsStorage, inventoryState.Inventory);
     }
 }

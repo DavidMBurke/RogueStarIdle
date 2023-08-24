@@ -4,7 +4,7 @@
 @inject InventoryState inventoryState
 
 <div class="page-content-container">
-    <div class="row" style="width:auto; height: 75px;">
+    <div class="equipment-page-wrapper">
         <div class="inventory-grid-container">
             <div class="equipment-row">
                 <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.BrainCybernetic1/>
@@ -77,14 +77,14 @@
                 <InventorySlotComponent slot=@characterState.SelectedCharacter.Equipment.Explosive />
             </div>
         </div>
-        <div class="column" style="border-left: 5px solid black; width:200px; display:flex; justify-content: center; padding: 0;">
-            <div style="overflow-y:scroll; height: 260px; border-bottom: 5px solid black;">
+        <div class="equipment-sidebar">
+            <div class="character-list">
                 @foreach (Character character in characterList)
                 {
-                    <div @onclick="() => SelectCharacter(character)" class="equipped-items-character">@character.Name</div>                    
+                    <div @onclick="() => SelectCharacter(character)" class=@getCharSelectClass(character)>@character.Name</div>                    
                 }
             </div>
-            <div style="border: 2px solid black; background-color: cornflowerblue; height: 263px; margin-bottom: 3px; overflow-y: scroll;">
+            <div class="total-equipment-stats">
                 @getTotalEquipmentStatRender(characterState.SelectedCharacter.Equipment)
             </div>
         </div>
@@ -109,6 +109,7 @@
         characterState.OnChange += UpdateState;
         characterList.Add(characterState.MainCharacter);
         characterList.AddRange(characterState.SideCharacters);
+        await InvokeAsync(StateHasChanged);
     }
 
     private async void SelectCharacter(Character character)
@@ -169,12 +170,22 @@
         return null;
     }
 
-    RenderFragment getDamageResistanceRender(string type, int resistance, int? parentResistance = 0)
+    RenderFragment? getDamageResistanceRender(string type, int resistance, int? parentResistance = 0)
     {
         if (resistance > 0 && resistance > parentResistance)
         {
             return @<li>@type Damage Resistance: @resistance</li>;
         }
         return null;
+    }
+
+    private string getCharSelectClass(Character character)
+    {
+        string style = "character-selection";
+        if (character == characterState.SelectedCharacter)
+        {
+            style += " selected";
+        }
+        return style;
     }
 }

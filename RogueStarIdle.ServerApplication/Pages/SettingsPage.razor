@@ -80,7 +80,7 @@
 
     private async void ClearSave()
     {
-        DeleteFromLocalstorage("saveState");
+        await DeleteFromLocalstorage("saveState");
     }
 
     private async Task SaveToLocalstorage(string key, string value)
@@ -105,7 +105,7 @@
         return save;
     }
 
-    private static T Deserialize<T>(string? json)
+    private static T? Deserialize<T>(string? json)
     {
         if (json == null || json == "")
         {

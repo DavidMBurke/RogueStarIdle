@@ -78,7 +78,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             await NotifyStateChanged();
         }
 
-        public async void ConsumeEquipped(List<Item> inventory, Item item, int qtyConsumed)
+        public void ConsumeEquipped(List<Item> inventory, Item item, int qtyConsumed)
         {
             if (qtyConsumed > item.Quantity)
             {
@@ -92,7 +92,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             }
         }
 
-        public async Task Transfer(List<Item> storageFrom, List<Item> storageTo)
+        public void Transfer(List<Item> storageFrom, List<Item> storageTo)
         {
             foreach (Item item in storageFrom)
             {

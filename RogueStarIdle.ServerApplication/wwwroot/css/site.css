@@ -86,42 +86,15 @@ a, .btn-link {
     margin-right: 1px;
 }
 
-.inventory-spacer {
-    width: 73px;
-    height: 73px;
-    margin-left: 1px;
-    margin-right: 1px;
-}
-
 .row {
     display: flex;
     flex-direction: row;
-}
-
-.equipment-row {
-    display: flex;
-    flex-direction: row;
-    height: 75px;
 }
 
 .column {
     display: flex;
     flex-direction: column;
     width: fit-content
-}
-
-.equipped-items-character {
-    width: 186px;
-    height: 35px;
-    border: 2px solid black;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 12px;
-    font-weight: bold;
-    text-align: center;
-    background-color: cornflowerblue;
 }
 
 .equipped-items-character:hover {
