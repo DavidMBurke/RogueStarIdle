@@ -11,6 +11,12 @@
                 <option value="@character.Id" @key="character.Id">@character.Name</option>
             }
         </select>
+        <div class="column" style="width: 100%; align-content: flex-start">
+            @foreach (CombatRule rule in selectedCharacter.CombatRules)
+            {
+                <RuleComponent rule=rule/>                
+            }
+        </div>
         <div style="display: flex; justify-content: center; width: 100%">
             <div>
                 <button @onclick="() => AddRule(selectedCharacter)">Add Rule</button>
@@ -21,12 +27,6 @@
                     <button @onclick="() => RemoveRule(selectedCharacter)">Remove Rule</button>
                 }
             </div>
-        </div>
-        <div class="column" style="width: 100%; align-content: flex-start">
-            @foreach (CombatRule rule in selectedCharacter.CombatRules)
-            {
-                <RuleComponent rule=rule/>                
-            }
         </div>
     </div>
 </div>

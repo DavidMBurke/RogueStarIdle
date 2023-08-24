@@ -1,96 +1,102 @@
 ﻿@using static RogueStarIdle.CoreBusiness.CombatRule;
 
 
-<EditForm Model=@rule>
-    <InputSelect @bind-Value="rule.Action">
-        @foreach (var action in Enum.GetValues(typeof(ActionEnum)))
-        {
-            <option value="@((int)action)">@action.ToString()</option>
-        }
-    </InputSelect>
-    @if (rule.Action != (int)ActionEnum.ThrowExplosive && rule.Action != (int)ActionEnum.Run)
-    {
-        <InputSelect @bind-Value="rule.Target">
-            @foreach (var action in Enum.GetValues(typeof(TargetEnum)))
-            {
-                <option value="@((int)action)">@action.ToString()</option>
-            }
-        </InputSelect>
-        @if (rule.Target != (int)TargetEnum.Self)
-        {
-            <p> with </p>
-            <InputSelect @bind-Value="rule.TargetQualifier">
-                @foreach (var action in Enum.GetValues(typeof(TargetQualifierEnum)))
+<EditForm Model=@rule style="width:100%">
+    <div class="column" style="width:100%">
+        <div class="rule-container">
+            <InputSelect style="width: 20%" @bind-Value="rule.Action">
+                @foreach (var action in Enum.GetValues(typeof(ActionEnum)))
                 {
                     <option value="@((int)action)">@action.ToString()</option>
                 }
             </InputSelect>
-            @if (rule.TargetQualifier != (int)TargetQualifierEnum.Any)
+            @if (rule.Action != (int)ActionEnum.ThrowExplosive && rule.Action != (int)ActionEnum.Run)
             {
-                <InputSelect @bind-Value="rule.TargetQualifierStat">
-                    @foreach (var action in Enum.GetValues(typeof(StatDropdownEnum)))
+                <InputSelect style="width: 25%" @bind-Value="rule.Target">
+                    @foreach (var action in Enum.GetValues(typeof(TargetEnum)))
                     {
                         <option value="@((int)action)">@action.ToString()</option>
                     }
                 </InputSelect>
+                @if (rule.Target != (int)TargetEnum.Self)
+                {
+                    <p> with </p>
+                    <InputSelect style="width: 15%" @bind-Value="rule.TargetQualifier">
+                        @foreach (var action in Enum.GetValues(typeof(TargetQualifierEnum)))
+                        {
+                            <option value="@((int)action)">@action.ToString()</option>
+                        }
+                    </InputSelect>
+                    @if (rule.TargetQualifier != (int)TargetQualifierEnum.Any)
+                    {
+                        <InputSelect style="width: 25%" @bind-Value="rule.TargetQualifierStat">
+                            @foreach (var action in Enum.GetValues(typeof(StatDropdownEnum)))
+                            {
+                                <option value="@((int)action)">@action.ToString()</option>
+                            }
+                        </InputSelect>
+                    }
+                }
             }
-        }
-    }
-    <button @onclick="()=>rule.IsConditional = !rule.IsConditional" style=@(rule.IsConditional ? "" : "opacity: 0.5")>if</button>
-    @if (rule.IsConditional)
-    {
-        <InputSelect @bind-Value="rule.ConditionalTarget">
-            @foreach (var action in Enum.GetValues(typeof(TargetEnum)))
-            {
-                <option value="@((int)action)">@action.ToString()</option>
-            }
-        </InputSelect>
-        <InputSelect @bind-Value="rule.ConditionalTargetRule">
-            @foreach (var action in Enum.GetValues(typeof(ConditionalTargetRuleEnum)))
-            {
-                <option value="@((int)action)">@action.ToString().TrimStart('_')</option>
-            }
-        </InputSelect>
-        @if (rule.ConditionalTargetRule != (int)ConditionalTargetRuleEnum._)
+            <button @onclick="()=>rule.IsConditional = !rule.IsConditional" style=@(rule.IsConditional ? "" : "opacity: 0.5")>if</button>
+        </div>
+        @if (rule.IsConditional)
         {
-            @if (rule.ConditionalTargetRule == (int)ConditionalTargetRuleEnum.Stat)
-            {
-                <InputSelect @bind-Value="rule.ConditionalTargetStat">
-                    @foreach (var action in Enum.GetValues(typeof(StatDropdownEnum)))
+            <div class="rule-container">
+                <InputSelect style="width: 10%" @bind-Value="rule.ConditionalTarget">
+                    @foreach (var action in Enum.GetValues(typeof(TargetEnum)))
                     {
                         <option value="@((int)action)">@action.ToString()</option>
                     }
                 </InputSelect>
-                <InputSelect @bind-Value="rule.ConditionalTargetComparison">
-                    @foreach (var action in Enum.GetValues(typeof(ComparisonEnum)))
-                    {
-                        <option value="@((int)action)">@action.ToString()</option>
-                    }
-                </InputSelect>
-                <InputSelect @bind-Value="rule.Percentage">
-                    @foreach (var action in Enum.GetValues(typeof(PercentageEnum)))
-                    {
-                        <option value="@((int)action)">@($"{action.ToString().TrimStart('_')}%")</option>
-                    }
-                </InputSelect>
-            }
-            @if (rule.ConditionalTargetRule == (int)ConditionalTargetRuleEnum.AliveCount)
-            {
-                <InputSelect @bind-Value="rule.ConditionalTargetComparison">
-                    @foreach (var action in Enum.GetValues(typeof(ComparisonEnum)))
-                    {
-                        <option value="@((int)action)">@action.ToString()</option>
-                    }
-                </InputSelect>
-                <InputSelect @bind-Value="rule.ConditionalTargetStat">
-                    @foreach (var action in Enum.GetValues(typeof(ConditionalTargetCountEnum)))
+                <InputSelect style="width: 10%" @bind-Value="rule.ConditionalTargetRule">
+                    @foreach (var action in Enum.GetValues(typeof(ConditionalTargetRuleEnum)))
                     {
                         <option value="@((int)action)">@action.ToString().TrimStart('_')</option>
                     }
                 </InputSelect>
-            }
+                @if (rule.ConditionalTargetRule != (int)ConditionalTargetRuleEnum._)
+                {
+                    @if (rule.ConditionalTargetRule == (int)ConditionalTargetRuleEnum.Stat)
+                    {
+                        <InputSelect style="width: 10%" @bind-Value="rule.ConditionalTargetStat">
+                            @foreach (var action in Enum.GetValues(typeof(StatDropdownEnum)))
+                            {
+                                <option value="@((int)action)">@action.ToString()</option>
+                            }
+                        </InputSelect>
+                        <InputSelect style="width: 10%" @bind-Value="rule.ConditionalTargetComparison">
+                            @foreach (var action in Enum.GetValues(typeof(ComparisonEnum)))
+                            {
+                                <option value="@((int)action)">@action.ToString()</option>
+                            }
+                        </InputSelect>
+                        <InputSelect style="width: 10%" @bind-Value="rule.Percentage">
+                            @foreach (var action in Enum.GetValues(typeof(PercentageEnum)))
+                            {
+                                <option value="@((int)action)">@($"{action.ToString().TrimStart('_')}%")</option>
+                            }
+                        </InputSelect>
+                    }
+                    @if (rule.ConditionalTargetRule == (int)ConditionalTargetRuleEnum.AliveCount)
+                    {
+                        <InputSelect style="width: 10%" @bind-Value="rule.ConditionalTargetComparison">
+                            @foreach (var action in Enum.GetValues(typeof(ComparisonEnum)))
+                            {
+                                <option value="@((int)action)">@action.ToString()</option>
+                            }
+                        </InputSelect>
+                        <InputSelect style="width: 10%" @bind-Value="rule.ConditionalTargetStat">
+                            @foreach (var action in Enum.GetValues(typeof(ConditionalTargetCountEnum)))
+                            {
+                                <option value="@((int)action)">@action.ToString().TrimStart('_')</option>
+                            }
+                        </InputSelect>
+                    }
+                }
+            </div>
         }
-    }
+    </div>
 </EditForm>
 
 @code {
