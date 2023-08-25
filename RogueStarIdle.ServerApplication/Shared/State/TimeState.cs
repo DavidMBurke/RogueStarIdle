@@ -25,7 +25,6 @@ namespace RogueStarIdle.ServerApplication.Shared.State
         public System.Timers.Timer GameTimer { get; set; } = new System.Timers.Timer(20);
         public event Func<Task> OnChange;
         private readonly ActionState actionState;
-
         public TimeState(ActionState actionState)
         {
             this.actionState = actionState;
@@ -43,7 +42,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             await OnChange.Invoke();
         }
 
-        public void CalculateElapsedTicks(object source, ElapsedEventArgs e)
+        public async void CalculateElapsedTicks(object source, ElapsedEventArgs e)
         {
             // Breaks when adding 10 hours or more and runs Tick multiple times without resetting
             TimeSpan timeElapsed = DateTime.Now - LastUpdateTime;
@@ -57,7 +56,7 @@ namespace RogueStarIdle.ServerApplication.Shared.State
             }
             Tick(Ticks);
             Ticks = 0;
-            NotifyStateChanged();
+            await NotifyStateChanged();
         }
 
         // Update every state affected by time.

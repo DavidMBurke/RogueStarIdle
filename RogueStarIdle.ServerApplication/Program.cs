@@ -24,6 +24,7 @@ builder.Services.AddScoped<InventoryState>();
 builder.Services.AddScoped<CharacterState>();
 builder.Services.AddScoped<ActionState>();
 builder.Services.AddScoped<TimeState>();
+builder.Services.AddScoped<SaveState>();
 builder.Services.AddSignalR(e => {
     e.MaximumReceiveMessageSize = 102400000;
 });

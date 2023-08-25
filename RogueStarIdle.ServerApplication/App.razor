@@ -1,8 +1,16 @@
 ﻿@using RogueStarIdle.ServerApplication.Shared.State;
 @inject TimeState timeState;
 @inject InventoryState inventoryState;
-@inject ActionState exploringingState;
+@inject ActionState actionState;
 @inject CharacterState characterState;
+@inject SaveState saveState;
+@inject IJSRuntime JSRuntime
+@using System.Text.Json;
+@using System.Reflection;
+@using System.Security.Cryptography;
+@using System.Text;
+@using System.IO.Compression;
+@using System.Timers
 
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
@@ -19,8 +27,13 @@
 
 
 @code {
+    System.Timers.Timer timer = new Timer(30000);
     protected override void OnInitialized()
     {
+        timer.Elapsed += Autosave;
+        timer.Enabled = true;
+        timer.Start();
+        saveState.Load(LoadFromLocalStorage);
         if (characterState.Party.Count == 0)
         {
             characterState.Party.Add(characterState.MainCharacter);
@@ -35,4 +48,36 @@
 
         base.OnInitialized();
     }
+
+    private string key = "Rogue Star Baybeeeee";
+    private string importExport = "";
+
+    private async Task<string> LoadFromLocalStorage(string key)
+    {
+        return await JSRuntime.InvokeAsync<string>("localStorage.getItem", key);
+    }
+
+    public async Task SaveToLocalStorage(string key, string value)
+    {
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", key, value);
+    }
+
+    private async void Autosave(object sender, ElapsedEventArgs e)
+    {
+        await SaveStateToLocalStorage();
+    }
+
+    private async Task SaveStateToLocalStorage()
+    {
+        await saveState.Save(SaveToLocalStorage);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await SaveStateToLocalStorage();
+        }
+    }
+
 }
